@@ -1,38 +1,57 @@
-Role Name
-=========
+# Ansible roles for Batfish
 
-Repository with Ansible modules for Batfish
+Intentionet has created this Ansible role to allow users to embed pre-deployment validation into any Ansible playbook. This role is hosted on Ansible Galaxy as Intentionet.batfish. The role includes a set of Ansible modules that analyze configuration files for an entire (or subset of a) network, allowing users to extract configuration data and perform network-wide validation tests in a completely vendor agnostic manner.
 
-Requirements
-------------
+## Overview of Modules
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+**batfish_session** - Setup the connection to the server running Batfish or Batfish Enterprise
 
-Role Variables
---------------
+**batfish_init** - Initialize a network snapshot
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+**batfish_get_facts** - Retrieve configuration facts for devices in the snapshot
 
-Dependencies
-------------
+**batfish_validate_facts** - Validate configuration facts for devices in the snapshot
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+**batfish_assert** - Validate network behavior
 
-Example Playbook
-----------------
+## Documentation
+Ansible module documentation can be found at https://docs.ansible.com by searching for Batfish or Intentionet.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Examples
+This example playbook outlines how to use the `Batfish.base` role to extract the list of interfaces for all devices in the network
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+<insert sample playbook>
+```
 
-License
--------
+For additional examples and a step-by-step tutorial of the Batfish Ansible role, please visit the Tutorials page
 
+## Installation  
+You must have the [DEPENDENCIES](#dependencies) installed on the system before you can use the role.
+
+### Ansible Galaxy Role
+To download the latest released version of the Batfish role to the Ansible server, execute the ansible-galaxy install command, and specify Intentionet.batfish
+
+```
+ansible-galaxy install Batfish.base
+```
+
+## Dependencies
+
+This module requires the following packages to be installed on the Ansible control machine:
+
+Python >= 2.7
+Ansible 2.7 or later
+Pybatfish >= 0.36
+
+## License
 Apache 2.0
 
-Author Information
-------------------
+## Support
+Support for this role is provided by the community and Intentionet. If you have an issue with a module in this role, you may:
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- Open a Github issue
+- Post a question on our Slack Group
+
+## Contributors
+Intentionet is actively contributing to and maintaining this repository.
