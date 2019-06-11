@@ -65,7 +65,13 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-# TODO
+summary:
+    description: Summary of action(s) performed.
+    type: str
+result:
+    description: Contains a map of node-name to list of failures for that node.
+    returned: when validation does not pass
+    type: complex
 '''
 
 from ansible.module_utils.basic import AnsibleModule

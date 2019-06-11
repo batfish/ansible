@@ -64,7 +64,19 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-# TODO
+summary:
+    description: Summary of action(s) performed.
+    type: str
+result:
+    description: Dictionary of extracted facts.
+    type: complex
+    contains:
+        nodes:
+            description: Dictionary of node-name to node-facts for each node.
+            type: complex
+        version:
+            description: Fact-format version of the returned facts.
+            type: str
 '''
 
 from ansible.module_utils.basic import AnsibleModule

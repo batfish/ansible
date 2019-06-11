@@ -59,7 +59,12 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-# TODO
+summary:
+    description: Summary of action(s) performed.
+    type: str
+session:
+    description: Details about the created session.
+    type: complex
 '''
 
 from ansible.module_utils.basic import AnsibleModule

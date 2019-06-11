@@ -69,7 +69,19 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-# TODO
+summary:
+    description: Summary of action(s) performed.
+    type: str
+result:
+    description: Information about the snapshot created.
+    type: complex
+    contains:
+        snapshot:
+            description: Name of the snapshot created.
+            type: str
+        network:
+            description: Name of the network created.
+            type: str
 '''
 
 from ansible.module_utils.basic import AnsibleModule
