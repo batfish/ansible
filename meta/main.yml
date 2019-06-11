@@ -1,7 +1,7 @@
 galaxy_info:
   author: Batfish
   description: Ansible modules for Batfish (www.batfish.org)
-  role_name: batfish
+  role_name: base
 
   license: Apache
 
