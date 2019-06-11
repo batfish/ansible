@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #   Copyright 2019 The Batfish Open Source Project
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -261,7 +262,6 @@ def assert_dict_subset(actual, expected, prefix="", diffs=None):
     for k in expected:
         key_name = '{}{}'.format(prefix, k)
         if k not in actual:
-            # TODO need to differentiate between
             diffs.append({
                 key_name: {
                     'key_present': False,
