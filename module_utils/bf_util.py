@@ -95,6 +95,31 @@ def load_facts(input_directory):
     return out
 
 
+def validate_facts(expected, actual):
+    """Return a map of node to non-matching facts based on the difference between the expected and actual facts supplied."""
+    failures = {}
+    expected_facts = expected['nodes']
+    actual_facts = actual['nodes']
+    expected_version = expected['version']
+    actual_version = actual['version']
+    if expected_version != actual_version:
+        return {
+            n: {
+                'Version': {
+                    'expected': expected_version,
+                    'actual': actual_version
+                }
+            } for n in actual_facts
+        }
+    for node in actual_facts:
+        if node in expected_facts:
+            res = assert_dict_subset(actual_facts[node],
+                                     expected_facts[node])
+            if res:
+                failures[node] = res
+    return failures
+
+
 def _process_facts(node_props, iface_props, bgp_process_props, bgp_peer_props):
     """Process properties answers into a fact dict."""
     # out = {}

@@ -76,7 +76,8 @@ result:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import (assert_dict_subset, create_session,
-                                          get_facts, load_facts, set_snapshot)
+                                          get_facts, load_facts, set_snapshot,
+                                          validate_facts)
 
 try:
     from pybatfish.client.session import Session
@@ -132,16 +133,9 @@ def run_module():
     session = create_session(**session_params)
     set_snapshot(session=session, network=network, snapshot=snapshot)
 
-    facts = get_facts(session, nodes_specifier=nodes_spec)
-    expected_facts = load_facts(input_directory)['nodes']
-
-    failures = {}
-    nodes_facts = facts['nodes']
-    for node in nodes_facts:
-        if node in expected_facts:
-            res = assert_dict_subset(nodes_facts[node], expected_facts[node])
-            if res:
-                failures[node] = res
+    actual = get_facts(session, nodes_specifier=nodes_spec)
+    expected = load_facts(input_directory)
+    failures = validate_facts(expected, actual)
 
     summary = 'Actual facts match expected facts'
     if failures:
