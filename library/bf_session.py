@@ -46,7 +46,16 @@ requirements:
 '''
 
 EXAMPLES = '''
-# TODO
+# Establish session with Batfish service running on localhost
+- bf_session:
+    host: localhost
+    name: my_session
+# Establish SSL session with Batfish service running at 10.10.10.10
+- bf_session:
+    host: 10.10.10.10
+    name: my_session
+    parameters:
+      ssl: true
 '''
 
 RETURN = '''
@@ -69,7 +78,7 @@ def run_module():
     module_args = dict(
         host=dict(type='str', required=True),
         name=dict(type='str', required=False, default='default'),
-        parameters=dict(type='str', required=False),
+        parameters=dict(type='dict', required=False),
     )
 
     # seed the result dict in the object

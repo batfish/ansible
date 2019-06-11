@@ -38,7 +38,7 @@ options:
         required: true
     snapshot_data:
         description:
-            - Path to snapshot data directory or zip.
+            - Path to snapshot data directory or zip. See U(https://github.com/batfish/batfish/wiki/Packaging-snapshots-for-analysis) for more details on packaging your snapshot for analysis.
         required: true
     overwrite:
         description:
@@ -55,7 +55,17 @@ requirements:
 '''
 
 EXAMPLES = '''
-# TODO
+# Initialize a snapshot with specified snapshot data
+- bf_init_snapshot
+    network: datacenter_sea
+    snapshot: 2019-01-01
+    snapshot_data: /path/to/snapshot/data/
+# Initialize a snapshot, replacing same named snapshot if it exists
+- bf_init_snapshot
+    network: network_name
+    snapshot: duplicate_snapshot_name
+    snapshot_data: /path/to/snapshot/data.zip
+    overwrite: true
 '''
 
 RETURN = '''

@@ -30,7 +30,7 @@ description:
 options:
     nodes:
         description:
-            - Nodes to extract facts for.
+            - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
         required: false
     network:
         description:
@@ -55,7 +55,13 @@ requirements:
 '''
 
 EXAMPLES = '''
-# TODO
+# Validate current snapshot facts against local YAML facts
+- bf_validate_facts:
+    expected_facts: /path/to/local/YAML/files/
+# Validate current snapshot facts for nodes whose names contain as1border against local YAML facts
+- bf_validate_facts:
+    nodes: /as1border/
+    expected_facts: /path/to/local/YAML/files/
 '''
 
 RETURN = '''

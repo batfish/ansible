@@ -30,7 +30,7 @@ description:
 options:
     nodes:
         description:
-            - Nodes to extract facts for.
+            - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
         required: false
     network:
         description:
@@ -55,7 +55,12 @@ requirements:
 '''
 
 EXAMPLES = '''
-# TODO
+# Extract facts and save to an output directory
+- bf_extract_facts:
+    output_directory: output/facts/
+# Extract facts for nodes whose names contain as1border or host
+- bf_extract_facts:
+    nodes: /as1border|host/
 '''
 
 RETURN = '''
