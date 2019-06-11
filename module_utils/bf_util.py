@@ -11,16 +11,12 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-import json
 import os
 import yaml
-from ansible.errors import AnsibleActionFail
 from collections import OrderedDict, Mapping
 from copy import deepcopy
-from deepdiff import DeepDiff
 from pybatfish.client.session import Session
 from pybatfish.datamodel.primitives import DataModelElement, ListWrapper
-from pybatfish.util import BfJsonEncoder
 
 BATFISH_FACT_VERSION = "batfish_v0"
 
@@ -59,7 +55,6 @@ def create_session(network=None, snapshot=None, **params):
 def get_facts(session, nodes_specifier):
     """Get current-snapshot facts from the specified session for nodes matching the nodes specifier."""
     # TODO assert questions exist
-
     args = {}
     if nodes_specifier:
         args['nodes'] = nodes_specifier
@@ -256,42 +251,3 @@ def assert_dict_subset(actual, expected, prefix="", diffs=None):
                         }
                     })
     return diffs
-
-
-def _subdict_recursive_new(d, d_ref, diffs):
-    """Helper function that retrieves differences between terminal key-value pairs in reference dictionary versus the base dictionary."""
-    out = {}
-    for k in d:
-        if k in d_ref.keys():
-            if isinstance(d_ref[k], Mapping):
-                out[k] = _subdict_recursive(d[k], d_ref[k])
-            else:
-                out[k] = d[k]
-    return out
-
-
-def _subdict_recursive(d, d_ref):
-    """Helper function that retrieves a subset of a dictionary corresponding to keys in the reference dictionary.
-
-    Checks keys recursively."""
-    out = {}
-    for k in d:
-        if k in d_ref.keys():
-            if isinstance(d_ref[k], Mapping):
-                out[k] = _subdict_recursive(d[k], d_ref[k])
-            else:
-                out[k] = d[k]
-    return out
-
-
-def assert_dict_subset_old(actual, expected):
-    """Assert that the expected dictionary is a subset of the actual dictionary.
-
-    :param actual: the dictionary tested
-    :param expected: the expected value of a dictionary
-    """
-    diff = DeepDiff(_subdict_recursive(actual, expected), expected,
-                    ignore_order=True, verbose_level=0, view='text')
-    if diff:
-        err_text = "Unexpected differences found:\n{}".format(diff)
-        return err_text
