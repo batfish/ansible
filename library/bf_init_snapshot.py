@@ -19,13 +19,14 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
+# Note: these docs take into account the fact that the plugin handles supplying default values for some params
 DOCUMENTATION = '''
 ---
 module: bf_init_snapshot
 short_description: Initializes a Batfish snapshot with provided snapshot data
 version_added: "2.7"
 description:
-    - "Initializes a Batfish snapshot with provided snapshot data"
+    - "Initializes a Batfish snapshot with provided snapshot data and populates C(bf_network) and C(bf_snapshot) facts."
 options:
     network:
         description:
@@ -45,11 +46,8 @@ options:
         required: false
     session:
         description:
-            - Batfish session required to connect to Batfish service.
+            - Batfish session parameters required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
         required: false
-    debug:
-        description:
-            - Boolean debug flag (uses local session creation instead of utils)
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -65,6 +63,7 @@ RETURN = '''
 '''
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.bf_util import create_session
 
 try:
     from pybatfish.client.session import Session
@@ -82,7 +81,6 @@ def run_module():
         snapshot_data=dict(type='str', required=True),
         overwrite=dict(type='bool', required=False, default=False),
         session=dict(type='dict', required=True),
-        debug=dict(type='bool', required=False, default=False),
     )
 
     # seed the result dict in the object
@@ -118,11 +116,7 @@ def run_module():
     overwrite = module.params['overwrite']
     session_params = module.params.get('session', {})
 
-    if module.params['debug']:
-        session = Session(**session_params)
-    else:
-        from ansible.module_utils.bf_util import create_session
-        session = create_session(**session_params)
+    session = create_session(**session_params)
 
     session.set_network(network)
     session.init_snapshot(snapshot_data, snapshot, overwrite=overwrite)

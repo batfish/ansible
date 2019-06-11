@@ -19,26 +19,35 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
+# Note: these docs take into account the fact that the plugin handles supplying default values for some params
 DOCUMENTATION = '''
 ---
 module: bf_validate_facts
 short_description: Validates facts for the current Batfish snapshot against the facts in the supplied directory 
 version_added: "2.7"
 description:
-    - "Validates facts for the current Batfish snapshot against the facts in the supplied directory"
+    - "Validates facts for the current Batfish snapshot against the facts in the C(expected_facts) directory"
 options:
     nodes:
         description:
             - Nodes to extract facts for.
         required: false
-    input_directory:
+    network:
         description:
-            - Directory to pull known good facts from.
+            - Name of the network to validate facts for. This defaults to the value in the bf_network fact.  
+        required: false
+    snapshot:
+        description:
+            - Name of the snapshot to validate facts for. This defaults to the value in the bf_snapshot fact.  
         required: false
     session:
         description:
-            - Batfish session required to connect to the Batfish service.
-        required: true
+            - Batfish session parameters required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
+        required: false
+    expected_facts:
+        description:
+            - Directory to pull expected facts from.
+        required: false
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -53,15 +62,12 @@ RETURN = '''
 # TODO
 '''
 
-import json
-import os
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import (assert_dict_subset, create_session,
-                                          get_facts, load_facts)
+                                          get_facts, load_facts, set_snapshot)
 
 try:
     from pybatfish.client.session import Session
-    # from pybatfish.client.asserts import assert_dict_subset
 except Exception as e:
     pybatfish_found = False
 else:
@@ -74,7 +80,7 @@ def run_module():
         nodes=dict(type='str', required=False, default='.*'),
         network=dict(type='str', required=True),
         snapshot=dict(type='str', required=True),
-        input_directory=dict(type='str', required=True),
+        expected_facts=dict(type='str', required=True),
         session=dict(type='dict', required=True),
         debug=dict(type='bool', required=False, default=False),
     )
@@ -106,12 +112,13 @@ def run_module():
         return result
 
     nodes_spec = module.params['nodes']
-    input_directory = module.params['input_directory']
+    input_directory = module.params['expected_facts']
     session_params = module.params.get('session', {})
     network = module.params.get('network')
     snapshot = module.params.get('snapshot')
 
-    session = create_session(network=network, snapshot=snapshot, **session_params)
+    session = create_session(**session_params)
+    set_snapshot(session=session, network=network, snapshot=snapshot)
 
     facts = get_facts(session, nodes_specifier=nodes_spec)
     expected_facts = load_facts(input_directory)['nodes']

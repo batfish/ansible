@@ -40,16 +40,17 @@ NODE_PROPERTIES_REORG = dict([
     ('TACACS_Source_Interface', 'TACACS'),
 ])
 
-def create_session(network=None, snapshot=None, **params):
+def create_session(**params):
     """Create session with the supplied params."""
     # TODO dynamically determine which session we want to use based on
     # available modules w/Sessions
-    s = Session(**params)
-    if network:
-        s.set_network(network)
-        if snapshot:
-            s.set_snapshot(snapshot)
-    return s
+    return Session(**params)
+
+
+def set_snapshot(session, network, snapshot):
+    """Set the network and snapshot for the specified session."""
+    session.set_network(network)
+    session.set_snapshot(snapshot)
 
 
 def get_facts(session, nodes_specifier):

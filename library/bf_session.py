@@ -25,7 +25,7 @@ module: bf_session
 short_description: Builds a Batfish session for use with other Batfish Ansible modules
 version_added: "2.7"
 description:
-    - "Builds a Batfish session for use with other Batfish Ansible modules"
+    - "Builds a Batfish session for use with other Batfish Ansible modules and populates C(bf_session) fact."
 options:
     host:
         description:
@@ -33,19 +33,11 @@ options:
         required: true
     name:
         description:
-            - Session (unused, maybe later used for lookup).
+            - Name of the session.
         required: false
-    api_key:
+    parameters:
         description:
-            - API key used to connect to the service.
-        required: false
-    ssl:
-        description:
-            - Boolean indicating if Batfish service connection will use SSL.
-        required: false
-    debug:
-        description:
-            - Boolean debug flag (uses local session creation instead of utils)
+            - Dictionary with additional parameters used to configure the session.  See U(https://pybatfish.readthedocs.io/en/latest/api.html#session-parameters) for more details.
         required: false
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
@@ -62,6 +54,7 @@ RETURN = '''
 '''
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.bf_util import create_session
 
 try:
     from pybatfish.client.session import Session
@@ -76,9 +69,7 @@ def run_module():
     module_args = dict(
         host=dict(type='str', required=True),
         name=dict(type='str', required=False, default='default'),
-        api_key=dict(type='str', required=False),
-        ssl=dict(type='bool', required=False, default=False),
-        debug=dict(type='bool', required=False, default=False),
+        parameters=dict(type='str', required=False),
     )
 
     # seed the result dict in the object
@@ -110,25 +101,20 @@ def run_module():
 
     host = module.params['host']
     name = module.params['name']
-    api_key = module.params['api_key']
-    ssl = module.params['ssl']
+    parameters = module.params['parameters']
 
-    # TODO maybe do a more dynamic approach? accept variable params with K-V pairs?
-    params = {'host': host}
-    if api_key is not None:
-        params['apiKey'] = api_key
+    if parameters is None:
+        parameters = {}
+    parameters['host'] = host
 
-    if module.params['debug']:
-        session = Session(**params)
-    else:
-        from ansible.module_utils.bf_util import create_session
-        session = create_session(**params)
+    # Not strictly necessary, but useful to confirm the session can be established
+    create_session(**parameters)
 
     # Overall status of command execution
     result['summary'] = "Session established to '{}' ({})".format(host, name)
-    result['session'] = params
+    result['session'] = parameters
     result['changed'] = True
-    result['ansible_facts']['bf_session'] = params
+    result['ansible_facts']['bf_session'] = parameters
     module.exit_json(**result)
 
 def main():

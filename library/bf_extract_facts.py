@@ -19,26 +19,35 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
+# Note: these docs take into account the fact that the plugin handles supplying default values for some params
 DOCUMENTATION = '''
 ---
 module: bf_extract_facts
-short_description: Extracts facts from the current Batfish snapshot
+short_description: Extracts facts for a Batfish snapshot
 version_added: "2.7"
 description:
-    - "Extracts facts from the current Batfish snapshot"
+    - "Extracts and returns facts for a Batfish snapshot and saves them (one YAML file node) to the output directory if specified."
 options:
     nodes:
         description:
             - Nodes to extract facts for.
         required: false
+    network:
+        description:
+            - Name of the network to extract facts for. This defaults to the value in the bf_network fact.  
+        required: false
+    snapshot:
+        description:
+            - Name of the snapshot to extract facts for. This defaults to the value in the bf_snapshot fact.  
+        required: false
     output_directory:
         description:
-            - Optional directory to save facts to.
+            - Directory to save facts to.
         required: false
     session:
         description:
-            - Batfish session required to connect to the Batfish service.
-        required: true
+            - Batfish session parameters required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
+        required: false
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -53,11 +62,9 @@ RETURN = '''
 # TODO
 '''
 
-import json
-import os
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import (create_session, get_facts,
-                                          write_facts)
+                                          set_snapshot, write_facts)
 
 try:
     from pybatfish.client.session import Session
@@ -110,9 +117,10 @@ def run_module():
     network = module.params.get('network')
     snapshot = module.params.get('snapshot')
 
-    session = create_session(network=network, snapshot=snapshot, **session_params)
+    session = create_session(**session_params)
+    set_snapshot(session=session, network=network, snapshot=snapshot)
 
-    facts = get_facts(session, nodes_specifier=nodes)
+    facts = get_facts(session=session, nodes_specifier=nodes)
     summary = "Got facts for nodes: '{}'".format(nodes)
 
     if output_directory:

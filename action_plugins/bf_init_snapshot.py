@@ -43,13 +43,15 @@ class ActionModule(ActionNetworkModule):
             display.vvv('No session supplied, using session from Ansible facts: %s' % session)
             module_args['session'] = session
 
-        if 'snapshot' not in module_args:
-            module_args['snapshot'] = facts.get('bf_snapshot')
+        module_name = self._task.action
+        if module_name != 'bf_init_snapshot':
+            if 'snapshot' not in module_args:
+                module_args['snapshot'] = facts.get('bf_snapshot')
 
-        if 'network' not in module_args:
-            module_args['network'] = facts.get('bf_network')
+            if 'network' not in module_args:
+                module_args['network'] = facts.get('bf_network')
 
-        result = self._execute_module(module_name=self._task.action,
+        result = self._execute_module(module_name=module_name,
                                       module_args=module_args,
                                       task_vars=task_vars,
                                       wrap_async=self._task.async_val)
