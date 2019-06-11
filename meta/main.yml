@@ -1,8 +1,7 @@
 galaxy_info:
   author: Batfish
-  description: Ansible modules for Batfish
-  role_name: ansible
-  company: Intentionet, Inc.
+  description: Ansible modules for Batfish (www.batfish.org)
+  role_name: batfish
 
   license: Apache
 
