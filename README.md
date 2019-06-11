@@ -18,7 +18,7 @@ Intentionet has created this Ansible role to allow users to embed pre-deployment
 Ansible module documentation can be found at https://docs.ansible.com by searching for Batfish or Intentionet.
 
 ## Examples
-This example playbook outlines how to use the Intentionet.batfish role to extract the list of interfaces for all devices in the network
+This example playbook outlines how to use the `Batfish.base` role to extract the list of interfaces for all devices in the network
 
 <insert sample playbook>
 
@@ -31,14 +31,7 @@ You must have the Dependencies installed on the system before you can use the ro
 To download the latest released version of the Batfish role to the Ansible server, execute the ansible-galaxy install command, and specify Intentionet.batfish
 
 ```
-ansible-galaxy install Intentionet.batfish
-```
-
-### Direct from Github
-You can also use the ansible-galaxy install command to install the latest development version of the role directly from GitHub.
-
-```
-sudo ansible-galaxy install git+https://github.com/batfish/ansible.git,,Intentionet.batfish
+ansible-galaxy install Batfish.base
 ```
 
 ## Dependencies
@@ -53,7 +46,7 @@ Pybatfish >= 0.36
 Apache 2.0
 
 ## Support
-Support for this Intentionet.batfish role is provided by the community and Intentionet. If you have an issue with a module in this role, you may:
+Support for this role is provided by the community and Intentionet. If you have an issue with a module in this role, you may:
 
 - Open a Github issue
 - Post a question on our Slack Group
