@@ -137,20 +137,11 @@ def run_module():
 
     failures = {}
     nodes_facts = facts['nodes']
-    # result['result'] = {'expected': expected_facts}
-    # result['result']['nodes_facts'] = nodes_facts
     for node in nodes_facts:
-        #try:
         if node in expected_facts:
-            #result['result'][node] = {
-            #    'expected': expected_facts[node],
-            #    'actual': nodes_facts[node],
-            #}
             res = assert_dict_subset(nodes_facts[node], expected_facts[node])
             if res:
                 failures[node] = res
-    # except Exception as e:
-    #    failures[node] = str(e)
 
     summary = 'Actual facts match expected facts'
     if failures:
@@ -159,9 +150,8 @@ def run_module():
 
     # Overall status of command execution
     result['summary'] = summary
-    # Detailed results
     result['result'] = failures
-    # Also warn the user in the case of failed assert(s)
+    # Add warning that shows up in Ansible in the case of failed assert(s)
     if failures:
         result['warnings'] = [summary]
 

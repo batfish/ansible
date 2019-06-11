@@ -150,8 +150,6 @@ def run_module():
         'snapshot': snapshot,
     }
     result['changed'] = True
-
-    # result['ansible_facts']['batfish'] = {'network': network, 'snapshot': snapshot}
     result['ansible_facts']['bf_snapshot'] = snapshot
     result['ansible_facts']['bf_network'] = network
 
