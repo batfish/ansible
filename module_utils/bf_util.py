@@ -13,10 +13,10 @@
 #   limitations under the License.
 import os
 import yaml
-from collections import OrderedDict, Mapping
+from collections import Mapping
 from copy import deepcopy
 from pybatfish.client.session import Session
-from pybatfish.datamodel.primitives import DataModelElement, ListWrapper
+from pybatfish.datamodel.primitives import ListWrapper
 
 BATFISH_FACT_VERSION = "batfish_v0"
 
@@ -80,10 +80,7 @@ def load_facts(input_directory):
     for filename in os.listdir(input_directory):
         with open(os.path.join(input_directory, filename), 'r') as f:
             dict_ = yaml.safe_load(f.read())
-            assert 'version' in dict_
-            assert 'nodes' in dict_
-            version = dict_['version']
-            nodes = dict_['nodes']
+            nodes, version = _unencapsulate_facts(dict_)
 
             if out['version'] and version != out['version']:
                 raise ValueError('Input file version mismatch!')
@@ -186,7 +183,6 @@ def _process_nodes(node_props):
     """Return fact dict corresponding to processed node properties answer."""
     out = {}
     node_dict = node_props.frame().to_dict(orient='records')
-    # print(node_dict)
     for record in node_dict:
         node = record.pop('Node')
         record.pop('Interfaces')
@@ -229,8 +225,10 @@ def _write_yaml_file(dict_, filepath):
 
 def write_facts(output_directory, facts):
     """Write facts to YAML files in the supplied output directory."""
-    version = facts['version']
-    for node in facts['nodes']:
+    nodes, version = _unencapsulate_facts(facts)
+
+    # Write facts for each node in its own file
+    for node in nodes:
         filepath = os.path.join(output_directory, '{}.yml'.format(node))
         node_facts = _encapsulate_nodes_facts({node:facts['nodes'][node]},
                                               version)
@@ -238,11 +236,18 @@ def write_facts(output_directory, facts):
 
 
 def _encapsulate_nodes_facts(nodes_facts, version):
-    """Format raw node(s) facts in the way they are written to file."""
+    """Format node(s) facts in final fact format (the way they are written to file)."""
     return {
         'nodes': nodes_facts,
         'version': version,
     }
+
+
+def _unencapsulate_facts(facts):
+    """Extract node facts and version from final fact format."""
+    assert 'version' in facts
+    assert 'nodes' in facts
+    return facts['nodes'], facts['version']
 
 
 def assert_dict_subset(actual, expected, prefix="", diffs=None):
