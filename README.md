@@ -71,10 +71,10 @@ ansible-galaxy install batfish.base
 
 This module requires the following packages to be installed on the Ansible control machine:
 
-Python >= 2.7
-Ansible 2.7 or later
-Pybatfish >= 0.36
-PyYAML >= 3.10
+- Python >= 2.7
+- Ansible 2.7 or later
+- Pybatfish >= 0.36
+- PyYAML >= 3.10
 
 ## License
 Apache 2.0
