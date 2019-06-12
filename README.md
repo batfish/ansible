@@ -22,20 +22,14 @@ This example playbook outlines how to use the `batfish.base` role to extract the
 
 ```yaml
 ---
-- name: Welcome to the first Batfish Tutorial!
+- name: Extract network device facts using Batfish and Ansible
   hosts: localhost
   connection: local
   gather_facts: no
   roles:
-    - Batfish.base
+    - batfish.base
 
   tasks:
-
-  - include_tasks: batfish_docker_start.yml
-
-  - name: Pause for Batfish docker container to initialize
-    pause:
-      seconds: 5
 
   - name: Setup connection to Batfish service
     bf_session:
