@@ -15,11 +15,25 @@
 
 from copy import deepcopy
 from collections import Mapping
-from pybatfish.client.asserts import (assert_flows_fail, assert_flows_succeed)
+from pybatfish.client.asserts import (
+    assert_filter_denies, assert_filter_permits, assert_flows_fail,
+    assert_flows_succeed
+)
 from pybatfish.exception import BatfishAssertException
 
+# Map assert type string to Pybatfish assertion function
+_ASSERT_TYPE_TO_FUNCTION = {
+    'assert_reachable': assert_flows_succeed,
+    'assert_unreachable': assert_flows_fail,
+    'assert_filter_permits': assert_filter_permits,
+    'assert_filter_denies': assert_filter_denies,
+}
+
 def get_assertion_issues(assertion):
-    """Confirm the assertion is valid."""
+    """Return a reason the assertion dictionary is valid or return None if it is valid."""
+    if isinstance(assertion, Mapping):
+        return "Assertion format is invalid, expected dictionary: {}".format(assertion)
+
     if 'name' not in assertion:
         return "No name specified for assertion: {}".format(assertion)
     name = assertion['name']
@@ -34,30 +48,16 @@ def get_assertion_issues(assertion):
     type_ = assertion['type']
     if _get_asserts_function_from_type(type_) is None:
         return "Unknown assertion type: {} for assertion '{}'".format(type_, name)
-
     return None
 
 
 def _get_asserts_function_from_type(type_):
-    """Get the Pybatfish asserts function from the Ansible assertion type."""
-    if type_ == 'assert_reachable':
-        return assert_flows_succeed
-    elif type_ == 'assert_unreachable':
-        return assert_flows_fail
-    elif type_ == 'assert_filter_permits':
-        pass
-    elif type_ == 'assert_filter_denies':
-        pass
-    elif type_ == 'assert_no_undefined_references':
-        pass
-    elif type_ == 'assert_no_incompatible_bgp_sessions':
-        pass
-    return None
+    """Get the Pybatfish-asserts function for a given Ansible assertion-type string."""
+    return _ASSERT_TYPE_TO_FUNCTION.get(type_)
 
 
 def run_assertion(session, assertion):
-    """Run the specified assertion."""
-    name = assertion['name']
+    """Run the specified assertion and return the failure message, if applicable."""
     type_ = assertion['type']
     params = deepcopy(assertion.get('parameters', {}))
     params['session'] = session
