@@ -18,16 +18,41 @@ Intentionet has created this Ansible role to allow users to embed pre-deployment
 Ansible module documentation can be found at https://docs.ansible.com by searching for Batfish.
 
 ## Examples
-This example playbook outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network
+This example playbook outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
 
 ```yaml
-<insert sample playbook>
+---
+- name: Extract network device facts using Batfish and Ansible
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  roles:
+    - batfish.base
+
+  tasks:
+
+  - name: Setup connection to Batfish service
+    bf_session:
+      host: localhost
+      name: local_batfish
+  
+  - name: Initialize the example network
+    bf_init_snapshot:
+      network: example_network
+      snapshot: example_snapshot
+      snapshot_data: ../networks/example
+      overwrite: true
+
+  - name: Retrieve Batfish Facts
+    bf_extract_facts:
+      output_directory: data/bf_facts
+    register: bf_facts
 ```
 
-For additional examples and a step-by-step tutorial of the Batfish Ansible role, please visit the Tutorials page
+For additional examples and a step-by-step tutorial of the Batfish Ansible role, please visit the [Batfish Ansible Utilities and Playbooks](https://github.com/batfish/ansible-utils) repository
 
 ## Installation  
-You must have the [DEPENDENCIES](#dependencies) installed on the system before you can use the role.
+You must have the [Dependencies](#dependencies) installed on the system before you can use the role.
 
 ### Ansible Galaxy Role
 To download the latest released version of the Batfish role to the Ansible server, execute the ansible-galaxy install command, and specify batfish.base
@@ -40,9 +65,10 @@ ansible-galaxy install batfish.base
 
 This module requires the following packages to be installed on the Ansible control machine:
 
-Python >= 2.7
-Ansible 2.7 or later
-Pybatfish >= 0.36
+- Python >= 2.7
+- Ansible 2.7 or later
+- Pybatfish >= 0.36
+- PyYAML >= 3.10
 
 ## License
 Apache 2.0
