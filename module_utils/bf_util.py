@@ -218,8 +218,7 @@ def _reorg_dict(dict, reorg_map):
 def _write_yaml_file(dict_, filepath):
     # TODO write stream instead of dumping and writing dump
 
-    y = yaml.safe_dump(dict_, default_flow_style=False,
-                       sort_keys=False)
+    y = yaml.safe_dump(dict_, default_flow_style=False)
     with open(filepath, 'w') as f:
         f.write(y)
 
