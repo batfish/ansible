@@ -51,11 +51,11 @@ requirements:
 '''
 
 EXAMPLES = '''
-# Confirm 10.10.10.10 is unreachable by traffic entering Gig0/0 of as1border1
+# Confirm 10.10.10.10 is reachable by traffic entering Gig0/0 of as1border1
 - bf_assert:
     assertions:
-      - type: assert_unreachable
-        name: confirm host is unreachable for traffic received on GigEth0/0
+      - type: assert_reachable
+        name: confirm host is reachable for traffic received on GigEth0/0
         parameters:
           startLocation: "@enter(as1border1[GigabitEthernet0/0])"
           headers:
