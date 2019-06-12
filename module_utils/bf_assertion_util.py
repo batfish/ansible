@@ -29,9 +29,11 @@ _ASSERT_TYPE_TO_FUNCTION = {
     'assert_filter_denies': assert_filter_denies,
 }
 
+ASSERT_PASS_MESSAGE = 'Assertion passed'
+
 def get_assertion_issues(assertion):
     """Return a reason the assertion dictionary is valid or return None if it is valid."""
-    if isinstance(assertion, Mapping):
+    if not isinstance(assertion, Mapping):
         return "Assertion format is invalid, expected dictionary: {}".format(assertion)
 
     if 'name' not in assertion:
@@ -57,7 +59,7 @@ def _get_asserts_function_from_type(type_):
 
 
 def run_assertion(session, assertion):
-    """Run the specified assertion and return the failure message, if applicable."""
+    """Run the specified assertion and return the result message."""
     type_ = assertion['type']
     params = deepcopy(assertion.get('parameters', {}))
     params['session'] = session
@@ -67,4 +69,4 @@ def run_assertion(session, assertion):
         assert_(**params)
     except BatfishAssertException as e:
         return str(e)
-    return None
+    return ASSERT_PASS_MESSAGE

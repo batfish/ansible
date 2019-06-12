@@ -77,8 +77,9 @@ result_verbose:
 from ansible.errors import AnsibleActionFail, AnsibleError
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import create_session, set_snapshot
-from ansible.module_utils.bf_assertion_util import (get_assertion_issues,
-                                                    run_assertion)
+from ansible.module_utils.bf_assertion_util import (
+    ASSERT_PASS_MESSAGE, get_assertion_issues, run_assertion
+)
 
 try:
     from pybatfish.client.session import Session
@@ -147,13 +148,11 @@ def run_module():
     set_snapshot(session=session, network=network, snapshot=snapshot)
     for assertion in assertions:
         status = 'Pass'
-        assert_result = run_assertion(session, assertion)
 
-        if assert_result:
+        assert_result = run_assertion(session, assertion)
+        if assert_result != ASSERT_PASS_MESSAGE:
             failed.append(assert_result)
             status = 'Fail'
-        else:
-            assert_result = 'Assertion passed'
 
         results.append({
             'name': assertion['name'],
@@ -170,7 +169,6 @@ def run_module():
         # Add warning that shows up in Ansible in the case of failed assert(s)
         result['warnings'] = [summary]
 
-    # Overall status of command execution
     result['summary'] = summary
     result['result'] = results
     result['result_verbose'] = results_verbose
