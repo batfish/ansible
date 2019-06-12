@@ -34,11 +34,11 @@ options:
         required: false
     network:
         description:
-            - Name of the network to validate facts for. This defaults to the value in the bf_network fact.  
+            - Name of the network to validate facts for. This defaults to the value in the C(bf_network) fact.
         required: false
     snapshot:
         description:
-            - Name of the snapshot to validate facts for. This defaults to the value in the bf_snapshot fact.  
+            - Name of the snapshot to validate facts for. This defaults to the value in the C(bf_snapshot) fact.
         required: false
     session:
         description:
@@ -47,7 +47,7 @@ options:
     expected_facts:
         description:
             - Directory to pull expected facts from.
-        required: false
+        required: true
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -95,7 +95,6 @@ def run_module():
         snapshot=dict(type='str', required=True),
         expected_facts=dict(type='str', required=True),
         session=dict(type='dict', required=True),
-        debug=dict(type='bool', required=False, default=False),
     )
 
     # seed the result dict in the object

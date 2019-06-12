@@ -34,11 +34,11 @@ options:
         required: false
     network:
         description:
-            - Name of the network to extract facts for. This defaults to the value in the bf_network fact.  
+            - Name of the network to extract facts for. This defaults to the value in the C(bf_network) fact.
         required: false
     snapshot:
         description:
-            - Name of the snapshot to extract facts for. This defaults to the value in the bf_snapshot fact.  
+            - Name of the snapshot to extract facts for. This defaults to the value in the C(bf_snapshot) fact.
         required: false
     output_directory:
         description:
@@ -99,7 +99,6 @@ def run_module():
         snapshot=dict(type='str', required=True),
         output_directory=dict(type='str', required=False),
         session=dict(type='dict', required=True),
-        debug=dict(type='bool', required=False, default=False),
     )
 
     # seed the result dict in the object
