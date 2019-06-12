@@ -51,33 +51,27 @@ requirements:
 '''
 
 EXAMPLES = '''
-# Extract facts and save to an output directory
+# Confirm 10.10.10.10 is unreachable by traffic entering Gig0/0 of as1border1
 - bf_assert:
     assertions:
-      - assert_reachable:
-          name: confirm host is reachable from the firewall
+      - type: assert_unreachable
+        name: confirm host is unreachable from inlet
         parameters:
-          - startLocation: @enter(firewall[GigabitEthernet0/0/2])
-            header:
-              dstIps: 10.114.60.10
-# TODO Add more
+          startLocation: "@enter(as1border1[GigabitEthernet0/0])"
+          headers:
+            dstIps: 10.10.10.10
 '''
 
 RETURN = '''
-# TODO
 summary:
     description: Summary of action(s) performed.
     type: str
 result:
-    description: Dictionary of extracted facts.
-    type: complex
-    contains:
-        nodes:
-            description: Dictionary of node-name to node-facts for each node.
-            type: complex
-        version:
-            description: Fact-format version of the returned facts.
-            type: str
+    description: List of high-level assertion results (name and status).
+    type: list
+result_verbose:
+    description: List of verbose assertion results, containing more details about why assertions failed.
+    type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -169,6 +163,8 @@ def run_module():
         })
     if failed:
         summary = '{} of {} assertions failed'.format(len(failed), len(assertions))
+        # Add warning that shows up in Ansible in the case of failed assert(s)
+        result['warnings'] = [summary]
 
     # Overall status of command execution
     result['summary'] = summary
