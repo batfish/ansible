@@ -18,16 +18,24 @@ from collections import Mapping
 from pybatfish.client.asserts import (assert_flows_fail, assert_flows_succeed)
 from pybatfish.exception import BatfishAssertException
 
-def check_assertion_issues(assertion):
+def get_assertion_issues(assertion):
     """Confirm the assertion is valid."""
     if 'name' not in assertion:
-        return "No name specified for the assertion. {}".format(assertion)
+        return "No name specified for assertion: {}".format(assertion)
+    name = assertion['name']
+
     if 'type' not in assertion:
-        return "No type specified for the assertion. {}".format(assertion)
+        return "No type specified for assertion '{}'".format(name)
+
     params = assertion.get('parameters', {})
     if not isinstance(params, Mapping):
-        return "Invalid parameters, expected a dictionary of param name to value. {}".format(assertion)
-    return False
+        return "Invalid parameters, expected a dictionary of param name to value for assertion '{}'".format(name)
+
+    type_ = assertion['type']
+    if _get_asserts_function_from_type(type_) is None:
+        return "Unknown assertion type: {} for assertion '{}'".format(type_, name)
+
+    return None
 
 
 def _get_asserts_function_from_type(type_):
@@ -44,6 +52,7 @@ def _get_asserts_function_from_type(type_):
         pass
     elif type_ == 'assert_no_incompatible_bgp_sessions':
         pass
+    return None
 
 
 def run_assertion(session, assertion):
@@ -58,4 +67,4 @@ def run_assertion(session, assertion):
         assert_(**params)
     except BatfishAssertException as e:
         return str(e)
-    return
+    return None

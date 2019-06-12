@@ -77,7 +77,7 @@ result_verbose:
 from ansible.errors import AnsibleActionFail, AnsibleError
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import create_session, set_snapshot
-from ansible.module_utils.bf_assertion_util import (check_assertion_issues,
+from ansible.module_utils.bf_assertion_util import (get_assertion_issues,
                                                     run_assertion)
 
 try:
@@ -126,7 +126,7 @@ def run_module():
     network = module.params.get('network')
     snapshot = module.params.get('snapshot')
 
-    issues = [i for i in [check_assertion_issues(a) for a in assertions] if i]
+    issues = [i for i in [get_assertion_issues(a) for a in assertions] if i]
     if any(issues):
         message = (
             '{} of {} assertions are malformed'.format(len(issues), len(assertions))
