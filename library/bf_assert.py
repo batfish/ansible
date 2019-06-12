@@ -30,7 +30,7 @@ description:
 options:
     assertions:
         description:
-            - List of assertions to make on the snapshot.
+            - List of assertions to make about the snapshot.
         required: true
     network:
         description:
@@ -55,7 +55,7 @@ EXAMPLES = '''
 - bf_assert:
     assertions:
       - type: assert_unreachable
-        name: confirm host is unreachable from inlet
+        name: confirm host is unreachable for traffic received on GigEth0/0
         parameters:
           startLocation: "@enter(as1border1[GigabitEthernet0/0])"
           headers:
@@ -175,7 +175,7 @@ def run_module():
         })
     if failed:
         summary = '{} of {} assertions failed'.format(len(failed), len(assertions))
-        # Add warning that shows up in Ansible in the case of failed assert(s)
+        # Also add this as a warning that shows up in Ansible
         result['warnings'] = [summary]
 
     result['summary'] = summary

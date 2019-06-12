@@ -21,7 +21,7 @@ from pybatfish.client.asserts import (
 )
 from pybatfish.exception import BatfishAssertException
 
-# Map assert type string to Pybatfish assertion function
+# Map assertion-type string to Pybatfish-assertion function
 _ASSERT_TYPE_TO_FUNCTION = {
     'assert_reachable': assert_flows_succeed,
     'assert_unreachable': assert_flows_fail,
@@ -32,7 +32,7 @@ _ASSERT_TYPE_TO_FUNCTION = {
 ASSERT_PASS_MESSAGE = 'Assertion passed'
 
 def get_assertion_issues(assertion):
-    """Return a reason the assertion dictionary is valid or return None if it is valid."""
+    """Return the reason the assertion dictionary is valid, or return None if it is valid."""
     if not isinstance(assertion, Mapping):
         return "Assertion format is invalid, expected dictionary: {}".format(assertion)
 
