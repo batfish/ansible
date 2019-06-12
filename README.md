@@ -47,6 +47,15 @@ This example playbook outlines how to use the `batfish.base` role to extract the
     bf_extract_facts:
       output_directory: data/bf_facts
     register: bf_facts
+    
+  - name: Display configuration for all interfaces on all nodes
+    debug: msg=" {{item.value.Interfaces}} "
+    with_dict: "{{bf_facts.result.nodes}}"
+    loop_control:
+      label: " {{item.key}}.Interfaces "
+    when: bf_facts.failed|bool == false
+
+  - include_tasks: batfish_docker_stop.yml
 ```
 
 For additional examples and a step-by-step tutorial of the Batfish Ansible role, please visit the [Batfish Ansible Utilities and Playbooks](https://github.com/batfish/ansible-utils) repository
