@@ -34,11 +34,11 @@ options:
         required: true
     network:
         description:
-            - Name of the network to make assertions about. This defaults to the value in the C(bf_network) fact.  
+            - Name of the network to make assertions about. This defaults to the value in the C(bf_network) fact.
         required: false
     snapshot:
         description:
-            - Name of the snapshot to make assertions about. This defaults to the value in the C(bf_snapshot) fact.  
+            - Name of the snapshot to make assertions about. This defaults to the value in the C(bf_snapshot) fact.
         required: false
     session:
         description:
@@ -60,6 +60,15 @@ EXAMPLES = '''
           startLocation: "@enter(as1border1[GigabitEthernet0/0])"
           headers:
             dstIps: 10.10.10.10
+# Confirm a filter denies some specific traffic
+- bf_assert:
+    assertions:
+      - type: assert_filter_denies
+        name: confirm node1 filter block_access denies TCP traffic on port 22
+        parameters:
+          filter_name: 'node1["block_access"]'
+          headers:
+            applications: ssh
 '''
 
 RETURN = '''
