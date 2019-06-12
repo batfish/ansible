@@ -74,6 +74,7 @@ result_verbose:
     type: list
 '''
 
+from ansible.errors import AnsibleActionFail, AnsibleError
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import create_session, set_snapshot
 from ansible.module_utils.bf_assertion_util import (check_assertion_issues,
@@ -127,9 +128,12 @@ def run_module():
 
     issues = [i for i in [check_assertion_issues(a) for a in assertions] if i]
     if any(issues):
-        result['summary'] = '{} of {} assertions are malformed, skipped running assertions.'.format(len(issues), len(assertions))
+        message = (
+            '{} of {} assertions are malformed'.format(len(issues), len(assertions))
+            + ', no assertions run'
+        )
         result['result'] = issues
-        module.exit_json(**result)
+        module.fail_json(msg=message, **result)
 
     if module.check_mode:
         module.exit_json(**result)
