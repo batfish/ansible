@@ -164,7 +164,8 @@ def run_module():
                 module.fail_json(msg='Cannot write facts to file, must be a directory: {}'.format(output_directory))
             write_facts(output_directory, facts)
         except Exception as e:
-            module.fail_json(msg='Failed to write facts: {}'.format(e))
+            message = 'Failed to write facts: {}'.format(e)
+            module.fail_json(msg=message, **result)
         summary += ', wrote facts to directory: {}'.format(output_directory)
 
     # Overall status of command execution

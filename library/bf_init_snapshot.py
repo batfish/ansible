@@ -141,7 +141,8 @@ def run_module():
     try:
         session = create_session(**session_params)
     except Exception as e:
-        module.fail_json(msg='Failed to establish session with Batfish service: {}'.format(e))
+        message = 'Failed to establish session with Batfish service: {}'.format(e)
+        module.fail_json(msg=message, **result)
         return
 
     session.set_network(network)
@@ -149,7 +150,8 @@ def run_module():
     try:
         session.init_snapshot(snapshot_data, snapshot, overwrite=overwrite)
     except Exception as e:
-        module.fail_json(msg='Failed to initialize snapshot: {}'.format(e))
+        message = 'Failed to initialize snapshot: {}'.format(e)
+        module.fail_json(msg=message, **result)
 
     # Overall status of command execution
     result['summary'] = "Snapshot '{}' created in network '{}'".format(snapshot, network)

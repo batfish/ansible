@@ -125,7 +125,8 @@ def run_module():
     try:
         create_session(**parameters)
     except Exception as e:
-        module.fail_json(msg='Failed to establish session with Batfish service: {}'.format(e))
+        message = 'Failed to establish session with Batfish service: {}'.format(e)
+        module.fail_json(msg=message, **result)
 
     # Overall status of command execution
     result['summary'] = "Session established to '{}' ({})".format(host, name)
