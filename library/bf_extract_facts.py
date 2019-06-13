@@ -78,7 +78,7 @@ result:
             description: Fact-format version of the returned facts.
             type: str
 '''
-
+import os
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import (create_session, get_facts,
                                           set_snapshot, write_facts)
@@ -133,14 +133,39 @@ def run_module():
     network = module.params.get('network')
     snapshot = module.params.get('snapshot')
 
-    session = create_session(**session_params)
-    set_snapshot(session=session, network=network, snapshot=snapshot)
+    try:
+        session = create_session(**session_params)
+    except Exception as e:
+        message = 'Failed to establish session with Batfish service: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
 
-    facts = get_facts(session=session, nodes_specifier=nodes)
+    try:
+        set_snapshot(session=session, network=network, snapshot=snapshot)
+    except Exception as e:
+        message = 'Failed to set snapshot: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
+
+    try:
+        facts = get_facts(session=session, nodes_specifier=nodes)
+    except Exception as e:
+        message = 'Failed to get facts: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
+
     summary = "Got facts for nodes: '{}'".format(nodes)
 
     if output_directory:
-        write_facts(output_directory, facts)
+        try:
+            if not os.path.exists(output_directory):
+                os.makedirs(output_directory)
+            if os.path.isfile(output_directory):
+                module.fail_json(msg='Cannot write facts to file, must be a directory: {}'.format(output_directory))
+            write_facts(output_directory, facts)
+        except Exception as e:
+            message = 'Failed to write facts: {}'.format(e)
+            module.fail_json(msg=message, **result)
         summary += ', wrote facts to directory: {}'.format(output_directory)
 
     # Overall status of command execution
