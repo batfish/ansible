@@ -17,6 +17,9 @@ import yaml
 from collections import Mapping
 from copy import deepcopy
 from pybatfish.client.session import Session
+from pybatfish.client._diagnostics import (
+    check_if_all_passed, check_if_any_failed, get_snapshot_parse_status
+)
 from pybatfish.datamodel.primitives import ListWrapper
 
 BATFISH_FACT_VERSION = "batfish_v0"
@@ -52,6 +55,16 @@ def set_snapshot(session, network, snapshot):
     """Set the network and snapshot for the specified session."""
     session.set_network(network)
     session.set_snapshot(snapshot)
+
+
+def get_snapshot_init_warning(session):
+    """Return warning message if the snapshot initialization had issues (parse warnings, errors)."""
+    statuses = get_snapshot_parse_status(session)
+    if check_if_any_failed(statuses):
+        return 'Your snapshot was initialized but Batfish failed to parse one or more input files. You can proceed but some analyses may be incorrect.'
+    if not check_if_all_passed(statuses):
+        return 'Your snapshot was successfully initialized but Batfish failed to fully recognized some lines in one or more input files. Some unrecognized configuration lines are not uncommon for new networks, and it is often fine to proceed with further analysis.'
+    return None
 
 
 def get_facts(session, nodes_specifier):
