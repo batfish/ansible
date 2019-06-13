@@ -51,6 +51,14 @@ requirements:
 '''
 
 EXAMPLES = '''
+# Confirm there are no undefined references or incompatible BGP sessions
+- bf_assert:
+    assertions:
+      - type: assert_no_undefined_references
+        name: Confirm we have no undefined references
+      - type: assert_no_incompatible_bgp_sessions
+        name: Confirm we have no incompatible BGP sessions
+
 # Confirm 10.10.10.10 is reachable by traffic entering Gig0/0 of as1border1
 - bf_assert:
     assertions:
@@ -60,6 +68,7 @@ EXAMPLES = '''
           startLocation: '@enter(as1border1[GigabitEthernet0/0])'
           headers:
             dstIps: '10.10.10.10'
+
 # Confirm a filter denies some specific traffic
 - bf_assert:
     assertions:

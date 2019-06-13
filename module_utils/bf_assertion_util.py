@@ -17,7 +17,8 @@ from copy import deepcopy
 from collections import Mapping
 from pybatfish.client.asserts import (
     assert_filter_denies, assert_filter_permits, assert_flows_fail,
-    assert_flows_succeed
+    assert_flows_succeed, assert_no_incompatible_bgp_sessions,
+    assert_no_undefined_references
 )
 from pybatfish.exception import BatfishAssertException
 
@@ -27,6 +28,8 @@ _ASSERT_TYPE_TO_FUNCTION = {
     'assert_unreachable': assert_flows_fail,
     'assert_filter_permits': assert_filter_permits,
     'assert_filter_denies': assert_filter_denies,
+    'assert_no_incompatible_bgp_sessions': assert_no_incompatible_bgp_sessions,
+    'assert_no_undefined_references': assert_no_undefined_references,
 }
 
 ASSERT_PASS_MESSAGE = 'Assertion passed'
