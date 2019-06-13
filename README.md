@@ -14,8 +14,6 @@ Intentionet has created this Ansible role to allow users to embed pre-deployment
 
 **bf_assert** - Validate network behavior
 
-## Documentation
-Ansible module documentation can be found at https://docs.ansible.com by searching for Batfish.
 
 ## Examples
 This example playbook outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
@@ -85,8 +83,8 @@ Apache 2.0
 ## Support
 Support for this role is provided by the community and Intentionet. If you have an issue with a module in this role, you may:
 
-- Open a Github issue
-- Post a question on our Slack Group
+- Open a Github [issue](https://github.com/batfish/ansible/issues)
+- Post a question on our [Slack Group](https://batfish-org.slack.com)
 
 ## Contributors
 Intentionet is actively contributing to and maintaining this repository.
