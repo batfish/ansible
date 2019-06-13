@@ -57,9 +57,9 @@ EXAMPLES = '''
       - type: assert_reachable
         name: confirm host is reachable for traffic received on GigEth0/0
         parameters:
-          startLocation: "@enter(as1border1[GigabitEthernet0/0])"
+          startLocation: '@enter(as1border1[GigabitEthernet0/0])'
           headers:
-            dstIps: 10.10.10.10
+            dstIps: '10.10.10.10'
 # Confirm a filter denies some specific traffic
 - bf_assert:
     assertions:
@@ -68,7 +68,7 @@ EXAMPLES = '''
         parameters:
           filter_name: 'node1["block_access"]'
           headers:
-            applications: ssh
+            applications: 'ssh'
 '''
 
 RETURN = '''
