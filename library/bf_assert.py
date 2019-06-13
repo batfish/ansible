@@ -153,15 +153,25 @@ def run_module():
     failed = []
     summary = 'Assertion(s) completed successfully'
 
-    session = create_session(**session_params)
-    set_snapshot(session=session, network=network, snapshot=snapshot)
+    try:
+        session = create_session(**session_params)
+        set_snapshot(session=session, network=network, snapshot=snapshot)
+    except Exception as e:
+        message = 'Failed to set snapshot for assertions: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
+
     for assertion in assertions:
         status = 'Pass'
-
-        assert_result = run_assertion(session, assertion)
-        if assert_result != ASSERT_PASS_MESSAGE:
+        try:
+            assert_result = run_assertion(session, assertion)
+            if assert_result != ASSERT_PASS_MESSAGE:
+                failed.append(assert_result)
+                status = 'Fail'
+        except Exception as e:
+            assert_result = str(e)
             failed.append(assert_result)
-            status = 'Fail'
+            status = 'Error'
 
         results.append({
             'name': assertion['name'],

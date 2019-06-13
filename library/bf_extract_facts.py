@@ -137,7 +137,7 @@ def run_module():
         session = create_session(**session_params)
         set_snapshot(session=session, network=network, snapshot=snapshot)
     except Exception as e:
-        message = 'Failed to select snapshot for extraction: {}'.format(e)
+        message = 'Failed to set snapshot for extraction: {}'.format(e)
         module.fail_json(msg=message, **result)
         return
 
