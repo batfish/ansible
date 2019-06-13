@@ -187,11 +187,25 @@ def _process_nodes(node_props):
     for record in node_dict:
         node = record.pop('Node')
         record.pop('Interfaces')
+
+        # Remove Batfish-constructed structures e.g.:
+        # routing policies like ~BGP_COMMON_EXPORT_POLICY:default~
+        _remove_constructed_names(record)
+
         # Add properties as children of node
         out[node] = record
         _reorg_dict(out[node], NODE_PROPERTIES_REORG)
     return out
 
+
+def _remove_constructed_names(dict_):
+    """Remove names constructed by Batfish.
+
+     Removes strings beginning with ~ from lists in the specified dict.
+     """
+    for k in dict_:
+        if isinstance(dict_[k], list):
+            dict_[k] = [i for i in dict_[k] if not i.startswith('~')]
 
 
 def _add_interface(node_dict, iface_dict_in):
