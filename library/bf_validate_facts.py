@@ -129,12 +129,34 @@ def run_module():
     network = module.params.get('network')
     snapshot = module.params.get('snapshot')
 
-    session = create_session(**session_params)
-    set_snapshot(session=session, network=network, snapshot=snapshot)
+    try:
+        session = create_session(**session_params)
+        set_snapshot(session=session, network=network, snapshot=snapshot)
+    except Exception as e:
+        message = 'Failed to select snapshot for validation: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
 
-    actual = get_facts(session, nodes_specifier=nodes_spec)
-    expected = load_facts(input_directory)
-    failures = validate_facts(expected, actual)
+    try:
+        actual = get_facts(session, nodes_specifier=nodes_spec)
+    except Exception as e:
+        message = 'Failed to get actual facts: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
+
+    try:
+        expected = load_facts(input_directory)
+    except Exception as e:
+        message = 'Failed to get expected facts: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
+
+    try:
+        failures = validate_facts(expected, actual)
+    except Exception as e:
+        message = 'Failed to validate facts: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
 
     summary = 'Actual facts match expected facts'
     if failures:

@@ -138,10 +138,18 @@ def run_module():
     overwrite = module.params['overwrite']
     session_params = module.params.get('session', {})
 
-    session = create_session(**session_params)
+    try:
+        session = create_session(**session_params)
+    except Exception as e:
+        module.fail_json(msg='Failed to establish session with Batfish service: {}'.format(e))
+        return
 
     session.set_network(network)
-    session.init_snapshot(snapshot_data, snapshot, overwrite=overwrite)
+
+    try:
+        session.init_snapshot(snapshot_data, snapshot, overwrite=overwrite)
+    except Exception as e:
+        module.fail_json(msg='Failed to initialize snapshot: {}'.format(e))
 
     # Overall status of command execution
     result['summary'] = "Snapshot '{}' created in network '{}'".format(snapshot, network)

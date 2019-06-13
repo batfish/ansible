@@ -122,7 +122,10 @@ def run_module():
     parameters['host'] = host
 
     # Not strictly necessary, but useful to confirm the session can be established
-    create_session(**parameters)
+    try:
+        create_session(**parameters)
+    except Exception as e:
+        module.fail_json(msg='Failed to establish session with Batfish service: {}'.format(e))
 
     # Overall status of command execution
     result['summary'] = "Session established to '{}' ({})".format(host, name)
