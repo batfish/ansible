@@ -131,9 +131,15 @@ def run_module():
 
     try:
         session = create_session(**session_params)
+    except Exception as e:
+        message = 'Failed to establish session with Batfish service: {}'.format(e)
+        module.fail_json(msg=message, **result)
+        return
+
+    try:
         set_snapshot(session=session, network=network, snapshot=snapshot)
     except Exception as e:
-        message = 'Failed to set snapshot for validation: {}'.format(e)
+        message = 'Failed to set snapshot: {}'.format(e)
         module.fail_json(msg=message, **result)
         return
 
