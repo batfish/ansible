@@ -67,7 +67,7 @@ The following options may be specified for this module:
     <td>nodes<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>no</td>
-    <td></td>
+    <td>All nodes</td>
     <td>
         <div>Nodes to extract facts for. See <a href='https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier'>https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier</a> for more details on node specifiers.</div>
     </td>

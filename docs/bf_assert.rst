@@ -45,7 +45,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>assertions<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>list</td>
     <td>yes</td>
     <td></td>
     <td>
@@ -55,7 +55,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>network<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>no</td>
     <td>Value in the <code>bf_network</code> fact.</td>
     <td>
@@ -65,7 +65,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>session<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>dict</td>
     <td>no</td>
     <td>Value in <code>bf_session</code> fact.</td>
     <td>
@@ -75,7 +75,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>snapshot<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>no</td>
     <td>Value in the <code>bf_snapshot</code> fact.</td>
     <td>

@@ -57,7 +57,7 @@ The following options may be specified for this module:
     <td>name<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>no</td>
-    <td></td>
+    <td>&quot;default&quot;</td>
     <td>
         <div>Name of the session.</div>
     </td>
@@ -67,9 +67,9 @@ The following options may be specified for this module:
     <td>parameters<br/><div style="font-size: small;"></div></td>
     <td>dict</td>
     <td>no</td>
-    <td></td>
+    <td>None</td>
     <td>
-        <div>{&#x27;Dictionary with additional parameters used to configure the session. Use <code>{ssl&#x27;: &#x27;true}</code> to use SSL.&#x27;}</div>
+        <div>Dictionary with additional parameters used to configure the session. Use <code>{ssl: true}</code> to use SSL.</div>
     </td>
     </tr>
 

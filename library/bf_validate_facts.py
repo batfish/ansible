@@ -29,6 +29,7 @@ description:
     - "Validates facts for the current Batfish snapshot against the facts in the C(expected_facts) directory"
 options:
     nodes:
+        default: All nodes
         description:
             - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
         required: false

@@ -45,7 +45,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>network<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
     <td></td>
     <td>
@@ -55,9 +55,9 @@ The following options may be specified for this module:
 
     <tr>
     <td>overwrite<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>bool</td>
     <td>no</td>
-    <td></td>
+    <td>False</td>
     <td>
         <div>Boolean indicating if the snapshot name already exists in the specified network.</div>
     </td>
@@ -65,7 +65,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>session<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>dict</td>
     <td>no</td>
     <td>Value in <code>bf_session</code> fact.</td>
     <td>
@@ -75,7 +75,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>snapshot<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
     <td></td>
     <td>
@@ -85,7 +85,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>snapshot_data<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
     <td></td>
     <td>

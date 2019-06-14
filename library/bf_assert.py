@@ -32,21 +32,25 @@ options:
         description:
             - List of assertions to make about the snapshot.
         required: true
+        type: list
     network:
         description:
             - Name of the network to make assertions about. 
         default: Value in the C(bf_network) fact.
         required: false
+        type: str
     snapshot:
         description:
             - Name of the snapshot to make assertions about. 
         default: Value in the C(bf_snapshot) fact.
         required: false
+        type: str
     session:
         description:
             - Batfish session object required to connect to the Batfish service.
         default: Value in C(bf_session) fact.
         required: false
+        type: dict
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:

@@ -32,23 +32,29 @@ options:
         description:
             - Name of the network in which to initialize the snapshot.
         required: true
+        type: str
     snapshot:
         description:
             - Name of the snapshot to initialize.
         required: true
+        type: str
     snapshot_data:
         description:
             - Path to snapshot data directory or zip. See U(https://github.com/batfish/batfish/wiki/Packaging-snapshots-for-analysis) for more details on packaging your snapshot for analysis.
         required: true
+        type: str
     overwrite:
+        default: false
         description:
             - Boolean indicating if the snapshot name already exists in the specified network.
         required: false
+        type: bool
     session:
         description:
             - Batfish session object required to connect to the Batfish service. 
         default: Value in C(bf_session) fact.
         required: false
+        type: dict
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:

@@ -32,26 +32,32 @@ options:
         description:
             - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
         required: false
+        type: str
         default: All nodes
     network:
         description:
             - Name of the network to extract facts for. 
         default: Value in the C(bf_network) fact.
         required: false
+        type: str
     snapshot:
         description:
             - Name of the snapshot to extract facts for. 
         default: Value in the C(bf_snapshot) fact.
         required: false
+        type: str
     output_directory:
+        default: None
         description:
             - Directory to save facts to.
         required: false
+        type: str
     session:
         description:
             - Batfish session object required to connect to the Batfish service. 
         default: Value in C(bf_session) fact.
         required: false
+        type: dict
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
