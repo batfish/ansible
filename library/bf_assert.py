@@ -89,7 +89,6 @@ result:
     type: list
 '''
 
-from ansible.errors import AnsibleActionFail, AnsibleError
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import create_session, set_snapshot
 from ansible.module_utils.bf_assertion_util import (
