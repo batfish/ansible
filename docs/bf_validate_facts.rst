@@ -4,12 +4,6 @@ bf_validate_facts
 +++++++++++++++++
 Validates facts for the current Batfish snapshot against the facts in the supplied directory
 
-# remove version added information
-##.. versionadded:: 2.7
-#
-
-
-
 .. contents::
    :local:
    :depth: 2

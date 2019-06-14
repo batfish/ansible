@@ -4,12 +4,6 @@ bf_init_snapshot
 ++++++++++++++++
 Initializes a Batfish snapshot with provided snapshot data
 
-# remove version added information
-##.. versionadded:: 2.7
-#
-
-
-
 .. contents::
    :local:
    :depth: 2

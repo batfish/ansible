@@ -4,12 +4,6 @@ bf_session
 ++++++++++
 Builds a Batfish session for use with other Batfish Ansible modules
 
-# remove version added information
-##.. versionadded:: 2.7
-#
-
-
-
 .. contents::
    :local:
    :depth: 2

@@ -4,12 +4,6 @@ bf_extract_facts
 ++++++++++++++++
 Extracts facts for a Batfish snapshot
 
-# remove version added information
-##.. versionadded:: 2.7
-#
-
-
-
 .. contents::
    :local:
    :depth: 2
