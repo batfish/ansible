@@ -39,15 +39,9 @@ options:
         type: str
     parameters:
         description:
-            - Dictionary with additional parameters used to configure the session.
+            - Dictionary with additional parameters used to configure the session. Use {ssl: true} to use SSL.
         required: false
-        type: complex
-        contains:
-            ssl:
-                description: Whether to use SSL
-                required: false
-                default: false
-                type: bool
+        type: dict
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -82,12 +76,7 @@ session:
             returned: always
         parameters:
             description: Additional parameters to connect to the service
-            type: complex
-            contains:
-                ssl: 
-                    description: Whether to use SSL (default is False)
-                    type: bool
-                    returned: If supplied by user
+            type: dict
             returned: If supplied by user             
     returned: always
 '''

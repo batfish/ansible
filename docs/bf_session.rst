@@ -68,12 +68,12 @@ The following options may be specified for this module:
 
     <tr>
     <td>parameters<br/><div style="font-size: small;"></div></td>
-    <td>complex</td>
+    <td>dict</td>
     <td>no</td>
     <td></td>
     <td></td>
     <td>
-        <div>Dictionary with additional parameters used to configure the session.</div>
+        <div>{&#x27;Dictionary with additional parameters used to configure the session. Use {ssl&#x27;: &#x27;true} to use SSL.&#x27;}</div>
     </td>
     </tr>
 
@@ -156,7 +156,7 @@ Return Values
             <div>Additional parameters to connect to the service</div>
         </td>
         <td align=center>If supplied by user</td>
-        <td align=center>complex</td>
+        <td align=center>dict</td>
         <td align=center></td>
         </tr>
 
