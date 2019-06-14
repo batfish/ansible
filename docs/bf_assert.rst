@@ -4,8 +4,9 @@ bf_assert
 +++++++++
 Makes assertions about a Batfish snapshot
 
-.. versionadded:: 2.7
-
+# remove version added information
+##.. versionadded:: 2.7
+#
 
 
 
@@ -153,17 +154,7 @@ Return Values
     <tr>
     <td>result</td>
     <td>
-        <div>List of high-level assertion results (name and status).</div>
-    </td>
-    <td align=center>always</td>
-    <td align=center>list</td>
-    <td align=center></td>
-    </tr>
-
-    <tr>
-    <td>result_verbose</td>
-    <td>
-        <div>List of verbose assertion results, containing more details about why assertions failed.</div>
+        <div>List of assertion results.</div>
     </td>
     <td align=center>always</td>
     <td align=center>list</td>

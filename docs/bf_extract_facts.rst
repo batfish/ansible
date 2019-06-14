@@ -4,8 +4,9 @@ bf_extract_facts
 ++++++++++++++++
 Extracts facts for a Batfish snapshot
 
-.. versionadded:: 2.7
-
+# remove version added information
+##.. versionadded:: 2.7
+#
 
 
 
