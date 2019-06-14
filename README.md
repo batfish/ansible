@@ -52,8 +52,6 @@ This example playbook outlines how to use the `batfish.base` role to extract the
     loop_control:
       label: " {{item.key}}.Interfaces "
     when: bf_facts.failed|bool == false
-
-  - include_tasks: batfish_docker_stop.yml
 ```
 
 For additional examples and a step-by-step tutorial of the Batfish Ansible role, please visit the [Batfish Ansible Utilities and Playbooks](https://github.com/batfish/ansible-utils) repository
