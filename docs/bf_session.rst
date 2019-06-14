@@ -151,7 +151,7 @@ Return Values
         <td>
             <div>Additional parameters to connect to the service</div>
         </td>
-        <td align=center>If supplied by user</td>
+        <td align=center>if supplied by user</td>
         <td align=center>dict</td>
         <td align=center></td>
         </tr>
