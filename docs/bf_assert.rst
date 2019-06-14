@@ -40,7 +40,6 @@ The following options may be specified for this module:
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 
@@ -48,7 +47,6 @@ The following options may be specified for this module:
     <td>assertions<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>List of assertions to make about the snapshot.</div>
@@ -59,10 +57,9 @@ The following options may be specified for this module:
     <td>network<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>no</td>
-    <td></td>
-    <td></td>
+    <td>Value in the <code>bf_network</code> fact.</td>
     <td>
-        <div>Name of the network to make assertions about. This defaults to the value in the <code>bf_network</code> fact.</div>
+        <div>Name of the network to make assertions about.</div>
     </td>
     </tr>
 
@@ -70,10 +67,9 @@ The following options may be specified for this module:
     <td>session<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>no</td>
-    <td></td>
-    <td></td>
+    <td>Value in <code>bf_session</code> fact.</td>
     <td>
-        <div>Batfish session parameters required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
+        <div>Batfish session object required to connect to the Batfish service.</div>
     </td>
     </tr>
 
@@ -81,10 +77,9 @@ The following options may be specified for this module:
     <td>snapshot<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>no</td>
-    <td></td>
-    <td></td>
+    <td>Value in the <code>bf_snapshot</code> fact.</td>
     <td>
-        <div>Name of the snapshot to make assertions about. This defaults to the value in the <code>bf_snapshot</code> fact.</div>
+        <div>Name of the snapshot to make assertions about.</div>
     </td>
     </tr>
 

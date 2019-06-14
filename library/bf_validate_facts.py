@@ -35,17 +35,20 @@ options:
         type: str
     network:
         description:
-            - Name of the network to validate facts for. This defaults to the value in the C(bf_network) fact.
+            - Name of the network to validate facts for. 
+        default: Value in the C(bf_network) fact.
         required: false
         type: str
     snapshot:
         description:
-            - Name of the snapshot to validate facts for. This defaults to the value in the C(bf_snapshot) fact.
+            - Name of the snapshot to validate facts for. 
+        default: Value in the C(bf_snapshot) fact.
         required: false
         type: str
     session:
         description:
-            - Batfish session object required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
+            - Batfish session object required to connect to the Batfish service. 
+        default: Value in C(bf_session) fact.
         required: false
         type: dict
     expected_facts:
