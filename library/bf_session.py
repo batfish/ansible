@@ -77,7 +77,7 @@ session:
         parameters:
             description: Additional parameters to connect to the service
             type: dict
-            returned: If supplied by user             
+            returned: if supplied by user
     returned: always
 '''
 
