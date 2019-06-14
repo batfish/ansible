@@ -46,7 +46,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>expected_facts<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
     <td></td>
     <td></td>
@@ -57,7 +57,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>network<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>no</td>
     <td></td>
     <td></td>
@@ -68,7 +68,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>nodes<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>no</td>
     <td></td>
     <td></td>
@@ -79,18 +79,18 @@ The following options may be specified for this module:
 
     <tr>
     <td>session<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>dict</td>
     <td>no</td>
     <td></td>
     <td></td>
     <td>
-        <div>Batfish session parameters required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
+        <div>Batfish session object required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
     </td>
     </tr>
 
     <tr>
     <td>snapshot<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>no</td>
     <td></td>
     <td></td>
@@ -115,7 +115,7 @@ Examples
         expected_facts: /path/to/local/YAML/files/
     # Validate current snapshot facts for nodes whose names contain as1border against local YAML facts
     - bf_validate_facts:
-        nodes: /as1border/
+        nodes: '/as1border/'
         expected_facts: /path/to/local/YAML/files/
 
 
@@ -141,26 +141,9 @@ Return Values
     <td>
         <div>Contains a map of node-name to list of failures for that node.</div>
     </td>
-    <td align=center>always</td>
-    <td align=center>complex</td>
+    <td align=center>when validation does not pass</td>
+    <td align=center>dict</td>
     <td align=center></td>
-    </tr>
-
-    <tr>
-    <td>contains:</td>
-    <td colspan=4>
-        <table border=1 cellpadding=2>
-
-        <tr>
-        <th class="head">name</th>
-        <th class="head">description</th>
-        <th class="head">returned</th>
-        <th class="head">type</th>
-        <th class="head">sample</th>
-        </tr>
-
-        </table>
-    </td>
     </tr>
 
     <tr>
