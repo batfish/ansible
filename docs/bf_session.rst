@@ -67,9 +67,9 @@ The following options may be specified for this module:
     <td>parameters<br/><div style="font-size: small;"></div></td>
     <td>dict</td>
     <td>no</td>
-    <td><code>empty</code></td>
+    <td>None</td>
     <td>
-        <div>{&#x27;Dictionary with additional parameters used to configure the session. Use <code>\\{ssl&#x27;: &#x27;true\\}</code> to use SSL.&#x27;}</div>
+        <div>{&#x27;Dictionary with additional parameters used to configure the session. Use <code>ssl&#x27;: &#x27;true</code> to use SSL.&#x27;}</div>
     </td>
     </tr>
 

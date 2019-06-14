@@ -67,7 +67,7 @@ The following options may be specified for this module:
     <td>output_directory<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>no</td>
-    <td><code>null</code></td>
+    <td>None</td>
     <td>
         <div>Directory to save facts to.</div>
     </td>

@@ -41,7 +41,7 @@ options:
     parameters:
         default: None
         description:
-            - Dictionary with additional parameters used to configure the session. Use C(ssl: true) to use SSL.
+            - Dictionary with additional parameters used to configure the session.
         required: false
         type: dict
 author:
