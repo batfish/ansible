@@ -33,15 +33,15 @@ options:
         required: true
         type: str
     name:
-        default: default
+        default: "default"
         description:
             - Name of the session.
         required: false
         type: str
     parameters:
-        default: C(empty)
+        default: None
         description:
-            - Dictionary with additional parameters used to configure the session. Use C({ssl: true}) to use SSL.
+            - Dictionary with additional parameters used to configure the session. Use C(ssl: true) to use SSL.
         required: false
         type: dict
 author:

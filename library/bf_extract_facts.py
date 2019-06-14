@@ -47,10 +47,10 @@ options:
         required: false
         type: str
     output_directory:
+        default: None
         description:
             - Directory to save facts to.
         required: false
-        default: C(null)
         type: str
     session:
         description:
