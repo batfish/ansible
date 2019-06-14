@@ -166,15 +166,15 @@ def run_module():
 
     summary = 'Actual facts match expected facts'
     if failures:
-        summary = ('Validation failed for the following nodes: {}. See task ' +
-                   'output for more details.').format(list(failures.keys()))
+        summary = 'Validation failed for the following nodes: {}.'.format(
+            list(failures.keys()))
 
     # Overall status of command execution
     result['summary'] = summary
     result['result'] = failures
-    # Add warning that shows up in Ansible in the case of failed assert(s)
+    # Indicate failure to Ansible in the case of failed validation
     if failures:
-        result['warnings'] = [summary]
+        module.fail_json(msg=summary, **result)
 
     module.exit_json(**result)
 
