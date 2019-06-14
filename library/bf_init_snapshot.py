@@ -85,7 +85,9 @@ result:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.bf_util import create_session
+from ansible.module_utils.bf_util import (
+    create_session, get_snapshot_init_warning
+)
 
 try:
     from pybatfish.client.session import Session
@@ -152,6 +154,13 @@ def run_module():
     except Exception as e:
         message = 'Failed to initialize snapshot: {}'.format(e)
         module.fail_json(msg=message, **result)
+
+    try:
+        warn = get_snapshot_init_warning(session)
+        if warn:
+            result['warnings'] = [warn]
+    except Exception as e:
+        result['warnings'] = 'Failed to check snapshot init status: {}'.format(e)
 
     # Overall status of command execution
     result['summary'] = "Snapshot '{}' created in network '{}'".format(snapshot, network)
