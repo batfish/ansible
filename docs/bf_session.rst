@@ -46,7 +46,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>host<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
     <td></td>
     <td></td>
@@ -57,7 +57,7 @@ The following options may be specified for this module:
 
     <tr>
     <td>name<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>no</td>
     <td></td>
     <td></td>
@@ -68,12 +68,12 @@ The following options may be specified for this module:
 
     <tr>
     <td>parameters<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>complex</td>
     <td>no</td>
     <td></td>
     <td></td>
     <td>
-        <div>Dictionary with additional parameters used to configure the session.  See <a href='https://pybatfish.readthedocs.io/en/latest/api.html#session-parameters'>https://pybatfish.readthedocs.io/en/latest/api.html#session-parameters</a> for more details.</div>
+        <div>Dictionary with additional parameters used to configure the session.</div>
     </td>
     </tr>
 
@@ -138,6 +138,26 @@ Return Values
         <th class="head">returned</th>
         <th class="head">type</th>
         <th class="head">sample</th>
+        </tr>
+
+        <tr>
+        <td>host</td>
+        <td>
+            <div>Host where service is hosted</div>
+        </td>
+        <td align=center>always</td>
+        <td align=center>str</td>
+        <td align=center></td>
+        </tr>
+
+        <tr>
+        <td>parameters</td>
+        <td>
+            <div>Additional parameters to connect to the service</div>
+        </td>
+        <td align=center>If supplied by user</td>
+        <td align=center>complex</td>
+        <td align=center></td>
         </tr>
 
         </table>

@@ -31,14 +31,23 @@ options:
         description:
             - Host (resolvable name or IP address) running the Batfish service.
         required: true
+        type: str
     name:
         description:
             - Name of the session.
         required: false
+        type: str
     parameters:
         description:
-            - Dictionary with additional parameters used to configure the session.  See U(https://pybatfish.readthedocs.io/en/latest/api.html#session-parameters) for more details.
+            - Dictionary with additional parameters used to configure the session.
         required: false
+        type: complex
+        contains:
+            ssl:
+                description: Whether to use SSL
+                required: false
+                default: false
+                type: bool
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -66,6 +75,20 @@ summary:
 session:
     description: Details about the created session.
     type: complex
+    contains:
+        host:
+            description: Host where service is hosted
+            type: str
+            returned: always
+        parameters:
+            description: Additional parameters to connect to the service
+            type: complex
+            contains:
+                ssl: 
+                    description: Whether to use SSL (default is False)
+                    type: bool
+                    returned: If supplied by user
+            returned: If supplied by user             
     returned: always
 '''
 
