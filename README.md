@@ -82,7 +82,7 @@ Apache 2.0
 Support for this role is provided by the community and Intentionet. If you have an issue with a module in this role, you may:
 
 - Open a Github [issue](https://github.com/batfish/ansible/issues)
-- Post a question on our [Slack Group](https://batfish-org.slack.com)
+- Post a question on our [Slack Group](https://join.slack.com/t/batfish-org/shared_invite/enQtMzA0Nzg2OTAzNzQ1LTUxOTJlY2YyNTVlNGQ3MTJkOTIwZTU2YjY3YzRjZWFiYzE4ODE5ODZiNjA4NGI5NTJhZmU2ZTllOTMwZDhjMzA)
 
 ## Contributors
 Intentionet is actively contributing to and maintaining this repository.
