@@ -46,7 +46,8 @@ options:
         required: false
     session:
         description:
-            - Batfish session parameters required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
+            - Batfish session object required to connect to the Batfish service. 
+        default: Value in C(bf_session) fact.
         required: false
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)

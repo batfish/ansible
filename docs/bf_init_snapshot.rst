@@ -67,9 +67,9 @@ The following options may be specified for this module:
     <td>session<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>no</td>
-    <td></td>
+    <td>Value in <code>bf_session</code> fact.</td>
     <td>
-        <div>Batfish session parameters required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
+        <div>Batfish session object required to connect to the Batfish service.</div>
     </td>
     </tr>
 
