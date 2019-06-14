@@ -84,9 +84,11 @@ RETURN = '''
 summary:
     description: Summary of action(s) performed.
     type: str
+    returned: always
 result:
     description: List of assertion results.
     type: list
+    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule

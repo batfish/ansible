@@ -4,15 +4,15 @@ Intentionet has created this Ansible role to allow users to embed pre-deployment
 
 ## Overview of Modules
 
-**bf_session** - Setup the connection to the server running Batfish or Batfish Enterprise
+**[bf_session](docs/bf_session.rst)** - Setup the connection to the server running Batfish or Batfish Enterprise
 
-**bf_init_snapshot** - Initialize a network snapshot
+**[bf_init_snapshot](docs/bf_init_snapshot.rst)** - Initialize a network snapshot
 
-**bf_extract_facts** - Retrieve configuration facts for devices in the snapshot
+**[bf_extract_facts](docs/bf_extract_facts.rst)** - Retrieve configuration facts for devices in the snapshot
 
-**bf_validate_facts** - Validate configuration facts for devices in the snapshot
+**[bf_validate_facts](docs/bf_validate_facts.rst)** - Validate configuration facts for devices in the snapshot
 
-**bf_assert** - Validate network behavior
+**[bf_assert](docs/bf_assert.rst)** - Validate network behavior
 
 
 ## Examples

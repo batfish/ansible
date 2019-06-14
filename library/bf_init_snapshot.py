@@ -72,6 +72,7 @@ RETURN = '''
 summary:
     description: Summary of action(s) performed.
     type: str
+    returned: always
 result:
     description: Information about the snapshot created.
     type: complex
@@ -79,9 +80,12 @@ result:
         snapshot:
             description: Name of the snapshot created.
             type: str
+            returned: always
         network:
             description: Name of the network created.
             type: str
+            returned: always
+    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule

@@ -32,22 +32,27 @@ options:
         description:
             - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
         required: false
+        type: str
     network:
         description:
             - Name of the network to validate facts for. This defaults to the value in the C(bf_network) fact.
         required: false
+        type: str
     snapshot:
         description:
             - Name of the snapshot to validate facts for. This defaults to the value in the C(bf_snapshot) fact.
         required: false
+        type: str
     session:
         description:
-            - Batfish session parameters required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
+            - Batfish session object required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
         required: false
+        type: dict
     expected_facts:
         description:
             - Directory to pull expected facts from.
         required: true
+        type: str
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -60,7 +65,7 @@ EXAMPLES = '''
     expected_facts: /path/to/local/YAML/files/
 # Validate current snapshot facts for nodes whose names contain as1border against local YAML facts
 - bf_validate_facts:
-    nodes: /as1border/
+    nodes: '/as1border/'
     expected_facts: /path/to/local/YAML/files/
 '''
 
@@ -68,10 +73,11 @@ RETURN = '''
 summary:
     description: Summary of action(s) performed.
     type: str
+    returned: always
 result:
     description: Contains a map of node-name to list of failures for that node.
     returned: when validation does not pass
-    type: complex
+    type: dict
 '''
 
 from ansible.module_utils.basic import AnsibleModule

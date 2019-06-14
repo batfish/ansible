@@ -67,6 +67,7 @@ RETURN = '''
 summary:
     description: Summary of action(s) performed.
     type: str
+    returned: always
 result:
     description: Dictionary of extracted facts.
     type: complex
@@ -74,9 +75,12 @@ result:
         nodes:
             description: Dictionary of node-name to node-facts for each node.
             type: complex
+            returned: always
         version:
             description: Fact-format version of the returned facts.
             type: str
+            returned: always
+    returned: always
 '''
 import os
 from ansible.module_utils.basic import AnsibleModule
