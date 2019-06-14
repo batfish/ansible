@@ -40,7 +40,6 @@ The following options may be specified for this module:
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 
@@ -48,7 +47,6 @@ The following options may be specified for this module:
     <td>expected_facts<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>Directory to pull expected facts from.</div>
@@ -60,7 +58,6 @@ The following options may be specified for this module:
     <td>str</td>
     <td>no</td>
     <td></td>
-    <td></td>
     <td>
         <div>Name of the network to validate facts for. This defaults to the value in the <code>bf_network</code> fact.</div>
     </td>
@@ -70,7 +67,6 @@ The following options may be specified for this module:
     <td>nodes<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>no</td>
-    <td></td>
     <td></td>
     <td>
         <div>Nodes to extract facts for. See <a href='https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier'>https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier</a> for more details on node specifiers.</div>
@@ -82,7 +78,6 @@ The following options may be specified for this module:
     <td>dict</td>
     <td>no</td>
     <td></td>
-    <td></td>
     <td>
         <div>Batfish session object required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
     </td>
@@ -92,7 +87,6 @@ The following options may be specified for this module:
     <td>snapshot<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>no</td>
-    <td></td>
     <td></td>
     <td>
         <div>Name of the snapshot to validate facts for. This defaults to the value in the <code>bf_snapshot</code> fact.</div>

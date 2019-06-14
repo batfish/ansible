@@ -40,7 +40,6 @@ The following options may be specified for this module:
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 
@@ -48,7 +47,6 @@ The following options may be specified for this module:
     <td>assertions<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>List of assertions to make about the snapshot.</div>
@@ -60,7 +58,6 @@ The following options may be specified for this module:
     <td></td>
     <td>no</td>
     <td></td>
-    <td></td>
     <td>
         <div>Name of the network to make assertions about. This defaults to the value in the <code>bf_network</code> fact.</div>
     </td>
@@ -71,7 +68,6 @@ The following options may be specified for this module:
     <td></td>
     <td>no</td>
     <td></td>
-    <td></td>
     <td>
         <div>Batfish session parameters required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
     </td>
@@ -81,7 +77,6 @@ The following options may be specified for this module:
     <td>snapshot<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>no</td>
-    <td></td>
     <td></td>
     <td>
         <div>Name of the snapshot to make assertions about. This defaults to the value in the <code>bf_snapshot</code> fact.</div>

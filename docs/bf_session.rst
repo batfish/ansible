@@ -40,7 +40,6 @@ The following options may be specified for this module:
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 
@@ -48,7 +47,6 @@ The following options may be specified for this module:
     <td>host<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>Host (resolvable name or IP address) running the Batfish service.</div>
@@ -60,7 +58,6 @@ The following options may be specified for this module:
     <td>str</td>
     <td>no</td>
     <td></td>
-    <td></td>
     <td>
         <div>Name of the session.</div>
     </td>
@@ -70,7 +67,6 @@ The following options may be specified for this module:
     <td>parameters<br/><div style="font-size: small;"></div></td>
     <td>dict</td>
     <td>no</td>
-    <td></td>
     <td></td>
     <td>
         <div>{&#x27;Dictionary with additional parameters used to configure the session. Use {ssl&#x27;: &#x27;true} to use SSL.&#x27;}</div>

@@ -40,7 +40,6 @@ The following options may be specified for this module:
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 
@@ -48,7 +47,6 @@ The following options may be specified for this module:
     <td>network<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>Name of the network in which to initialize the snapshot.</div>
@@ -60,7 +58,6 @@ The following options may be specified for this module:
     <td></td>
     <td>no</td>
     <td></td>
-    <td></td>
     <td>
         <div>Boolean indicating if the snapshot name already exists in the specified network.</div>
     </td>
@@ -70,7 +67,6 @@ The following options may be specified for this module:
     <td>session<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>no</td>
-    <td></td>
     <td></td>
     <td>
         <div>Batfish session parameters required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
@@ -82,7 +78,6 @@ The following options may be specified for this module:
     <td></td>
     <td>yes</td>
     <td></td>
-    <td></td>
     <td>
         <div>Name of the snapshot to initialize.</div>
     </td>
@@ -92,7 +87,6 @@ The following options may be specified for this module:
     <td>snapshot_data<br/><div style="font-size: small;"></div></td>
     <td></td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>Path to snapshot data directory or zip. See <a href='https://github.com/batfish/batfish/wiki/Packaging-snapshots-for-analysis'>https://github.com/batfish/batfish/wiki/Packaging-snapshots-for-analysis</a> for more details on packaging your snapshot for analysis.</div>
