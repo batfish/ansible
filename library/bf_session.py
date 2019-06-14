@@ -67,6 +67,7 @@ session:
     type: complex
 '''
 
+import time
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import create_session
 
@@ -76,6 +77,10 @@ except Exception as e:
     pybatfish_found = False
 else:
     pybatfish_found = True
+
+# Constants for session creation retry
+_MAX_RETRY_TIME = 10
+_RETRY_DELAY = 3
 
 def run_module():
     # define the available arguments/parameters that a user can pass to
@@ -123,7 +128,18 @@ def run_module():
 
     # Not strictly necessary, but useful to confirm the session can be established
     try:
-        create_session(**parameters)
+        # Allow a few retries in case the service isn't ready yet
+        retry_time = 0
+        while True:
+            try:
+                create_session(**parameters)
+                break
+            except Exception as session_e:
+                if retry_time < _MAX_RETRY_TIME:
+                    time.sleep(_RETRY_DELAY)
+                    retry_time += _RETRY_DELAY
+                else:
+                    raise session_e
     except Exception as e:
         message = 'Failed to establish session with Batfish service: {}'.format(e)
         module.fail_json(msg=message, **result)
