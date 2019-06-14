@@ -33,11 +33,13 @@ options:
         required: true
         type: str
     name:
+        default: default
         description:
             - Name of the session.
         required: false
         type: str
     parameters:
+        default: C(empty)
         description:
             - Dictionary with additional parameters used to configure the session. Use {ssl: true} to use SSL.
         required: false
