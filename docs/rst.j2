@@ -79,7 +79,6 @@ The following options may be specified for this module:
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 {% for k in option_keys -%}
@@ -91,11 +90,6 @@ The following options may be specified for this module:
     <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
     <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
     <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
-{% if v.get('type', 'not_bool') == 'bool' %}
-    <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
-    <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
     <td>
 {% if v.description is string %}
         <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
@@ -134,7 +128,6 @@ The following options may be specified for this module:
         <th class="head">type</th>
         <th class="head">required</th>
         <th class="head">default</th>
-        <th class="head">choices</th>
         <th class="head">comments</th>
         </tr>
 {% for k2 in v['suboptions'] %}
@@ -145,11 +138,6 @@ The following options may be specified for this module:
         <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
         <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
         <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
-{% if v2.get('type', 'not_bool') == 'bool' %}
-        <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
-        <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
         <td>
 {% if v2.description is string %}
         <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
@@ -194,7 +182,6 @@ In addition to the :ref:`module-specific-options-label`, the following connectio
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 {% for k in connection_option_keys -%}
@@ -206,11 +193,6 @@ In addition to the :ref:`module-specific-options-label`, the following connectio
     <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
     <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
     <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
-{% if v.get('type', 'not_bool') == 'bool' %}
-    <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
-    <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
     <td>
 {% if v.description is string %}
         <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
@@ -249,7 +231,6 @@ In addition to the :ref:`module-specific-options-label`, the following connectio
         <th class="head">type</th>
         <th class="head">required</th>
         <th class="head">default</th>
-        <th class="head">choices</th>
         <th class="head">comments</th>
         </tr>
 {% for k2 in v['suboptions'] %}
@@ -260,12 +241,6 @@ In addition to the :ref:`module-specific-options-label`, the following connectio
         <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
         <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
         <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
-{% if v2.get('type', 'not_bool') == 'bool' %}
-        <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
-        <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
-        <td>
 {% if v2.description is string %}
         <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
 {% else %}
@@ -309,7 +284,6 @@ In addition to the :ref:`module-specific-options-label`, the following logging-r
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 {% for k in logging_option_keys -%}
@@ -321,11 +295,6 @@ In addition to the :ref:`module-specific-options-label`, the following logging-r
     <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
     <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
     <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
-{% if v.get('type', 'not_bool') == 'bool' %}
-    <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
-    <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
     <td>
 {% if v.description is string %}
         <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
@@ -364,7 +333,6 @@ In addition to the :ref:`module-specific-options-label`, the following logging-r
         <th class="head">type</th>
         <th class="head">required</th>
         <th class="head">default</th>
-        <th class="head">choices</th>
         <th class="head">comments</th>
         </tr>
 {% for k2 in v['suboptions'] %}
@@ -375,11 +343,6 @@ In addition to the :ref:`module-specific-options-label`, the following logging-r
         <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
         <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
         <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
-{% if v2.get('type', 'not_bool') == 'bool' %}
-        <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
-        <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
         <td>
 {% if v2.description is string %}
         <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>

@@ -41,7 +41,7 @@ options:
     parameters:
         default: C(empty)
         description:
-            - Dictionary with additional parameters used to configure the session. Use {ssl: true} to use SSL.
+            - Dictionary with additional parameters used to configure the session. Use C({ssl: true}) to use SSL.
         required: false
         type: dict
 author:
@@ -79,7 +79,7 @@ session:
         parameters:
             description: Additional parameters to connect to the service
             type: dict
-            returned: If supplied by user             
+            returned: if supplied by user
     returned: always
 '''
 

@@ -29,33 +29,33 @@ description:
     - "Extracts and returns facts for a Batfish snapshot and saves them (one YAML file node) to the output directory if specified."
 options:
     nodes:
-        default: .*
         description:
             - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
         required: false
         type: str
+        default: All nodes
     network:
-        default: value in the C(bf_network) fact
         description:
-            - Name of the network to extract facts for. This defaults to the value in the C(bf_network) fact.
+            - Name of the network to extract facts for. 
+        default: Value in the C(bf_network) fact.
         required: false
         type: str
     snapshot:
-        default: value in the C(bf_snapshot) fact
         description:
-            - Name of the snapshot to extract facts for. This defaults to the value in the C(bf_snapshot) fact.
+            - Name of the snapshot to extract facts for. 
+        default: Value in the C(bf_snapshot) fact.
         required: false
         type: str
     output_directory:
-        default: C(null)
         description:
             - Directory to save facts to.
         required: false
+        default: C(null)
         type: str
     session:
-        default: value in the C(bf_session) fact
         description:
-            - Batfish session parameters required to connect to the Batfish service. This defaults to the value in C(bf_session) fact.
+            - Batfish session object required to connect to the Batfish service. 
+        default: Value in C(bf_session) fact.
         required: false
         type: dict
 author:

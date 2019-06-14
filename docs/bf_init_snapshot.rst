@@ -40,15 +40,13 @@ The following options may be specified for this module:
     <th class="head">type</th>
     <th class="head">required</th>
     <th class="head">default</th>
-    <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
 
     <tr>
     <td>network<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>Name of the network in which to initialize the snapshot.</div>
@@ -57,10 +55,9 @@ The following options may be specified for this module:
 
     <tr>
     <td>overwrite<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>bool</td>
     <td>no</td>
-    <td></td>
-    <td></td>
+    <td>False</td>
     <td>
         <div>Boolean indicating if the snapshot name already exists in the specified network.</div>
     </td>
@@ -68,20 +65,18 @@ The following options may be specified for this module:
 
     <tr>
     <td>session<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>dict</td>
     <td>no</td>
-    <td></td>
-    <td></td>
+    <td>Value in <code>bf_session</code> fact.</td>
     <td>
-        <div>Batfish session parameters required to connect to the Batfish service. This defaults to the value in <code>bf_session</code> fact.</div>
+        <div>Batfish session object required to connect to the Batfish service.</div>
     </td>
     </tr>
 
     <tr>
     <td>snapshot<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>Name of the snapshot to initialize.</div>
@@ -90,9 +85,8 @@ The following options may be specified for this module:
 
     <tr>
     <td>snapshot_data<br/><div style="font-size: small;"></div></td>
-    <td></td>
+    <td>str</td>
     <td>yes</td>
-    <td></td>
     <td></td>
     <td>
         <div>Path to snapshot data directory or zip. See <a href='https://github.com/batfish/batfish/wiki/Packaging-snapshots-for-analysis'>https://github.com/batfish/batfish/wiki/Packaging-snapshots-for-analysis</a> for more details on packaging your snapshot for analysis.</div>
