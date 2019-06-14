@@ -16,12 +16,12 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 from ansible.errors import AnsibleActionFail
-from ansible.plugins.action.network import ActionModule as ActionNetworkModule
+from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
 
 display = Display()
 
-class ActionModule(ActionNetworkModule):
+class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         # Need to use local connect, since Batfish modules run on localhost only
         if self._play_context.connection != 'local':

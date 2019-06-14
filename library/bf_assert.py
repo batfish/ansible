@@ -86,11 +86,7 @@ summary:
     type: str
     returned: always
 result:
-    description: List of high-level assertion results (name and status).
-    type: list
-    returned: always
-result_verbose:
-    description: List of verbose assertion results, containing more details about why assertions failed.
+    description: List of assertion results.
     type: list
     returned: always
 '''
@@ -127,7 +123,6 @@ def run_module():
     result = dict(
         changed=False,
         result='',
-        result_verbose='',
         summary='',
     )
 
@@ -161,7 +156,6 @@ def run_module():
         module.exit_json(**result)
 
     results = []
-    results_verbose = []
     failed = []
     summary = 'Assertion(s) completed successfully'
 
@@ -193,22 +187,19 @@ def run_module():
 
         results.append({
             'name': assertion['name'],
-            'status': status,
-        })
-        results_verbose.append({
-            'name': assertion['name'],
             'type': assertion['type'],
             'status': status,
             'details': assert_result,
         })
     if failed:
         summary = '{} of {} assertions failed'.format(len(failed), len(assertions))
-        # Also add this as a warning that shows up in Ansible
-        result['warnings'] = [summary]
 
     result['summary'] = summary
     result['result'] = results
-    result['result_verbose'] = results_verbose
+    # Indicate failure to Ansible in the case of failed assert(s)
+    if failed:
+        module.fail_json(msg=summary, **result)
+
     module.exit_json(**result)
 
 def main():
