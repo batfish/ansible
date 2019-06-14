@@ -179,11 +179,6 @@ Return Values
     </br>
 
 
-Author
-~~~~~~
-
-* Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
-
 
 
 

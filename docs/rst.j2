@@ -521,18 +521,7 @@ Notes
 
 
 {% endif %}
-{% if author is defined -%}
 
-
-Author
-~~~~~~
-
-{% for author_name in author %}
-* @{ author_name }@
-{% endfor %}
-
-
-{% endif %}
 {% if not deprecated %}
 {% set support = { 'core': 'The Ansible Core Team', 'network': 'The Ansible Network Team', 'certified': 'an Ansible Partner', 'community': 'The Ansible Community', 'curated': 'A Third Party'} %}
 {% set module_states = { 'preview': 'it is not guaranteed to have a backwards compatible interface', 'stableinterface': 'the maintainers for this module guarantee that no backward incompatible interface changes will be made'} %}
