@@ -33,7 +33,7 @@ options:
         required: true
         type: str
     name:
-        default: "default"
+        default: '"default"'
         description:
             - Name of the session.
         required: false

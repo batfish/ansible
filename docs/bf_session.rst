@@ -57,7 +57,7 @@ The following options may be specified for this module:
     <td>name<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>no</td>
-    <td>default</td>
+    <td>&quot;default&quot;</td>
     <td>
         <div>Name of the session.</div>
     </td>
