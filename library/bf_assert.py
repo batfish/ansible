@@ -84,12 +84,15 @@ RETURN = '''
 summary:
     description: Summary of action(s) performed.
     type: str
+    returned: always
 result:
     description: List of high-level assertion results (name and status).
     type: list
+    returned: always
 result_verbose:
     description: List of verbose assertion results, containing more details about why assertions failed.
     type: list
+    returned: always
 '''
 
 from ansible.errors import AnsibleActionFail, AnsibleError

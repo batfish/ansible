@@ -62,9 +62,11 @@ RETURN = '''
 summary:
     description: Summary of action(s) performed.
     type: str
+    returned: always
 session:
     description: Details about the created session.
     type: complex
+    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule

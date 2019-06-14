@@ -68,10 +68,12 @@ RETURN = '''
 summary:
     description: Summary of action(s) performed.
     type: str
+    returned: always
 result:
     description: Contains a map of node-name to list of failures for that node.
     returned: when validation does not pass
     type: complex
+    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule
