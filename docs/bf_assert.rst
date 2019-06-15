@@ -142,7 +142,7 @@ Return Values
     <tr>
     <td>result</td>
     <td>
-        <div>List of assertion results.</div>
+        <div>List of assertion results. There is one entry per assertion, and each entry contains details of the assertion and additional information when the assertion fails.</div>
     </td>
     <td align=center>always</td>
     <td align=center>list</td>
