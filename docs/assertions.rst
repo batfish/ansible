@@ -5,15 +5,16 @@ Assertions supported by bf_assert module
    :local:
    :depth: 2
 
-.. _assert_reachable:
+.. _assert_all_flows_fail:
 
-assert_reachable
-----------------
-Assert that packets with specified start locations and headers are successful
+assert_all_flows_fail
+---------------------
+Assert that all packets with specified start locations and headers fail
 
 
 
-* This is an all-to-all reachability test. It will fail if any (start location, header) combination fails.
+* Success means reaching the destination or exiting the network. Other outcomes such as being denied by an ACL or being dropped due to missing routing information are deemed as a failure.
+* This is an all-to-all test. It will fail if any (start location, header) combination succeed.
 
 
 The following parameters may be specified for this assertion:
@@ -54,15 +55,16 @@ The following parameters may be specified for this assertion:
     </br>
 
 
-.. _assert_unreachable:
+.. _assert_all_flows_succeed:
 
-assert_unreachable
-------------------
-Assert that packets with specified start locations and headers do not succeed
+assert_all_flows_succeed
+------------------------
+Assert that all packets with specified start locations and headers are successful
 
 
 
-* This is an all-to-all unreachability test. It will fail if any (start location, header) combination succeed.
+* Success means reaching the destination or exiting the network. Other outcomes such as being denied by an ACL or being dropped due to missing routing information are deemed as a failure.
+* This is an all-to-all test. It will fail if any (start location, header) combination fails.
 
 
 The following parameters may be specified for this assertion:
@@ -107,7 +109,7 @@ The following parameters may be specified for this assertion:
 
 assert_filter_has_no_unreachable_lines
 --------------------------------------
-Assert that the filters (e.g., ACLs) have no unreachable lines.
+Assert that the filters (e.g., ACLs) have no unreachable lines
 
 
 
@@ -147,7 +149,7 @@ The following parameters may be specified for this assertion:
 
 assert_filter_denies
 --------------------
-Assert that the specified filters (e.g., ACLs) deny specified headers.
+Assert that the specified filters (e.g., ACLs) deny specified headers
 
 
 
@@ -196,7 +198,7 @@ The following parameters may be specified for this assertion:
 
 assert_filter_permits
 ---------------------
-Assert that the specified filters  (e.g., ACLs) permit specified headers.
+Assert that the specified filters  (e.g., ACLs) permit specified headers
 
 
 
@@ -245,7 +247,7 @@ The following parameters may be specified for this assertion:
 
 assert_no_incompatible_bgp_sessions
 -----------------------------------
-Assert that all BGP sessions are compatibly configured.
+Assert that all BGP sessions are compatibly configured
 
 
 

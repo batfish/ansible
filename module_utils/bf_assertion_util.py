@@ -16,17 +16,19 @@
 from copy import deepcopy
 from collections import Mapping
 from pybatfish.client.asserts import (
-    assert_filter_has_no_unreachable_lines, assert_filter_denies, assert_filter_permits, assert_flows_fail,
-    assert_flows_succeed, assert_no_incompatible_bgp_sessions,
+    assert_filter_has_no_unreachable_lines, assert_filter_denies, assert_filter_permits,
+    assert_flows_fail, assert_flows_succeed,
+    assert_no_incompatible_bgp_sessions,
     assert_no_undefined_references
 )
 from pybatfish.exception import BatfishAssertException
 
 ASSERTIONS = '''
-assert_reachable:
-    short_description: Assert that packets with specified start locations and headers are successful
+assert_all_flows_fail:
+    short_description: Assert that all packets with specified start locations and headers fail
     description:
-        - "This is an all-to-all reachability test. It will fail if any (start location, header) combination fails."
+        - "Success means reaching the destination or exiting the network. Other outcomes such as being denied by an ACL or being dropped due to missing routing information are deemed as a failure."
+        - "This is an all-to-all test. It will fail if any (start location, header) combination succeed."
     options:
         start:
             description:
@@ -39,10 +41,11 @@ assert_reachable:
             required: true
             type: dict
 
-assert_unreachable:
-    short_description: Assert that packets with specified start locations and headers do not succeed
+assert_all_flows_succeed:
+    short_description: Assert that all packets with specified start locations and headers are successful
     description:
-        - "This is an all-to-all unreachability test. It will fail if any (start location, header) combination succeed."
+        - "Success means reaching the destination or exiting the network. Other outcomes such as being denied by an ACL or being dropped due to missing routing information are deemed as a failure."
+        - "This is an all-to-all test. It will fail if any (start location, header) combination fails."
     options:
         start:
             description:
@@ -56,7 +59,7 @@ assert_unreachable:
             type: dict
 
 assert_filter_has_no_unreachable_lines:
-    short_description: Assert that the filters (e.g., ACLs) have no unreachable lines.
+    short_description: Assert that the filters (e.g., ACLs) have no unreachable lines
     description:
         - "A filter line is considered unreachable if it will never match a packet, e.g., because its match condition is empty or covered completely by those of prior lines."
         - "This test will fail if any line in any filter is unreachable."
@@ -68,7 +71,7 @@ assert_filter_has_no_unreachable_lines:
             type: dict
 
 assert_filter_denies:
-    short_description: Assert that the specified filters (e.g., ACLs) deny specified headers.
+    short_description: Assert that the specified filters (e.g., ACLs) deny specified headers
     description:
         - "This test will fail if any packet in the specified header space is permitted by any filter."
     options:
@@ -84,7 +87,7 @@ assert_filter_denies:
             type: dict
 
 assert_filter_permits:
-    short_description: Assert that the specified filters  (e.g., ACLs) permit specified headers.
+    short_description: Assert that the specified filters  (e.g., ACLs) permit specified headers
     description:
         - "This test will fail if any packet in the specified header space is denied by any filter."
     options:
@@ -100,7 +103,7 @@ assert_filter_permits:
             type: dict
 
 assert_no_incompatible_bgp_sessions:
-    short_description: Assert that all BGP sessions are compatibly configured.
+    short_description: Assert that all BGP sessions are compatibly configured
     description:
         - "This test finds all pairs of BGP session endpoints in the snapshot and will fail if the configuration of any pair is incompatible."
         - "This test takes no parameters."
@@ -114,8 +117,8 @@ assert_no_undefined_references:
 
 # Map assertion-type string to Pybatfish-assertion function
 _ASSERT_TYPE_TO_FUNCTION = {
-    'assert_reachable': assert_flows_succeed,
-    'assert_unreachable': assert_flows_fail,
+    'assert_all_flows_fail': assert_flows_fail,
+    'assert_all_flows_succeed': assert_flows_succeed,
     'assert_filter_has_no_unreachable_lines': assert_filter_has_no_unreachable_lines,
     'assert_filter_denies': assert_filter_denies,
     'assert_filter_permits': assert_filter_permits,
