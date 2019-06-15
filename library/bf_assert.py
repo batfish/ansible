@@ -31,6 +31,7 @@ options:
     assertions:
         description:
             - List of assertions to make about the snapshot.
+            - See U(assertions.rst) for documentation of supported assertions.
         required: true
         type: list
     network:
@@ -82,7 +83,7 @@ EXAMPLES = '''
       - type: assert_filter_denies
         name: confirm node1 filter block_access denies TCP traffic on port 22
         parameters:
-          filter_name: 'node1["block_access"]'
+          filters: 'node1["block_access"]'
           headers:
             applications: 'ssh'
 '''

@@ -1,0 +1,119 @@
+.. _@{ assertion_name }@:
+
+{% set title = assertion_name %}
+{% set title_len = title|length %}
+@{ title }@
+@{ '-' * title_len }@
+{% if short_description %}
+@{ short_description|convert_symbols_to_format }@
+{% endif %}
+
+
+{% if description %}
+
+{% for desc in description -%}
+* @{ desc | convert_symbols_to_format }@
+{% endfor %}
+
+
+{% endif %}
+{% if options -%}
+
+The following parameters may be specified for this assertion:
+
+.. raw:: html
+
+    <table border=1 cellpadding=4>
+
+    <tr>
+    <th class="head">parameter</th>
+    <th class="head">type</th>
+    <th class="head">required</th>
+    <th class="head">default</th>
+    <th class="head">comments</th>
+    </tr>
+{% for k in option_keys -%}
+{% set v = options[k] -%}
+{% if not v['suboptions'] %}
+
+    <tr>
+    <td>@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
+    <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
+    <td>
+{% if v.description is string %}
+        <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+{% else %}
+
+    <tr>
+    <td rowspan="2">@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+    <td></td>
+    <td></td>
+    <td>
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+    </tr>
+
+    <tr>
+    <td colspan="5">
+        <table border=1 cellpadding=4>
+        <caption><b>Dictionary object @{ k }@</b></caption>
+
+        <tr>
+        <th class="head">parameter</th>
+        <th class="head">type</th>
+        <th class="head">required</th>
+        <th class="head">default</th>
+        <th class="head">comments</th>
+        </tr>
+{% for k2 in v['suboptions'] %}
+{% set v2 = v['suboptions'] [k2] %}
+
+        <tr>
+        <td>@{ k2 }@<br/><div style="font-size: small;">{% if v2['version_added'] -%} (added in @{v2['version_added']}@){% endif -%}</div></td>
+        <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
+        <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+        <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
+        <td>
+{% if v2.description is string %}
+        <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v2.description %}
+            <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v2.aliases %}
+            </br><div style="font-size: small;">aliases: @{ v2.aliases|join(', ') }@</div>
+{% endif %}
+        </td>
+        </tr>
+{% endfor %}
+
+        </table>
+
+    </td>
+    </tr>
+{% endif %}
+    </td>
+    </tr>
+{% endfor %}
+
+    </table>
+    </br>
+
+{% endif %}

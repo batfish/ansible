@@ -1,4 +1,4 @@
-batfish.base Ansible Modules
+# Ansible modules in batfish.base
 
  *  [bf_init_snapshot](bf_init_snapshot.rst)
  *  [bf_session](bf_session.rst)
