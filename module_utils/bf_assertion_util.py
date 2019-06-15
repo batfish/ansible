@@ -22,6 +22,40 @@ from pybatfish.client.asserts import (
 )
 from pybatfish.exception import BatfishAssertException
 
+ASSERTIONS = '''
+assert_reachable:
+    short_description: Assert that packets specified start locations and headers are successful
+    description:
+        - "This is an all-to-all reachability test. It will fail if any start location, header combination fails."
+    options:
+        start:
+            description:
+                - Start location specifier. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#location-specifier) for location specification.
+            required: true
+            type: str
+        headers:
+            description:
+                - Constraints on packet headers. See U(...) for header specification.
+            required: true
+            type: dict
+
+assert_unreachable:
+    short_description: Assert that packets specified start locations and headers do not succeed
+    description:
+        - "This is an all-to-all unreachability test. It will fail if any start location, header combination succeed."
+    options:
+        start:
+            description:
+                - Start location specifier. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#location-specifier) for location specification.
+            required: true
+            type: str
+        headers:
+            description:
+                - Constraints on packet headers. See U(...) for header specification.
+            required: true
+            type: dict
+'''
+
 # Map assertion-type string to Pybatfish-assertion function
 _ASSERT_TYPE_TO_FUNCTION = {
     'assert_reachable': assert_flows_succeed,
