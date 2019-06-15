@@ -24,9 +24,9 @@ from pybatfish.exception import BatfishAssertException
 
 ASSERTIONS = '''
 assert_reachable:
-    short_description: Assert that packets specified start locations and headers are successful
+    short_description: Assert that packets with specified start locations and headers are successful
     description:
-        - "This is an all-to-all reachability test. It will fail if any start location, header combination fails."
+        - "This is an all-to-all reachability test. It will fail if any (start location, header) combination fails."
     options:
         start:
             description:
@@ -35,14 +35,14 @@ assert_reachable:
             type: str
         headers:
             description:
-                - Constraints on packet headers. See U(...) for header specification.
+                - Constraints on packet headers. See U(https://pybatfish.readthedocs.io/en/latest/datamodel.html#pybatfish.datamodel.flow.HeaderConstraints) for keys in this dictionary.
             required: true
             type: dict
 
 assert_unreachable:
-    short_description: Assert that packets specified start locations and headers do not succeed
+    short_description: Assert that packets with specified start locations and headers do not succeed
     description:
-        - "This is an all-to-all unreachability test. It will fail if any start location, header combination succeed."
+        - "This is an all-to-all unreachability test. It will fail if any (start location, header) combination succeed."
     options:
         start:
             description:
@@ -51,9 +51,53 @@ assert_unreachable:
             type: str
         headers:
             description:
-                - Constraints on packet headers. See U(...) for header specification.
+                - Constraints on packet headers. See U(https://pybatfish.readthedocs.io/en/latest/datamodel.html#pybatfish.datamodel.flow.HeaderConstraints) for keys in this dictionary.
             required: true
             type: dict
+
+assert_filter_permits:
+    short_description: Assert that the specified filters permit specified headers.
+    description:
+        - "This test will fail if any packet in the specified header space is denied by any filter."
+    options:
+        filters:
+            description:
+                - Filter specifier. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#filter-specifier) for filter specification.
+            required: true
+            type: dict
+        headers:
+            description:
+                - Constraints on packet headers. See U(https://pybatfish.readthedocs.io/en/latest/datamodel.html#pybatfish.datamodel.flow.HeaderConstraints) for keys in this dictionary.
+            required: true
+            type: dict
+
+assert_filter_denies:
+    short_description: Assert that the specified filters deny specified headers.
+    description:
+        - "This test will fail if any packet in the specified header space is permitted by any filter."
+    options:
+        filters:
+            description:
+                - Filter specifier. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#filter-specifier) for filter specification.
+            required: true
+            type: dict
+        headers:
+            description:
+                - Constraints on packet headers. See U(https://pybatfish.readthedocs.io/en/latest/datamodel.html#pybatfish.datamodel.flow.HeaderConstraints) for keys in this dictionary.
+            required: true
+            type: dict
+
+assert_no_incompatible_bgp_sessions:
+    short_description: Assert that all BGP sessions are compatibly configured.
+    description:
+        - "This test finds all pairs of BGP session endpoints in the snapshot and will fail if the configuration of any pair is incompatible."
+        - "This test takes no parameters."
+
+assert_no_undefined_references:
+    short_description: Assert that there are no undefined references
+    description:
+        - "This test will fail if any device configuration refers to a structured (e.g., ACL or routemap) that is not defined in the configuration."
+        - "This test takes no parameters."
 '''
 
 # Map assertion-type string to Pybatfish-assertion function
@@ -67,6 +111,7 @@ _ASSERT_TYPE_TO_FUNCTION = {
 }
 
 ASSERT_PASS_MESSAGE = 'Assertion passed'
+
 
 def get_assertion_issues(assertion):
     """Return the reason the assertion dictionary is valid, or return None if it is valid."""
