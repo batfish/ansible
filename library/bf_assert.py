@@ -31,6 +31,7 @@ options:
     assertions:
         description:
             - List of assertions to make about the snapshot.
+            - See U(assertions.rst) for documentation of supported assertions.
         required: true
         type: list
     network:

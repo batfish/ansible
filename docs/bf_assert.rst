@@ -50,6 +50,7 @@ The following options may be specified for this module:
     <td></td>
     <td>
         <div>List of assertions to make about the snapshot.</div>
+        <div>See <a href='assertions.rst'>assertions.rst</a> for documentation of supported assertions.</div>
     </td>
     </tr>
 
