@@ -136,7 +136,6 @@ Return Values
     <th class="head">description</th>
     <th class="head">returned</th>
     <th class="head">type</th>
-    <th class="head">sample</th>
     </tr>
 
 
@@ -147,7 +146,6 @@ Return Values
     </td>
     <td align=center>always</td>
     <td align=center>list</td>
-    <td align=center></td>
     </tr>
 
     <tr>
@@ -157,7 +155,6 @@ Return Values
     </td>
     <td align=center>always</td>
     <td align=center>str</td>
-    <td align=center></td>
     </tr>
 
     </table>
