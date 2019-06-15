@@ -3,7 +3,7 @@
 {% set title = assertion_name %}
 {% set title_len = title|length %}
 @{ title }@
-@{ '+' * title_len }@
+@{ '-' * title_len }@
 {% if short_description %}
 @{ short_description|convert_symbols_to_format }@
 {% endif %}

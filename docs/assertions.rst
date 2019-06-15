@@ -8,7 +8,7 @@ Assertions supported by bf_assert module
 .. _assert_reachable:
 
 assert_reachable
-++++++++++++++++
+----------------
 Assert that packets specified start locations and headers are successful
 
 
@@ -57,7 +57,7 @@ The following options may be specified for this assertion:
 .. _assert_unreachable:
 
 assert_unreachable
-++++++++++++++++++
+------------------
 Assert that packets specified start locations and headers do not succeed
 
 
