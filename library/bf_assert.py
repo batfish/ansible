@@ -93,7 +93,7 @@ summary:
     type: str
     returned: always
 result:
-    description: List of assertion results.
+    description: List of assertion results. There is one entry per assertion, and each entry contains details of the assertion and additional information when the assertion fails.
     type: list
     returned: always
 '''
@@ -110,6 +110,7 @@ except Exception as e:
     pybatfish_found = False
 else:
     pybatfish_found = True
+
 
 def run_module():
     # define the available arguments/parameters that a user can pass to
@@ -152,8 +153,8 @@ def run_module():
     issues = [i for i in [get_assertion_issues(a) for a in assertions] if i]
     if any(issues):
         message = (
-            '{} of {} assertions are malformed'.format(len(issues), len(assertions))
-            + ', no assertions run'
+                '{} of {} assertions are malformed'.format(len(issues), len(assertions))
+                + ', no assertions run'
         )
         result['result'] = issues
         module.fail_json(msg=message, **result)
@@ -208,8 +209,10 @@ def run_module():
 
     module.exit_json(**result)
 
+
 def main():
     run_module()
+
 
 if __name__ == '__main__':
     main()

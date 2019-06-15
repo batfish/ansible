@@ -406,7 +406,6 @@ Return Values
     <th class="head">description</th>
     <th class="head">returned</th>
     <th class="head">type</th>
-    <th class="head">sample</th>
     </tr>
 
 {% for entry in returndocs_keys %}
@@ -424,7 +423,6 @@ Return Values
     </td>
     <td align=center>@{ returndocs[entry].returned | html_ify }@</td>
     <td align=center>@{ returndocs[entry].type | html_ify }@</td>
-    <td align=center>@{ returndocs[entry].sample | replace('\n', '\n    ') | html_ify }@</td>
     </tr>
 {% if returndocs[entry].type == 'complex' %}
 
@@ -438,7 +436,6 @@ Return Values
         <th class="head">description</th>
         <th class="head">returned</th>
         <th class="head">type</th>
-        <th class="head">sample</th>
         </tr>
 {% for sub in returndocs[entry].contains %}
 
@@ -455,7 +452,6 @@ Return Values
         </td>
         <td align=center>@{ returndocs[entry].contains[sub].returned | html_ify }@</td>
         <td align=center>@{ returndocs[entry].contains[sub].type | html_ify }@</td>
-        <td align=center>@{ returndocs[entry].contains[sub].sample }@</td>
         </tr>
 {% endfor %}
 
