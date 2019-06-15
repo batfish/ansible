@@ -253,6 +253,7 @@ def main():
     out_file_path = os.path.join(OUTPUTDIR, "assertions.rst")
     out_file = open(out_file_path, "w")
     out_file.write('Assertions supported by bf_assert module\n')
+    out_file.write('++++++++++++++++++++++++++++++++++++++++\n')
     out_file.write('\n')
 
     out_file.write(".. contents::\n")

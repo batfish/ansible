@@ -414,6 +414,7 @@ def main():
     index_file_path = os.path.join(OUTPUTDIR, "README.md")
     index_file = open(index_file_path, "w")
     index_file.write('batfish.base Ansible Modules\n')
+    index_file.write('++++++++++++++++++++++++++++\n')
     index_file.write('\n')
 
     for module_name in module_names:
