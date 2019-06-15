@@ -16,7 +16,7 @@
 from copy import deepcopy
 from collections import Mapping
 from pybatfish.client.asserts import (
-    assert_filter_denies, assert_filter_permits, assert_flows_fail,
+    assert_filter_has_no_unreachable_lines, assert_filter_denies, assert_filter_permits, assert_flows_fail,
     assert_flows_succeed, assert_no_incompatible_bgp_sessions,
     assert_no_undefined_references
 )
@@ -55,10 +55,22 @@ assert_unreachable:
             required: true
             type: dict
 
-assert_filter_permits:
-    short_description: Assert that the specified filters permit specified headers.
+assert_filter_has_no_unreachable_lines:
+    short_description: Assert that the filters (e.g., ACLs) have no unreachable lines.
     description:
-        - "This test will fail if any packet in the specified header space is denied by any filter."
+        - "A filter line is considered unreachable if it will never match a packet, e.g., because its match condition is empty or covered completely by those of prior lines."
+        - "This test will fail if any line in any filter is unreachable."
+    options:
+        filters:
+            description:
+                - Filter specifier. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#filter-specifier) for filter specification.
+            required: true
+            type: dict
+
+assert_filter_denies:
+    short_description: Assert that the specified filters (e.g., ACLs) deny specified headers.
+    description:
+        - "This test will fail if any packet in the specified header space is permitted by any filter."
     options:
         filters:
             description:
@@ -71,10 +83,10 @@ assert_filter_permits:
             required: true
             type: dict
 
-assert_filter_denies:
-    short_description: Assert that the specified filters deny specified headers.
+assert_filter_permits:
+    short_description: Assert that the specified filters  (e.g., ACLs) permit specified headers.
     description:
-        - "This test will fail if any packet in the specified header space is permitted by any filter."
+        - "This test will fail if any packet in the specified header space is denied by any filter."
     options:
         filters:
             description:
@@ -104,8 +116,9 @@ assert_no_undefined_references:
 _ASSERT_TYPE_TO_FUNCTION = {
     'assert_reachable': assert_flows_succeed,
     'assert_unreachable': assert_flows_fail,
-    'assert_filter_permits': assert_filter_permits,
+    'assert_filter_has_no_unreachable_lines': assert_filter_has_no_unreachable_lines,
     'assert_filter_denies': assert_filter_denies,
+    'assert_filter_permits': assert_filter_permits,
     'assert_no_incompatible_bgp_sessions': assert_no_incompatible_bgp_sessions,
     'assert_no_undefined_references': assert_no_undefined_references,
 }

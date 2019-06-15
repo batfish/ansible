@@ -103,15 +103,55 @@ The following parameters may be specified for this assertion:
     </br>
 
 
-.. _assert_filter_permits:
+.. _assert_filter_has_no_unreachable_lines:
 
-assert_filter_permits
----------------------
-Assert that the specified filters permit specified headers.
+assert_filter_has_no_unreachable_lines
+--------------------------------------
+Assert that the filters (e.g., ACLs) have no unreachable lines.
 
 
 
-* This test will fail if any packet in the specified header space is denied by any filter.
+* A filter line is considered unreachable if it will never match a packet, e.g., because its match condition is empty or covered completely by those of prior lines.
+* This test will fail if any line in any filter is unreachable.
+
+
+The following parameters may be specified for this assertion:
+
+.. raw:: html
+
+    <table border=1 cellpadding=4>
+
+    <tr>
+    <th class="head">parameter</th>
+    <th class="head">type</th>
+    <th class="head">required</th>
+    <th class="head">default</th>
+    <th class="head">comments</th>
+    </tr>
+
+    <tr>
+    <td>filters<br/><div style="font-size: small;"></div></td>
+    <td>dict</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+        <div>Filter specifier. See <a href='https://github.com/batfish/batfish/blob/master/questions/Parameters.md#filter-specifier'>https://github.com/batfish/batfish/blob/master/questions/Parameters.md#filter-specifier</a> for filter specification.</div>
+    </td>
+    </tr>
+
+    </table>
+    </br>
+
+
+.. _assert_filter_denies:
+
+assert_filter_denies
+--------------------
+Assert that the specified filters (e.g., ACLs) deny specified headers.
+
+
+
+* This test will fail if any packet in the specified header space is permitted by any filter.
 
 
 The following parameters may be specified for this assertion:
@@ -152,15 +192,15 @@ The following parameters may be specified for this assertion:
     </br>
 
 
-.. _assert_filter_denies:
+.. _assert_filter_permits:
 
-assert_filter_denies
---------------------
-Assert that the specified filters deny specified headers.
+assert_filter_permits
+---------------------
+Assert that the specified filters  (e.g., ACLs) permit specified headers.
 
 
 
-* This test will fail if any packet in the specified header space is permitted by any filter.
+* This test will fail if any packet in the specified header space is denied by any filter.
 
 
 The following parameters may be specified for this assertion:
