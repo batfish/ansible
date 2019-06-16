@@ -49,7 +49,7 @@ options:
     session:
         description:
             - Batfish session object required to connect to the Batfish service.
-        default: Value in C(bf_session) fact.
+        default: Value in the C(bf_session) fact.
         required: false
         type: dict
 author:

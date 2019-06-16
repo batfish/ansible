@@ -59,7 +59,7 @@ The following options may be specified for this module:
     <td>no</td>
     <td>False</td>
     <td>
-        <div>Boolean indicating if the snapshot name already exists in the specified network.</div>
+        <div>Whether to overwrite a snapshot of the same name (if it exists) in the network.</div>
     </td>
     </tr>
 

@@ -46,7 +46,7 @@ options:
     overwrite:
         default: false
         description:
-            - Boolean indicating if the snapshot name already exists in the specified network.
+            - Whether to overwrite a snapshot of the same name (if it exists) in the network.
         required: false
         type: bool
     session:
