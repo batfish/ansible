@@ -27,8 +27,10 @@ ASSERTIONS = '''
 assert_all_flows_fail:
     short_description: Assert that all packets with specified start locations and headers fail
     description:
-        - "Success means reaching the destination or exiting the network. Other outcomes such as being denied by an ACL or being dropped due to missing routing information are deemed as a failure."
-        - "This is an all-to-all test. It will fail if any (start location, header) combination succeed."
+        - "This is an all-to-all test."
+        - "If any flow (start location, header) can reach its destination, this assertion will return false."
+        - "If no flow (start location, header) can reach its destination, this assertion will return true."
+        - "This assertion is used to evaluate the security of select destinations in the network."
     options:
         start:
             description:
@@ -44,8 +46,10 @@ assert_all_flows_fail:
 assert_all_flows_succeed:
     short_description: Assert that all packets with specified start locations and headers are successful
     description:
-        - "Success means reaching the destination or exiting the network. Other outcomes such as being denied by an ACL or being dropped due to missing routing information are deemed as a failure."
-        - "This is an all-to-all test. It will fail if any (start location, header) combination fails."
+        - "This is an all-to-all test."
+        - "If any flow (start location, header) cannot reach its destination, this assertion will return false."
+        - "If all flows (start location, header) can reach its destination, this assertion will return true."
+        - "This assertion is used to evaluate the accessibility of select destinations in the network."
     options:
         start:
             description:
@@ -62,7 +66,7 @@ assert_filter_has_no_unreachable_lines:
     short_description: Assert that the filters (e.g., ACLs) have no unreachable lines
     description:
         - "A filter line is considered unreachable if it will never match a packet, e.g., because its match condition is empty or covered completely by those of prior lines."
-        - "This test will fail if any line in any filter is unreachable."
+        - "This test will fail if any line in any of the specified filter(s) is unreachable."
     options:
         filters:
             description:
@@ -73,7 +77,7 @@ assert_filter_has_no_unreachable_lines:
 assert_filter_denies:
     short_description: Assert that the specified filters (e.g., ACLs) deny specified headers
     description:
-        - "This test will fail if any packet in the specified header space is permitted by any filter."
+        - "This test will fail if any packet in the specified header space is permitted by any of the specified filter(s)."
     options:
         filters:
             description:
@@ -89,7 +93,7 @@ assert_filter_denies:
 assert_filter_permits:
     short_description: Assert that the specified filters  (e.g., ACLs) permit specified headers
     description:
-        - "This test will fail if any packet in the specified header space is denied by any filter."
+        - "This test will fail if any packet in the specified header space is denied by any of the specified filter(s)."
     options:
         filters:
             description:
@@ -111,7 +115,7 @@ assert_no_incompatible_bgp_sessions:
 assert_no_undefined_references:
     short_description: Assert that there are no undefined references
     description:
-        - "This test will fail if any device configuration refers to a structured (e.g., ACL or routemap) that is not defined in the configuration."
+        - "This test will fail if any device configuration refers to a structure (e.g., ACL, prefix-list, routemap) that is not defined in the configuration."
         - "This test takes no parameters."
 '''
 
