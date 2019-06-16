@@ -27,7 +27,7 @@ ASSERTIONS = '''
 assert_all_flows_fail:
     short_description: Assert that all packets with specified start locations and headers fail
     description:
-        - "This is an all-to-all test."
+        - "This is an all-to-all test that analyzes all (start location, header) combinations"
         - "If any flow (start location, header) can reach its destination, this assertion will return false."
         - "If no flow (start location, header) can reach its destination, this assertion will return true."
         - "This assertion is used to evaluate the security of select destinations in the network."
@@ -46,7 +46,7 @@ assert_all_flows_fail:
 assert_all_flows_succeed:
     short_description: Assert that all packets with specified start locations and headers are successful
     description:
-        - "This is an all-to-all test."
+        - "This is an all-to-all test that analyzes all (start location, header) combinations"
         - "If any flow (start location, header) cannot reach its destination, this assertion will return false."
         - "If all flows (start location, header) can reach its destination, this assertion will return true."
         - "This assertion is used to evaluate the accessibility of select destinations in the network."
