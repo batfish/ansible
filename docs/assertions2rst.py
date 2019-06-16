@@ -26,49 +26,23 @@
 
 import ast
 import os
-import re
 import datetime
-from jinja2 import Environment, FileSystemLoader
 from six import print_
 
 from ansible.module_utils.six import iteritems
-from ansible.parsing.plugin_docs import read_docstring
 from ansible.parsing.yaml.loader import AnsibleLoader
 from ansible.utils.display import Display
 
-display = Display()
-
-try:
-    from html import escape as html_escape
-except ImportError:
-    # Python-3.2 or later
-    import cgi
-
-
-    def html_escape(text, quote=True):
-        return cgi.escape(text, quote)
-
-
-#####################################################################################
-# constants and paths
-
-_ITALIC = re.compile(r"I\(([^)]+)\)")
-_BOLD = re.compile(r"B\(([^)]+)\)")
-_MODULE = re.compile(r"M\(([^)]+)\)")
-_URL_W_TEXT = re.compile(r"U\(([^)^|]+)\|([^)]+)\)")
-_URL = re.compile(r"U\(([^)^|]+)\)")
-_CONST = re.compile(r"C\(([^)]+)\)")
-_UNDERSCORE = re.compile(r"_")
-DEPRECATED = b" (D)"
+from common import jinja2_environment
 
 ASSERTIONSFILE = "../module_utils/bf_assertion_util.py"
 OUTPUTDIR = "./"
 
+display = Display()
 
-#####################################################################################
+
 # this function is modified from the one in plugin_docs.py
-
-def read_docstring(filename, verbose=True, ignore_errors=True):
+def read_assertion_docs(filename, verbose=True, ignore_errors=True):
     """
     Search for assignment of ASSERTIONS variables in the given file.
     Parse DOCUMENTATION from YAML and return the YAML doc or None together with EXAMPLES, as plain text.
@@ -116,83 +90,6 @@ def read_docstring(filename, verbose=True, ignore_errors=True):
             raise
 
     return data
-
-
-#####################################################################################
-
-def assertion_to_html(matchobj):
-    if matchobj.group(1) is not None:
-        assertion_name = matchobj.group(1)
-        assertion_href = _UNDERSCORE.sub('-', assertion_name)
-        return '<a class="reference internal" href="#' + assertion_href + '"><span class="std std-ref">' + \
-                    assertion_name + '</span></a>'
-    return ''
-
-def html_ify(text):
-    ''' convert symbols like I(this is in italics) to valid HTML '''
-
-    t = html_escape(text)
-    t = _ITALIC.sub("<em>" + r"\1" + "</em>", t)
-    t = _BOLD.sub("<b>" + r"\1" + "</b>", t)
-    t = _MODULE.sub(assertion_to_html, t)
-    t = _URL_W_TEXT.sub("<a href='" + r"\2" + "'>" + r"\1" + "</a>", t)
-    t = _URL.sub("<a href='" + r"\1" + "'>" + r"\1" + "</a>", t)
-    t = _CONST.sub("<code>" + r"\1" + "</code>", t)
-
-    return t
-
-
-#####################################################################################
-
-def rst_ify(text):
-    ''' convert symbols like I(this is in italics) to valid restructured text '''
-
-    try:
-        t = _ITALIC.sub(r'*' + r"\1" + r"*", text)
-        t = _BOLD.sub(r'**' + r"\1" + r"**", t)
-        t = _MODULE.sub(r':ref:`' + r"\1 <\1>" + r"`", t)
-        t = _URL_W_TEXT.sub(r'`' + r"\1" + r" <" + r"\2" + r">`_", t)
-        t = _URL.sub(r'`' + r"\1" + r" <" + r"\1" + r">`_", t)
-        t = _CONST.sub(r'``' + r"\1" + r"``", t)
-    except Exception as e:
-        raise AnsibleError("Could not process (%s) : %s" % (str(text), str(e)))
-
-    return t
-
-
-def rst_fmt(text, fmt):
-    ''' helper for Jinja2 to do format strings '''
-
-    return fmt % (text)
-
-
-def rst_xline(width, char="="):
-    ''' return a restructured text line of a given length '''
-
-    return char * width
-
-
-#####################################################################################
-
-
-def jinja2_environment(template_dir, template_type):
-    env = Environment(loader=FileSystemLoader(template_dir),
-                      variable_start_string="@{",
-                      variable_end_string="}@",
-                      trim_blocks=True,
-                      )
-    env.globals['xline'] = rst_xline
-
-    if template_type == 'assertion':
-        env.filters['convert_symbols_to_format'] = rst_ify
-        env.filters['html_ify'] = html_ify
-        env.filters['fmt'] = rst_fmt
-        env.filters['xline'] = rst_xline
-        template = env.get_template('assertion.j2')
-    else:
-        raise Exception("unknown module format type: %s" % template_type)
-
-    return env, template
 
 
 def process_assertion(assertion_name, assertion_dict, template, out_file):
@@ -247,8 +144,8 @@ def process_assertion(assertion_name, assertion_dict, template, out_file):
 
 
 def main():
-    env, template = jinja2_environment('.', 'assertion')
-    assertions = read_docstring(ASSERTIONSFILE)
+    env, template, _ = jinja2_environment('.', 'rst', "assertion.j2")
+    assertions = read_assertion_docs(ASSERTIONSFILE)
 
     out_file_path = os.path.join(OUTPUTDIR, "assertions.rst")
     out_file = open(out_file_path, "w")
