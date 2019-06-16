@@ -46,13 +46,13 @@ options:
     overwrite:
         default: false
         description:
-            - Boolean indicating if the snapshot name already exists in the specified network.
+            - Whether to overwrite a snapshot of the same name (if it exists) in the network.
         required: false
         type: bool
     session:
         description:
             - Batfish session object required to connect to the Batfish service. 
-        default: Value in C(bf_session) fact.
+        default: Value in the C(bf_session) fact.
         required: false
         type: dict
 author:

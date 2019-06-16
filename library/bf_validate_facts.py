@@ -49,12 +49,12 @@ options:
     session:
         description:
             - Batfish session object required to connect to the Batfish service. 
-        default: Value in C(bf_session) fact.
+        default: Value in the C(bf_session) fact.
         required: false
         type: dict
     expected_facts:
         description:
-            - Directory to pull expected facts from.
+            - Directory to read expected facts from.
         required: true
         type: str
 author:
