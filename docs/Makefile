@@ -1,7 +1,8 @@
+# main target to generate all docs
 docs: assertions_doc modules_doc
 
-assertions_doc: ../module_utils/bf_assertion_util.py
+assertions_doc:
 	python assertions2rst.py
 
-modules_doc: ../library/*.py ansible2rst.py rst.j2
-	python ansible2rst.py
+modules_doc:
+	python modules2rst.py
