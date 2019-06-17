@@ -47,10 +47,22 @@ class ActionModule(ActionBase):
         module_name = self._task.action
         if module_name != 'bf_init_snapshot':
             if 'snapshot' not in module_args:
-                module_args['snapshot'] = facts.get('bf_snapshot')
+                snapshot = facts.get('bf_snapshot')
+                if snapshot is None:
+                    raise AnsibleActionFail(
+                        'No Batfish snapshot detected. Run the bf_init_snapshot '
+                        'module to set one up or set the snapshot name via '
+                        'bf_snapshot fact.')
+                module_args['snapshot'] = snapshot
 
             if 'network' not in module_args:
-                module_args['network'] = facts.get('bf_network')
+                network = facts.get('bf_network')
+                if network is None:
+                    raise AnsibleActionFail(
+                        'No Batfish network detected. Run the bf_init_snapshot '
+                        'module to set one up or set the network name via '
+                        'bf_network fact.')
+                module_args['network'] = network
 
         result = self._execute_module(module_name=module_name,
                                       module_args=module_args,
