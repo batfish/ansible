@@ -86,6 +86,12 @@ def get_facts(session, nodes_specifier):
                                     BATFISH_FACT_VERSION)
 
 
+def get_node_count(facts):
+    """Return the number of nodes in the supplied facts."""
+    nodes, version = _unencapsulate_facts(facts)
+    return len(nodes)
+
+
 def load_facts(input_directory):
     """Load facts from text files in the specified directory."""
     out = {'version': None, 'nodes': {}}

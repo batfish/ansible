@@ -86,8 +86,8 @@ result:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import (assert_dict_subset, create_session,
-                                          get_facts, load_facts, set_snapshot,
-                                          validate_facts)
+                                          get_facts, get_node_count, load_facts,
+                                          set_snapshot, validate_facts)
 
 try:
     from pybatfish.client.session import Session
@@ -155,6 +155,9 @@ def run_module():
 
     try:
         actual = get_facts(session, nodes_specifier=nodes_spec)
+        if not get_node_count(actual):
+            result['warnings'] = [
+                'No nodes found matching node specifier "{}"'.format(nodes_spec)]
     except Exception as e:
         message = 'Failed to get actual facts: {}'.format(e)
         module.fail_json(msg=message, **result)
