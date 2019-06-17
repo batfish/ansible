@@ -100,9 +100,10 @@ def load_facts(input_directory):
             dict_ = yaml.safe_load(f.read())
             nodes, version = _unencapsulate_facts(dict_)
 
-            if out['version'] and version != out['version']:
-                raise ValueError('Input file version mismatch!')
-            out['version'] = version
+            if version:
+                if out['version'] and version != out['version']:
+                    raise ValueError('Input file version mismatch!')
+                out['version'] = version
 
             # We allow a single input file to specify more than one node
             for node in nodes:
@@ -274,11 +275,12 @@ def _encapsulate_nodes_facts(nodes_facts, version):
     }
 
 
-def _unencapsulate_facts(facts):
+def _unencapsulate_facts(facts, check_version=False):
     """Extract node facts and version from final fact format."""
-    assert 'version' in facts, 'No version present in parsed facts file(s)'
     assert 'nodes' in facts, 'No nodes present in parsed facts file(s)'
-    return facts['nodes'], facts['version']
+    if check_version:
+        assert 'version' in facts, 'No version present in parsed facts file(s)'
+    return facts['nodes'], facts.get('version')
 
 
 def assert_dict_subset(actual, expected, prefix="", diffs=None):
