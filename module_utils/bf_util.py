@@ -91,7 +91,11 @@ def load_facts(input_directory):
     out = {'version': None, 'nodes': {}}
     out_nodes = out['nodes']
 
-    for filename in os.listdir(input_directory):
+    files = os.listdir(input_directory)
+    if not len(files):
+        raise ValueError('No files present in specified directory')
+
+    for filename in files:
         with open(os.path.join(input_directory, filename), 'r') as f:
             dict_ = yaml.safe_load(f.read())
             nodes, version = _unencapsulate_facts(dict_)
@@ -272,8 +276,8 @@ def _encapsulate_nodes_facts(nodes_facts, version):
 
 def _unencapsulate_facts(facts):
     """Extract node facts and version from final fact format."""
-    assert 'version' in facts
-    assert 'nodes' in facts
+    assert 'version' in facts, 'No version present in parsed facts file(s)'
+    assert 'nodes' in facts, 'No nodes present in parsed facts file(s)'
     return facts['nodes'], facts['version']
 
 
