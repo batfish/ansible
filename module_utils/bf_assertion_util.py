@@ -142,8 +142,9 @@ def get_assertion_issues(assertion):
         return "No name specified for assertion: {}".format(assertion)
     name = assertion['name']
 
+    valid_assert_types = ', '.join(_ASSERT_TYPE_TO_FUNCTION.keys())
     if 'type' not in assertion:
-        return "No type specified for assertion '{}'".format(name)
+        return "No type specified for assertion '{}'. Valid assert types are: {}".format(name, valid_assert_types)
 
     params = assertion.get('parameters', {})
     if not isinstance(params, Mapping):
@@ -151,7 +152,7 @@ def get_assertion_issues(assertion):
 
     type_ = assertion['type']
     if _get_asserts_function_from_type(type_) is None:
-        return "Unknown assertion type: {} for assertion '{}'".format(type_, name)
+        return "Unknown assertion type: {} for assertion '{}'. Valid assert types are: {}".format(type_, name, valid_assert_types)
     return None
 
 
