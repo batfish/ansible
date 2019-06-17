@@ -22,6 +22,7 @@ from ansible.utils.display import Display
 
 display = Display()
 
+# Modules that require snapshot (and network) to be explicitly specified
 _EXPLICIT_SNAPSHOT_PARAMETER_MODULES = {
     'bf_init_snapshot', 'bf_upload_diagnostics', 'bf_set_snapshot'
 }
