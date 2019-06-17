@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 from __future__ import (absolute_import, division, print_function)
+
 __metaclass__ = type
 
 from ansible.errors import AnsibleActionFail
@@ -20,6 +21,11 @@ from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
 
 display = Display()
+
+_EXPLICIT_SNAPSHOT_PARAMETER_MODULES = {
+    'bf_init_snapshot', 'bf_upload_diagnostics', 'bf_set_snapshot'
+}
+
 
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
@@ -32,7 +38,7 @@ class ActionModule(ActionBase):
             )
 
         # Use user-specified session or ansible_facts.bf_session in that order
-        facts = self._templar.template('{{ansible_facts}}') # .bf_session
+        facts = self._templar.template('{{ansible_facts}}')  # .bf_session
         module_args = self._task.args.copy()
 
         # Fall-back to using values from Ansible facts for common module parameters
@@ -41,18 +47,22 @@ class ActionModule(ActionBase):
             if session is None:
                 raise AnsibleActionFail(
                     'No Batfish session detected. Run the bf_session module to set one up.')
-            display.vvv('No session supplied, using session from Ansible facts: %s' % session)
+            display.vvv(
+                'No session supplied, using session from Ansible facts: %s' % session)
             module_args['session'] = session
 
         module_name = self._task.action
-        if module_name != 'bf_init_snapshot' and module_name != 'bf_upload_diagnostics':
+
+        # Fall-back to using values from Ansible facts for snapshot/network
+        # name for any module that doesn't require these to be explicitly set
+        if module_name not in _EXPLICIT_SNAPSHOT_PARAMETER_MODULES:
             if 'snapshot' not in module_args:
                 snapshot = facts.get('bf_snapshot')
                 if snapshot is None:
                     raise AnsibleActionFail(
                         'No Batfish snapshot detected. Run the bf_init_snapshot '
                         'module to set one up or set the snapshot name via '
-                        'bf_snapshot fact.')
+                        'bf_set_snapshot module.')
                 module_args['snapshot'] = snapshot
 
             if 'network' not in module_args:
@@ -61,7 +71,7 @@ class ActionModule(ActionBase):
                     raise AnsibleActionFail(
                         'No Batfish network detected. Run the bf_init_snapshot '
                         'module to set one up or set the network name via '
-                        'bf_network fact.')
+                        'bf_set_snapshot module.')
                 module_args['network'] = network
 
         result = self._execute_module(module_name=module_name,
