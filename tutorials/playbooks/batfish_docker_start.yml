@@ -1,0 +1,37 @@
+---
+- name: Get list of running docker containers
+  shell: docker ps
+  register: status
+
+- set_fact:
+    service: false
+
+- name: Check if batfish/allinone container is running
+  set_fact: 
+    service: true
+  when: status.stdout.find('batfish/allinone') != -1
+
+#NOTE: need to figure out how to allow user to set path for the local data directory
+- name: Start the Batfish Docker container, if it is not running
+  block:
+  - name: Start the container
+    docker_container:
+      name: batfish
+      image: batfish/allinone
+      state: started
+      ports:
+        - "9996:9996"
+        - "9997:9997"
+      volumes:
+        - "{{ lookup('env','PWD') }}/data:/data"
+    register: docker_start_status
+
+  - name: Print error message
+    debug: msg="Something went wrong"
+    when: docker_start_status.failed|bool == true
+
+  - name: Print Docker Container status
+    debug: msg="Image; {{docker_start_status.container.Config.Image}} - Status; {{docker_start_status.container.State}}"
+    when: docker_start_status.changed|bool == true
+
+  when: service != true

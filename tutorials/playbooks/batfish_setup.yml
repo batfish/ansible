@@ -1,0 +1,4 @@
+---
+- import_playbook: batfish_pybatfish_setup.yml
+- import_playbook: batfish_docker_setup.yml
+

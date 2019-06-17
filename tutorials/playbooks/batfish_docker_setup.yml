@@ -1,0 +1,37 @@
+---
+- name: Playbook to install latest Batfish docker container on localhost
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: Check if docker is installed
+      shell: "docker --version"
+      register: docker_installed
+
+    - name: Download latest Batfish Docker image
+      block:
+        #Note; If the local image is the latest version, this does NOTHING. So the variable `docker_dwld` is just empty
+        - name: Pulling Batfish Docker container from Dockerhub
+          docker_image:
+            repository: batfish/allinone
+            name: batfish/allinone
+            force: yes
+            state: present
+            pull: yes
+          register: docker_dwld
+
+        - name: Print error message
+          debug: msg="Something went wrong"
+          when: docker_dwld.failed|bool == true
+
+        - name: Print information about image download
+          debug: msg="{{docker_dwld.image}}"
+          when: docker_dwld.failed|bool == false
+
+      when: docker_installed.failed|bool == false and docker_installed.stdout is search("Docker version")
+
+    - name: Warn user about issue with Docker installation 
+      debug: msg="Docker is not running (or installed). Please fix and try again"
+      when: docker_installed.failed|bool != false

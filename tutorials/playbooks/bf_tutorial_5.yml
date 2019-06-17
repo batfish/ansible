@@ -1,0 +1,44 @@
+---
+- name: Welcome to the fifth Batfish Tutorial!
+  hosts: all
+  gather_facts: no
+  roles:
+    - batfish.base
+
+  tasks:
+
+  - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
+    block:
+
+    - include_tasks: batfish_docker_start.yml
+
+    - name: Setup connection to Batfish service
+      bf_session:
+        host: localhost
+        name: local_batfish
+
+    - name: Initialize the example network
+      bf_init_snapshot:
+        network: example_network
+        snapshot: example_snapshot
+        snapshot_data: ../networks/example
+        overwrite: true
+
+    - name: Validate the configuration of network devices
+      bf_assert:
+        assertions:
+          - type: assert_no_incompatible_bgp_sessions
+            name: Confirm that all BGP peers are properly configured
+
+          - type: assert_no_undefined_references
+            name: Confirm that there are NO undefined references on any network device
+      register: bf_assert
+      ignore_errors: true
+
+    - name: Display Batfish validation result details
+      debug: msg="{{bf_assert}}"
+
+    - include_tasks: batfish_docker_stop.yml
+
+    delegate_to: localhost
+    run_once: true

@@ -1,0 +1,11 @@
+---
+- name: Stop the Batfish Docker container, if it is running
+  docker_container:
+    name: batfish
+    image: batfish/allinone
+    state: stopped
+  register: docker_stop_status
+
+- name: Print error message
+  debug: msg="Something went wrong"
+  when: docker_stop_status.failed|bool == true

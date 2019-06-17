@@ -1,0 +1,16 @@
+nodes:
+  as1border1:
+    BGP:
+      Neighbors:
+        1.10.1.1:
+          Peer_Group: as1
+        10.12.11.2:
+          Peer_Group: as3
+        3.2.2.2:
+          Peer_Group: bad-ebgp
+        5.6.7.8:
+          Peer_Group: xanadu
+    DNS:
+      DNS_Servers: [1.1.1.1]
+    Domain_Name: lab.local
+version: batfish_v0

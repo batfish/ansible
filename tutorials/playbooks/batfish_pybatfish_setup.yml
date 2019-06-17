@@ -1,0 +1,58 @@
+---
+- name: Playbook to install Pybatfish on localhost
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: Check if in Python VENV
+      shell: "python -c 'import sys; print(\"1\" if (hasattr(sys, \"real_prefix\") or (hasattr(sys,\"base_prefix\") and sys.base_prefix != sys.prefix)) else \"0\")'"
+      register: python_venv
+
+    - name: Not in Python VENV, ask user to proceed or not
+      block:
+       - name: Python VENV not-detected
+         debug: msg="Python virtual environment NOT detected"
+
+       - name: Prompt if user wants to continue
+         pause:
+           prompt: "Do you want to continue? (y/n)"
+           echo: yes
+         register: venv_prompt
+
+      when: python_venv.stdout[0] == "0" 
+
+
+    - debug:
+        var: venv_prompt
+
+    - set_fact:
+        venv_prompt: "y"
+      when: python_venv.stdout[0] == "1" or venv_prompt.user_input == "Y" or venv_prompt.user_input == "y"
+
+
+    - name: Proceeding with pybatfish installation based on user input
+      block:
+      - name: Retrieve Python version
+        shell: "python --version"
+        register: python_installed
+
+      - name: Warn if Python 3 is not running
+        debug: msg="Python version 2 detected. We recommend that you use Python 3"
+        when: python_installed.stdout is search('Python 2')
+
+      - name: Download and install Pybatfish (Python SDK for Batfish)
+        shell: "python -m pip install --upgrade pip; python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git; python -m pip install -r ../requirements.txt" 
+        register: pybatfish_install
+
+      - name: Pybatfish installation error
+        debug: msg="Something went wrong"
+        when: pybatfish_install.failed|bool == true
+
+      - name: Print information about image download
+        debug: msg="{{pybatfish_install.stdout}}"
+        when: pybatfish_install.changed|bool == true
+
+      when: venv_prompt == "Y" or venv_prompt == "y"
+
