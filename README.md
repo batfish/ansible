@@ -16,7 +16,7 @@ Intentionet has created this Ansible role to allow users to embed pre-deployment
 
 
 ## Examples
-This example playbook outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
+The example playbook below outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
 
 ```yaml
 ---
@@ -54,7 +54,7 @@ This example playbook outlines how to use the `batfish.base` role to extract the
     when: bf_facts.failed|bool == false
 ```
 
-For additional examples and a step-by-step tutorial of the Batfish Ansible role, please visit the [Batfish Ansible Utilities and Playbooks](https://github.com/batfish/ansible-utils) repository
+For additional examples and step-by-step tutorials, check out the [tutorials](tutorials) folder.
 
 ## Installation  
 You must have the [Dependencies](#dependencies) installed on the system before you can use the role.
@@ -85,4 +85,4 @@ Support for this role is provided by the community and Intentionet. If you have 
 - Join our [Slack Group](https://join.slack.com/t/batfish-org/shared_invite/enQtMzA0Nzg2OTAzNzQ1LTUxOTJlY2YyNTVlNGQ3MTJkOTIwZTU2YjY3YzRjZWFiYzE4ODE5ODZiNjA4NGI5NTJhZmU2ZTllOTMwZDhjMzA) and post a question
 
 ## Contributors
-Intentionet is actively contributing to and maintaining this repository.
+Intentionet is contributing to and maintaining this repository.
