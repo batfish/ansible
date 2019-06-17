@@ -45,7 +45,7 @@ class ActionModule(ActionBase):
             module_args['session'] = session
 
         module_name = self._task.action
-        if module_name != 'bf_init_snapshot':
+        if module_name != 'bf_init_snapshot' and module_name != 'bf_upload_diagnostics':
             if 'snapshot' not in module_args:
                 snapshot = facts.get('bf_snapshot')
                 if snapshot is None:
