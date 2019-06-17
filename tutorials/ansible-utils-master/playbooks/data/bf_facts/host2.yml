@@ -1,0 +1,98 @@
+nodes:
+  host2:
+    AS_Path_Access_Lists: []
+    Authentication_Key_Chains: []
+    Community_Lists: []
+    Configuration_Format: HOST
+    DNS:
+      DNS_Servers: []
+      DNS_Source_Interface: null
+    Default_Cross_Zone_Action: PERMIT
+    Default_Inbound_Action: PERMIT
+    Device_Type: HOST
+    Domain_Name: null
+    Hostname: host2
+    IP6_Access_Lists: []
+    IP_Access_Lists:
+    - filter::FORWARD
+    - filter::INPUT
+    - filter::OUTPUT
+    - mangle::FORWARD
+    - mangle::INPUT
+    - mangle::OUTPUT
+    - mangle::POSTROUTING
+    - mangle::PREROUTING
+    - nat::OUTPUT
+    - nat::POSTROUTING
+    - nat::PREROUTING
+    IPsec:
+      IKE_Phase1_Keys: []
+      IKE_Phase1_Policies: []
+      IKE_Phase1_Proposals: []
+      IPsec_Peer_Configs: []
+      IPsec_Phase2_Policies: []
+      IPsec_Phase2_Proposals: []
+    Interfaces:
+      eth0:
+        Access_VLAN: null
+        Active: true
+        All_Prefixes:
+        - 2.128.1.101/24
+        Allowed_VLANs: ''
+        Auto_State_VLAN: true
+        Bandwidth: 1000000000.0
+        Blacklisted: false
+        Channel_Group: null
+        Channel_Group_Members: []
+        DHCP_Relay_Addresses: []
+        Declared_Names:
+        - eth0
+        Description: null
+        Encapsulation_VLAN: null
+        HSRP_Groups: []
+        HSRP_Version: null
+        Incoming_Filter_Name: filter::INPUT
+        MLAG_ID: null
+        MTU: 1500
+        Native_VLAN: null
+        OSPF_Area_Name: null
+        OSPF_Cost: null
+        OSPF_Enabled: false
+        OSPF_Passive: false
+        OSPF_Point_To_Point: false
+        Outgoing_Filter_Name: filter::OUTPUT
+        PBR_Policy_Name: null
+        Primary_Address: 2.128.1.101/24
+        Primary_Network: 2.128.1.0/24
+        Proxy_ARP: false
+        Rip_Enabled: false
+        Rip_Passive: false
+        Spanning_Tree_Portfast: false
+        Speed: null
+        Switchport: false
+        Switchport_Mode: NONE
+        Switchport_Trunk_Encapsulation: DOT1Q
+        VRF: default
+        VRRP_Groups: []
+        Zone_Name: null
+    NTP:
+      NTP_Servers: []
+      NTP_Source_Interface: null
+    PBR_Policies: []
+    Route6_Filter_Lists: []
+    Route_Filter_Lists: []
+    Routing_Policies: []
+    SNMP:
+      SNMP_Source_Interface: null
+      SNMP_Trap_Servers: []
+    Syslog:
+      Logging_Servers: []
+      Logging_Source_Interface: null
+    TACACS:
+      TACACS_Servers: []
+      TACACS_Source_Interface: null
+    VRFs:
+    - default
+    Vendor_Family: ''
+    Zones: []
+version: batfish_v0
