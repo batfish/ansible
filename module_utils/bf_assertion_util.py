@@ -184,8 +184,7 @@ def _get_parameter_issues(assert_type, assert_func, params):
         return "Invalid parameter(s) for {}: {} (valid parameters are {})".format(assert_type, extra_params,
                                                                                   valid_params)
 
-    mandatory_params = set(
-        [param for param in valid_params if (assert_func_sig.parameters[param].default == inspect_empty)])
+    mandatory_params = {param for param in valid_params if (assert_func_sig.parameters[param].default == inspect_empty)}
 
     missing_params = mandatory_params - params.keys()
     if len(missing_params) > 0:
