@@ -128,7 +128,7 @@ def run_module():
         session.set_network(network)
         session.set_snapshot(snapshot)
     except Exception as e:
-        message = 'Failed to find snapshot: {}'.format(e)
+        message = 'Failed to set snapshot: {}'.format(e)
         module.fail_json(msg=message, **result)
 
     result['summary'] = "Snapshot set to '{}' on network '{}'".format(snapshot, network)
