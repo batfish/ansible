@@ -47,7 +47,7 @@ Run specific tutorials via
 
 ## Documentation
 
- - [Documentation for the Ansible modules](../docs/README.md).
+ - [Documentation for the Ansible modules](../docs/README.md)
 
- - [Documentation for Batfish](https://github.com/batfish/batfish).
+ - [Documentation for Batfish](https://github.com/batfish/batfish)
 
