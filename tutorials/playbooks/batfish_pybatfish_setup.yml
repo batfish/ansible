@@ -47,6 +47,10 @@
         shell: "python -m pip install --upgrade pip; python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git; python -m pip install -r ../requirements.txt" 
         register: pybatfish_install
 
+      - name: Print pybatfish install info
+        debug:
+          var: pybatfish_install
+
       - name: Pybatfish installation error
         debug: msg="Something went wrong"
         when: pybatfish_install.failed|bool == true
