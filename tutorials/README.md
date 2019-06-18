@@ -12,7 +12,7 @@ This repository contains example playbooks that show how to use Batfish in conju
 
 - **bf_tutorial_5.yml**: Shows you how to validate configuration attributes to find mis-configured BGP sessions and undefined references
 
-- **bf_upload_diagnostics**: Shows you how you can upload diagnostic information about your snapshot in the event of issues (e.g. if Batfish fails to fully recognized some lines in your input files)
+- **bf_upload_diagnostics.yml**: Shows you how to upload diagnostic information about your snapshot in the event of issues (e.g. if Batfish fails to fully recognized some lines in your input files)
 
 ## Setup
 
