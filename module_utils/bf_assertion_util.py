@@ -21,7 +21,8 @@ from pybatfish.client.asserts import (
     assert_filter_has_no_unreachable_lines, assert_filter_denies, assert_filter_permits,
     assert_flows_fail, assert_flows_succeed,
     assert_no_incompatible_bgp_sessions,
-    assert_no_undefined_references
+    assert_no_undefined_references,
+    assert_no_unestablished_bgp_sessions
 )
 from pybatfish.exception import BatfishAssertException
 
@@ -114,6 +115,12 @@ assert_no_incompatible_bgp_sessions:
         - "This test finds all pairs of BGP session endpoints in the snapshot and will fail if the configuration of any pair is incompatible."
         - "This test takes no parameters."
 
+assert_no_unestablished_bgp_sessions:
+    short_description: Assert that all compatibly-configured BGP sessions are established
+    description:
+        - "This test fails if there are any BGP session in the snapshot that are compatibly configured but will not be established (e.g., due to ACLs)."
+        - "This test takes no parameters."
+
 assert_no_undefined_references:
     short_description: Assert that there are no undefined references
     description:
@@ -129,6 +136,7 @@ _ASSERT_TYPE_TO_FUNCTION = {
     'assert_filter_denies': assert_filter_denies,
     'assert_filter_permits': assert_filter_permits,
     'assert_no_incompatible_bgp_sessions': assert_no_incompatible_bgp_sessions,
+    'assert_no_unestablished_bgp_sessions': assert_no_unestablished_bgp_sessions,
     'assert_no_undefined_references': assert_no_undefined_references,
 }
 
