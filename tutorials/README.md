@@ -2,17 +2,17 @@
 
 This repository contains example playbooks that show how to use Batfish in conjunction with Ansible.
 
-- **bf_tutorial_1.yml**: Shows you how to retrieve facts about network devices
+- [tutorial1_extract_facts.yml](playbooks/tutorial1_extract_facts.yml): Shows you how to retrieve facts about network devices
 
-- **bf_tutorial_2.yml**: Shows you how to validate facts about network devices
+- [tutorial2_validate_facts.yml](playbooks/tutorial1_validate_facts.yml): Shows you how to validate facts about network devices
 
-- **bf_tutorial_3.yml**: Shows you how to validate the routing and forwarding behavior of the network
+- [tutorial3_validate_forwarding.yml](playbooks/tutorial1_validate_forwarding.yml): Shows you how to validate the routing and forwarding behavior of the network
 
-- **bf_tutorial_4.yml**: Shows you how to validate the behavior of a packet filter(ACL/Firewall rule) 
+- [tutorial4_validate_acls.yml](playbooks/tutorial1_validate_acls.yml): Shows you how to validate the behavior of a packet filter(ACL/Firewall rule) 
 
-- **bf_tutorial_5.yml**: Shows you how to validate configuration attributes to find mis-configured BGP sessions and undefined references
+- [tutorial5_validate_bgp_sessions.yml](playbooks/tutorial1_validate_bgp_sessions.yml): Shows you how to validate configuration attributes to find mis-configured BGP sessions and undefined references
 
-- **bf_upload_diagnostics.yml**: Shows you how to upload diagnostic information about your snapshot in the event of issues (e.g. if Batfish fails to fully recognized some lines in your input files)
+- [bf_upload_diagnostics.yml](playbooks/bf_upload_diagnostics.yml): Shows you how to upload diagnostic information about your snapshot in the event of issues (e.g. if Batfish fails to fully recognized some lines in your input files)
 
 ## Setup
 
