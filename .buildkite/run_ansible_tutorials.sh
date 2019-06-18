@@ -9,6 +9,9 @@ pushd tutorials
 pip freeze
 
 # Run tutorial setup
+# Build essential is required to build regex python dependency...
+sudo apt-get update
+sudo apt-get install build-essential
 ansible-playbook -i inventory --extra-vars "batch_mode=true" playbooks/batfish_setup.yml
 
 pip freeze
