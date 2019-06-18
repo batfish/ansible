@@ -27,11 +27,14 @@
     - name: Validate the configuration of network devices
       bf_assert:
         assertions:
+          - type: assert_no_undefined_references
+            name: Confirm that there are NO undefined references on any network device
+
           - type: assert_no_incompatible_bgp_sessions
             name: Confirm that all BGP peers are properly configured
 
-          - type: assert_no_undefined_references
-            name: Confirm that there are NO undefined references on any network device
+          - type: assert_no_unestablished_bgp_sessions
+            name: Confirm that all compatible BGP peers establish sessions
       register: bf_assert
       ignore_errors: true
 

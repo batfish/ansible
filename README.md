@@ -4,16 +4,19 @@ Intentionet has created this Ansible role to allow users to embed pre-deployment
 
 ## Overview of Modules
 
-**[bf_session](docs/bf_session.rst)** - Setup the connection to the server running Batfish or Batfish Enterprise
+Some of the modules included in the role are:
 
-**[bf_init_snapshot](docs/bf_init_snapshot.rst)** - Initialize a network snapshot
+* **[bf_session](docs/bf_session.rst)** - Setup the connection to the server running Batfish or Batfish Enterprise
 
-**[bf_extract_facts](docs/bf_extract_facts.rst)** - Retrieve configuration facts for devices in the snapshot
+* **[bf_init_snapshot](docs/bf_init_snapshot.rst)** - Initialize a network snapshot
 
-**[bf_validate_facts](docs/bf_validate_facts.rst)** - Validate configuration facts for devices in the snapshot
+* **[bf_extract_facts](docs/bf_extract_facts.rst)** - Retrieve configuration facts for devices in the snapshot
 
-**[bf_assert](docs/bf_assert.rst)** - Validate network behavior
+* **[bf_validate_facts](docs/bf_validate_facts.rst)** - Validate configuration facts for devices in the snapshot
 
+* **[bf_assert](docs/bf_assert.rst)** - Validate network behavior
+
+See [docs](docs) for a complete list of modules and documentation. 
 
 ## Examples
 The example playbook below outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
@@ -54,7 +57,7 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
     when: bf_facts.failed|bool == false
 ```
 
-For additional examples and step-by-step tutorials, check out the [tutorials](tutorials) folder.
+Check out the [tutorials](tutorials) for additional examples.
 
 ## Installation  
 You must have the [Dependencies](#dependencies) installed on the system before you can use the role.
