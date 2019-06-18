@@ -65,7 +65,7 @@ def get_snapshot_init_warning(session):
     """Return warning message if the snapshot initialization had issues (parse warnings, errors)."""
     statuses = get_snapshot_parse_status(session)
     if check_if_any_failed(statuses):
-        return 'Your snapshot was initialized but Batfish failed to parse one or more input files. You can proceed but some analyses may be incorrect. You can help the Batfish developers improve support for your network by running the bf_upload_diagnostics module: {}'.format(_UPLOAD_DIAGNOSTICS_DOC_URL)
+        return 'Your snapshot was initialized but Batfish failed to parse one or more input files. You can proceed but some analysis may be incorrect. You can help the Batfish developers improve support for your network by running the bf_upload_diagnostics module: {}'.format(_UPLOAD_DIAGNOSTICS_DOC_URL)
     if not check_if_all_passed(statuses):
         return 'Your snapshot was successfully initialized but Batfish failed to fully recognized some lines in one or more input files. Some unrecognized configuration lines are not uncommon for new networks, and it is often fine to proceed with further analysis.  You can help the Batfish developers improve support for your network by running the bf_upload_diagnostics module: {}'.format(_UPLOAD_DIAGNOSTICS_DOC_URL)
     return None
