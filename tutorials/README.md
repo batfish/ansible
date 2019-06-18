@@ -40,7 +40,7 @@ This repository contains example playbooks that show how to use Batfish in conju
 
 Run specific tutorials via
 
-  `ansible-playbook -i inventory playbooks/bf_tutorial_1.yml`
+  `ansible-playbook -i inventory playbooks/tutorial1_extract_facts.yml`
 
    Each playbook is a standalone tutorial, it does not depend on other tutorials having been run first. So feel free to execute them in whatever order you think is best.
 
