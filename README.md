@@ -73,6 +73,7 @@ This module requires the following packages to be installed on the Ansible contr
 
 - Python >= 2.7
 - Ansible 2.7 or later
+- PyYAML >= 3.1, < 4.3 (these requirements are due to the Docker module; latest version works if you are not using that)
 - Pybatfish >= 0.36 (`pip install --upgrade git+https://github.com/batfish/pybatfish.git`)
 - Running Batfish service
 
