@@ -60,13 +60,11 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
 Check out the [tutorials](tutorials) for additional examples.
 
 ## Installation  
-You must have the [Dependencies](#dependencies) installed on the system before you can use the role.
 
-### Ansible Galaxy Role
-To download the latest released version of the Batfish role to the Ansible server, execute the ansible-galaxy install command, and specify batfish.base
+Ensure that the [dependencies](#dependencies) below are met, and then get the latest version of the role from Ansible galaxy. 
 
 ```
-ansible-galaxy install batfish.base
+ansible-galaxy install --force batfish.base
 ```
 
 ## Dependencies
@@ -75,14 +73,21 @@ This module requires the following packages to be installed on the Ansible contr
 
 - Python >= 2.7
 - Ansible 2.7 or later
-- Pybatfish >= 0.36
-- PyYAML >= 3.10
+- Pybatfish >= 0.36 (`pip install --upgrade git+https://github.com/batfish/pybatfish.git`)
+- Running Batfish service
+
+To install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands:
+```
+docker pull batfish/allinone
+docker run -v batfish-data:/data -p 8888:8888 -p 9997:9997 -p 9996:9996 batfish/allinone
+python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
+```
 
 ## License
 Apache 2.0
 
 ## Support
-Support for this role is provided by the community and Intentionet. If you have an issue with a module in this role, you may:
+For bug reports and feature requests, you may:
 
 - Open a Github [issue](https://github.com/batfish/ansible/issues)
 - Join our [Slack Group](https://join.slack.com/t/batfish-org/shared_invite/enQtMzA0Nzg2OTAzNzQ1LTUxOTJlY2YyNTVlNGQ3MTJkOTIwZTU2YjY3YzRjZWFiYzE4ODE5ODZiNjA4NGI5NTJhZmU2ZTllOTMwZDhjMzA) and post a question
