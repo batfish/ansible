@@ -142,7 +142,7 @@ _ASSERT_TYPE_TO_FUNCTION = {
 
 ASSERT_PASS_MESSAGE = 'Assertion passed'
 
-UNSUPPORTED_ASSERTION_PARAMETERS = {"session", "snapshot", "soft"}
+UNSUPPORTED_ASSERTION_PARAMETERS = {"session", "snapshot", "soft", "df_format"}
 
 
 def get_assertion_issues(assertion):
@@ -165,7 +165,7 @@ def get_assertion_issues(assertion):
     type_ = assertion['type']
     assert_func = _get_asserts_function_from_type(type_)
     if not assert_func:
-        return "Unknown assertion type: {} for assertion '{}'. Valid assert types are: {}".format(type_, name,
+        return "Unknown assertion type '{}' for assertion '{}'. Valid assert types are: {}".format(type_, name,
                                                                                                   valid_assert_types)
 
     parameter_issues = _get_parameter_issues(type_, assert_func, params)
@@ -206,6 +206,7 @@ def run_assertion(session, assertion):
     type_ = assertion['type']
     params = deepcopy(assertion.get('parameters', {}))
     params['session'] = session
+    params['df_format'] = "records"
 
     assert_ = _get_asserts_function_from_type(type_)
     try:
