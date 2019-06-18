@@ -16,8 +16,6 @@ This repository contains example playbooks that show how to use Batfish in conju
 
 ## Setup
 
-We highly recommend that you install the Python dependencies in a Python 3 virtual environment. Details on how to set one up can be found [here](https://docs.python.org/3/library/venv.html).
-
 - Ensure that Docker is installed and running on your machine.
 
 - Install the latest version of the `batfish.base` role from Ansible Galaxy.
@@ -39,6 +37,8 @@ We highly recommend that you install the Python dependencies in a Python 3 virtu
   
 
 ## Running a tutorial
+
+We highly recommend that you run the tutorials in a Python 3 virtual environment. Details on how to set one up can be found [here](https://docs.python.org/3/library/venv.html).
 
 From the `tutorials` directory, run specific tutorials via
 
