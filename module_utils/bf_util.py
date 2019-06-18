@@ -108,6 +108,11 @@ def load_facts(input_directory):
             dict_ = yaml.safe_load(f.read())
             nodes, version = _unencapsulate_facts(dict_)
 
+            # Assume latest version if none is specified
+            if not version:
+                version = BATFISH_FACT_VERSION
+
+            # Make sure version is consistent
             if out['version'] and version != out['version']:
                 raise ValueError('Input file version mismatch!')
             out['version'] = version
@@ -132,7 +137,7 @@ def validate_facts(expected, actual):
                     'expected': expected_version,
                     'actual': actual_version
                 }
-            } for n in actual_facts
+            } for n in expected_facts
         }
     for node in actual_facts:
         if node in expected_facts:
@@ -282,11 +287,10 @@ def _encapsulate_nodes_facts(nodes_facts, version):
     }
 
 
-def _unencapsulate_facts(facts):
+def _unencapsulate_facts(facts, check_version=False):
     """Extract node facts and version from final fact format."""
-    assert 'version' in facts, 'No version present in parsed facts file(s)'
     assert 'nodes' in facts, 'No nodes present in parsed facts file(s)'
-    return facts['nodes'], facts['version']
+    return facts['nodes'], facts.get('version')
 
 
 def assert_dict_subset(actual, expected, prefix="", diffs=None):
