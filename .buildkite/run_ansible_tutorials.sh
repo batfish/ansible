@@ -14,5 +14,9 @@ ansible-playbook -i inventory playbooks/batfish_docker_setup.yml
 
 pip freeze
 
-# Run the tutorial
+# Run the tutorials
 ansible-playbook -i inventory playbooks/tutorial1_extract_facts.yml
+ansible-playbook -i inventory playbooks/tutorial2_validate_facts.yml
+ansible-playbook -i inventory playbooks/tutorial3_validate_forwarding.yml
+ansible-playbook -i inventory playbooks/tutorial4_validate_acls.yml
+ansible-playbook -i inventory playbooks/tutorial5_validate_bgp_sessions.yml
