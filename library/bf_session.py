@@ -83,6 +83,7 @@ session:
     returned: always
 '''
 
+from datetime import datetime
 import time
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import create_session
@@ -142,23 +143,22 @@ def run_module():
         parameters = {}
     parameters['host'] = host
 
-    # Not strictly necessary, but useful to confirm the session can be established
-    try:
-        # Allow a few retries in case the service isn't ready yet
-        retry_time = 0
-        while True:
-            try:
-                create_session(**parameters)
-                break
-            except Exception as session_e:
-                if retry_time < _MAX_RETRY_TIME:
-                    time.sleep(_RETRY_DELAY)
-                    retry_time += _RETRY_DELAY
-                else:
-                    raise session_e
-    except Exception as e:
-        message = 'Failed to establish session with Batfish service: {}'.format(e)
-        module.fail_json(msg=message, **result)
+    # Allow a few retries in case the service isn't ready yet
+    retry_time = 0
+    while True:
+        try_start_time = datetime.now()
+        try:
+            create_session(**parameters)
+            break
+        except Exception as session_e:
+            if retry_time < _MAX_RETRY_TIME:
+                try_time = (datetime.now() - try_start_time).seconds
+                sleep_time = max(_RETRY_DELAY - try_time, 1)  # sleep at least 1 second
+                time.sleep(sleep_time)
+                retry_time += try_time + sleep_time
+            else:
+                message = 'Failed to establish session with Batfish service: {}'.format(session_e)
+                module.fail_json(msg=message, **result)
 
     # Overall status of command execution
     result['summary'] = "Session established to '{}' ({})".format(host, name)
