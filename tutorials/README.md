@@ -18,9 +18,9 @@ This repository contains example playbooks that show how to use Batfish in conju
 
 - Ensure that Docker is installed and running on your machine.
 
-- Install the `batfish.base` role from Ansible Galaxy.
+- Install the latest version of the `batfish.base` role from Ansible Galaxy.
 
-  `ansible-galaxy install batfish.base`
+  `ansible-galaxy install --force batfish.base`
   - If you encounter any issues related to SSL certificates use the `-c` option. 
   - When you want to update the role in the future, you will need use the `--force` option.
 
@@ -29,6 +29,7 @@ This repository contains example playbooks that show how to use Batfish in conju
 - Setup Batfish on your local machine
 
   `cd tutorials`
+
   `ansible-playbook -i inventory playbooks/batfish_setup.yml`
 
   This playbook will download and install the latest Batfish docker container, Pybatfish SDK and other Python requirements. It has some rudimentary error checking built into it:  
