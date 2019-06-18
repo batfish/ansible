@@ -14,6 +14,4 @@ cat <<EOF
   - label: ":ansible: Run Ansible Tutorials"
     command:
       - ".buildkite/run_ansible_tutorials.sh"
-    agents:
-      queue: 'open-source-default'
 EOF
