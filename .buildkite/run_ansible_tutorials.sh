@@ -2,6 +2,7 @@
 set -euxo pipefail
 
 BUILDKITE_DIR="$(dirname "${BASH_SOURCE[0]}")"
+source ${BUILDKITE_DIR}/setup_python.sh
 source ${BUILDKITE_DIR}/setup_ansible.sh
 
 pushd tutorials
