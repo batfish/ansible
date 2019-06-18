@@ -15,11 +15,14 @@
 
 from copy import deepcopy
 from collections import Mapping
+from inspect import signature
+from inspect import _empty as inspect_empty
 from pybatfish.client.asserts import (
     assert_filter_has_no_unreachable_lines, assert_filter_denies, assert_filter_permits,
     assert_flows_fail, assert_flows_succeed,
     assert_no_incompatible_bgp_sessions,
-    assert_no_undefined_references
+    assert_no_undefined_references,
+    assert_no_unestablished_bgp_sessions
 )
 from pybatfish.exception import BatfishAssertException
 
@@ -112,6 +115,12 @@ assert_no_incompatible_bgp_sessions:
         - "This test finds all pairs of BGP session endpoints in the snapshot and will fail if the configuration of any pair is incompatible."
         - "This test takes no parameters."
 
+assert_no_unestablished_bgp_sessions:
+    short_description: Assert that all compatibly-configured BGP sessions are established
+    description:
+        - "This test fails if there are any BGP session in the snapshot that are compatibly configured but will not be established (e.g., due to ACLs)."
+        - "This test takes no parameters."
+
 assert_no_undefined_references:
     short_description: Assert that there are no undefined references
     description:
@@ -127,10 +136,13 @@ _ASSERT_TYPE_TO_FUNCTION = {
     'assert_filter_denies': assert_filter_denies,
     'assert_filter_permits': assert_filter_permits,
     'assert_no_incompatible_bgp_sessions': assert_no_incompatible_bgp_sessions,
+    'assert_no_unestablished_bgp_sessions': assert_no_unestablished_bgp_sessions,
     'assert_no_undefined_references': assert_no_undefined_references,
 }
 
 ASSERT_PASS_MESSAGE = 'Assertion passed'
+
+UNSUPPORTED_ASSERTION_PARAMETERS = {"session", "snapshot", "soft"}
 
 
 def get_assertion_issues(assertion):
@@ -151,14 +163,42 @@ def get_assertion_issues(assertion):
         return "Invalid parameters, expected a dictionary of param name to value for assertion '{}'".format(name)
 
     type_ = assertion['type']
-    if _get_asserts_function_from_type(type_) is None:
-        return "Unknown assertion type: {} for assertion '{}'. Valid assert types are: {}".format(type_, name, valid_assert_types)
+    assert_func = _get_asserts_function_from_type(type_)
+    if not assert_func:
+        return "Unknown assertion type: {} for assertion '{}'. Valid assert types are: {}".format(type_, name,
+                                                                                                  valid_assert_types)
+
+    parameter_issues = _get_parameter_issues(type_, assert_func, params)
+    if parameter_issues:
+        return parameter_issues
+
     return None
 
 
 def _get_asserts_function_from_type(type_):
     """Get the Pybatfish-asserts function for a given Ansible assertion-type string."""
     return _ASSERT_TYPE_TO_FUNCTION.get(type_)
+
+
+def _get_parameter_issues(assert_type, assert_func, params):
+    """Checks if the parameters supplied to an assertion are valid"""
+
+    assert_func_sig = signature(assert_func)
+
+    valid_params = set(assert_func_sig.parameters) - UNSUPPORTED_ASSERTION_PARAMETERS
+
+    extra_params = params.keys() - valid_params
+    if len(extra_params) > 0:
+        return "Invalid parameter(s) for {}: {} (valid parameters are {})".format(assert_type, extra_params,
+                                                                                  valid_params)
+
+    mandatory_params = {param for param in valid_params if (assert_func_sig.parameters[param].default == inspect_empty)}
+
+    missing_params = mandatory_params - params.keys()
+    if len(missing_params) > 0:
+        return "Missing mandatory parameter(s) for {}: {}".format(assert_type, missing_params)
+
+    return None
 
 
 def run_assertion(session, assertion):

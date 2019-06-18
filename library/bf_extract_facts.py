@@ -95,7 +95,9 @@ result:
 import os
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import (create_session, get_facts,
-                                          set_snapshot, write_facts)
+                                          get_node_count, set_snapshot,
+                                          write_facts,
+                                          NODE_SPECIFIER_INSTRUCTIONS_URL)
 
 try:
     from pybatfish.client.session import Session
@@ -163,6 +165,9 @@ def run_module():
 
     try:
         facts = get_facts(session=session, nodes_specifier=nodes)
+        if not get_node_count(facts):
+            result['warnings'] = [
+                'No nodes found matching node specifier "{}". See here for details on how to use node specifiers: {}'.format(nodes, NODE_SPECIFIER_INSTRUCTIONS_URL)]
     except Exception as e:
         message = 'Failed to get facts: {}'.format(e)
         module.fail_json(msg=message, **result)

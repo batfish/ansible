@@ -44,6 +44,8 @@ NODE_PROPERTIES_REORG = dict([
     ('TACACS_Source_Interface', 'TACACS'),
 ])
 
+NODE_SPECIFIER_INSTRUCTIONS_URL = 'https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier'
+
 def create_session(**params):
     """Create session with the supplied params."""
     # TODO dynamically determine which session we want to use based on
@@ -84,6 +86,12 @@ def get_facts(session, nodes_specifier):
                                                    bgp_process_properties,
                                                    bgp_peer_properties),
                                     BATFISH_FACT_VERSION)
+
+
+def get_node_count(facts):
+    """Return the number of nodes in the supplied facts."""
+    nodes, version = _unencapsulate_facts(facts)
+    return len(nodes)
 
 
 def load_facts(input_directory):

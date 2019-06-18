@@ -260,6 +260,19 @@ Assert that all BGP sessions are compatibly configured
 
 
 
+.. _assert_no_unestablished_bgp_sessions:
+
+assert_no_unestablished_bgp_sessions
+------------------------------------
+Assert that all compatibly-configured BGP sessions are established
+
+
+
+* This test fails if there are any BGP session in the snapshot that are compatibly configured but will not be established (e.g., due to ACLs).
+* This test takes no parameters.
+
+
+
 .. _assert_no_undefined_references:
 
 assert_no_undefined_references

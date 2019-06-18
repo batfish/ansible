@@ -22,41 +22,47 @@ ANSIBLE_METADATA = {
 # Note: these docs take into account the fact that the plugin handles supplying default values for some params
 DOCUMENTATION = '''
 ---
-module: bf_validate_facts
-short_description: Validates facts for the current Batfish snapshot against the facts in the supplied directory 
+module: bf_upload_diagnostics
+short_description: Upload anonymized diagnostic information about a Batfish snapshot
 version_added: "2.7"
 description:
-    - "Validates facts for the current Batfish snapshot against the facts in the C(expected_facts) directory"
+    - Fetches, anonymizes, and uploads diagnostic information about a Batfish snapshot.  This runs a series of diagnostic questions on the specified snapshot, which are then anonymized with Netconan (U(https://github.com/intentionet/netconan)), and optionally uploaded to the Batfish developers.
 options:
-    nodes:
-        default: All nodes
-        description:
-            - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
-        required: false
-        type: str
     network:
         description:
-            - Name of the network to validate facts for. 
-        default: Value in the C(bf_network) fact.
+            - Name of the network to collect diagnostic information from.
         required: false
+        default: Value in the C(bf_network) fact.
         type: str
     snapshot:
         description:
-            - Name of the snapshot to validate facts for. 
+            - Name of the snapshot to collect diagnostic information about.
+        required: false
         default: Value in the C(bf_snapshot) fact.
+        type: str
+    contact_info:
+        description:
+            - Contact information associated with this upload.
         required: false
         type: str
+    dry_run:
+        default: true
+        description:
+            - Whether or not to skip upload. If C(true), upload is skipped and the anonymized files will be stored locally for review. If C(false), anonymized files will be uploaded to the Batfish developers.
+        required: false
+        type: bool
+    netconan_config:
+        default: Anonymize passwords and IP addresses.
+        description:
+            - Path to Netconan (U(https://github.com/intentionet/netconan)) configuration file, containing settings used for information anonymization.
+        required: false
+        type: bool
     session:
         description:
             - Batfish session object required to connect to the Batfish service. 
         default: Value in the C(bf_session) fact.
         required: false
         type: dict
-    expected_facts:
-        description:
-            - Directory to read expected facts from.
-        required: true
-        type: str
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -64,13 +70,18 @@ requirements:
 '''
 
 EXAMPLES = '''
-# Validate current snapshot facts against local YAML facts
-- bf_validate_facts:
-    expected_facts: /path/to/local/YAML/files/
-# Validate current snapshot facts for nodes whose names contain as1border against local YAML facts
-- bf_validate_facts:
-    nodes: '/as1border/'
-    expected_facts: /path/to/local/YAML/files/
+# Generate diagnostic information about the specified snapshot and save locally (do not upload)
+- bf_upload_diagnostics
+    network: datacenter_sea
+    snapshot: 2019-01-01
+    dry_run: true
+    contact_info: my.email@example.com
+# Generate diagnostic information about the specified snapshot and upload to the Batfish developers
+- bf_upload_diagnostics
+    network: datacenter_sea
+    snapshot: 2019-01-01
+    dry_run: false
+    contact_info: my.email@example.com
 '''
 
 RETURN = '''
@@ -78,17 +89,14 @@ summary:
     description: Summary of action(s) performed.
     type: str
     returned: always
-result:
-    description: Contains a map of node-name to list of failures for that node.
-    returned: when validation does not pass
-    type: dict
 '''
 
+import os
+
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.bf_util import (assert_dict_subset, create_session,
-                                          get_facts, get_node_count, load_facts,
-                                          set_snapshot, validate_facts,
-                                          NODE_SPECIFIER_INSTRUCTIONS_URL)
+from ansible.module_utils.bf_util import (
+    create_session, get_snapshot_init_warning
+)
 
 try:
     from pybatfish.client.session import Session
@@ -101,10 +109,11 @@ def run_module():
     # define the available arguments/parameters that a user can pass to
     # the module
     module_args = dict(
-        nodes=dict(type='str', required=False, default='.*'),
         network=dict(type='str', required=True),
         snapshot=dict(type='str', required=True),
-        expected_facts=dict(type='str', required=True),
+        contact_info=dict(type='str', required=False),
+        dry_run=dict(type='bool', required=False, default=True),
+        netconan_config=dict(type='str', required=False),
         session=dict(type='dict', required=True),
     )
 
@@ -115,7 +124,6 @@ def run_module():
     # for consumption, for example, in a subsequent task
     result = dict(
         changed=False,
-        result='',
         summary='',
     )
 
@@ -134,11 +142,12 @@ def run_module():
     if module.check_mode:
         return result
 
-    nodes_spec = module.params['nodes']
-    input_directory = module.params['expected_facts']
+    network = module.params['network']
+    snapshot = module.params['snapshot']
+    contact_info = module.params.get('contact_info')
+    netconan_config = module.params.get('netconan_config')
+    dry_run = module.params['dry_run']
     session_params = module.params.get('session', {})
-    network = module.params.get('network')
-    snapshot = module.params.get('snapshot')
 
     try:
         session = create_session(**session_params)
@@ -148,48 +157,33 @@ def run_module():
         return
 
     try:
-        set_snapshot(session=session, network=network, snapshot=snapshot)
+        session.set_network(network)
+        session.set_snapshot(snapshot)
     except Exception as e:
-        message = 'Failed to set snapshot: {}'.format(e)
+        message = 'Failed to find snapshot {} in network {}: {}'.format(snapshot, network, e)
         module.fail_json(msg=message, **result)
-        return
+
+    if netconan_config:
+        if not os.path.isfile(netconan_config):
+            message = 'Specified netconan_config is invalid. Must specify a file.'
+            module.fail_json(msg=message, **result)
 
     try:
-        actual = get_facts(session, nodes_specifier=nodes_spec)
-        if not get_node_count(actual):
-            result['warnings'] = [
-                'No nodes found matching node specifier "{}". See here for details on how to use node specifiers: {}'.format(nodes_spec, NODE_SPECIFIER_INSTRUCTIONS_URL)]
+        upload_result = session.upload_diagnostics(dry_run=dry_run,
+                                                   netconan_config=netconan_config,
+                                                   contact_info=contact_info)
+        if dry_run:
+            summary = 'Diagnostics for snapshot {} on network {} written to temporary directory: {}'.format(
+                snapshot, network, upload_result)
+        else:
+            summary = 'Diagnostics for snapshot {} on network {} uploaded successfully.'.format(
+                snapshot, network)
     except Exception as e:
-        message = 'Failed to get actual facts: {}'.format(e)
+        message = 'Failed to upload diagnostics: {}'.format(e)
         module.fail_json(msg=message, **result)
         return
 
-    try:
-        expected = load_facts(input_directory)
-    except Exception as e:
-        message = 'Failed to get expected facts: {}'.format(e)
-        module.fail_json(msg=message, **result)
-        return
-
-    try:
-        failures = validate_facts(expected, actual)
-    except Exception as e:
-        message = 'Failed to validate facts: {}'.format(e)
-        module.fail_json(msg=message, **result)
-        return
-
-    summary = 'Actual facts match expected facts'
-    if failures:
-        summary = 'Validation failed for the following nodes: {}.'.format(
-            list(failures.keys()))
-
-    # Overall status of command execution
     result['summary'] = summary
-    result['result'] = failures
-    # Indicate failure to Ansible in the case of failed validation
-    if failures:
-        module.fail_json(msg=summary, **result)
-
     module.exit_json(**result)
 
 def main():
