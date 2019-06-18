@@ -26,7 +26,7 @@ module: bf_upload_diagnostics
 short_description: Upload anonymized diagnostic information about a Batfish snapshot
 version_added: "2.7"
 description:
-    - Fetches, anonymizes, and uploads diagnostic information about a Batfish snapshot.  This runs a series of diagnostic questions on the specified snapshot, which are then anonymized with Netconan (U(https://github.com/intentionet/netconan)), and optionally uploaded to the Batfish developers.
+    - Fetches, anonymizes, and uploads diagnostic information about a Batfish snapshot. This runs a series of diagnostic questions on the specified snapshot, which are then anonymized with Netconan (U(https://github.com/intentionet/netconan)), and optionally uploaded to the Batfish developers. By default, passwords are stripped and IP addresses are anonymized.
 options:
     network:
         description:
