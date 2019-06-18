@@ -2,7 +2,6 @@
 # Setup python for running Batfish Ansible modules and tutorials
 set -euo pipefail
 
-
 # Setup conda so we can avoid permission issues setting up Python as non-root user
 curl -o conda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash conda.sh -b -f -p $HOME/miniconda
