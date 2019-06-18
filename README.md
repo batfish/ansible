@@ -59,30 +59,31 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
 
 Check out the [tutorials](tutorials) for additional examples.
 
-## Installation  
-
-Ensure that the [dependencies](#dependencies) below are met, and then get the latest version of the role from Ansible galaxy. 
-
-```
-ansible-galaxy install --force batfish.base
-```
-
 ## Dependencies
 
 This module requires the following packages to be installed on the Ansible control machine:
 
 - Python >= 2.7
 - Ansible 2.7 or later
-- PyYAML >= 3.1, < 4.3 (these requirements are due to the Docker module; latest version works if you are not using that)
-- Pybatfish >= 0.36 (`pip install --upgrade git+https://github.com/batfish/pybatfish.git`)
-- Running Batfish service
+- PyYAML >= 3.1, < 4.3 (these requirements are inherited from the Docker module; latest version works if you are not using that)
 
-To install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands:
+- Running Batfish service and Pybatfish
+
+   - To install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands:
 ```
 docker pull batfish/allinone
 docker run -v batfish-data:/data -p 8888:8888 -p 9997:9997 -p 9996:9996 batfish/allinone
 python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
 ```
+
+## Installation  
+
+Ensure that the [dependencies](#dependencies) above are met, and then get the latest version of the role from Ansible galaxy. 
+
+```
+ansible-galaxy install --force batfish.base
+```
+
 
 ## License
 Apache 2.0
