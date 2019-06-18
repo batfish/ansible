@@ -1,0 +1,48 @@
+---
+- name: Upload Snapshot Diagnostics
+  hosts: all
+  gather_facts: no
+  roles:
+    - batfish.base
+
+  vars_prompt:
+  - name: network
+    prompt: "What is the name of your network?"
+    private: no
+  - name: snapshot
+    prompt: "What is the name of your snapshot?"
+    private: no
+  - name: dry_run
+    prompt: "Would you like to do a dry run? (skip upload)"
+    private: no
+  - name: contact_info
+    prompt: "What contact info would you like associated with your diagnostics? (optional)"
+    private: no
+
+  tasks:
+  - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
+    block:
+
+    - include_tasks: batfish_docker_start.yml
+
+    - name: Setup connection to Batfish service
+      bf_session:
+        host: localhost
+        name: local_batfish
+
+    - name: Collect diagnostics
+      bf_upload_diagnostics:
+        network: "{{ network }}"
+        snapshot: "{{ snapshot }}"
+        dry_run: "{{ dry_run|bool }}"
+        contact_info: "{{ contact_info }}"
+      register: diag_action
+
+    - name: Print diagnostics action summary
+      debug:
+        var: diag_action.summary
+
+    - include_tasks: batfish_docker_stop.yml
+
+    delegate_to: localhost
+    run_once: true
