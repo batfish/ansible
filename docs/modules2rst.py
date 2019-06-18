@@ -306,7 +306,7 @@ def main():
     index_file.write('# Ansible modules in batfish.base\n')
     index_file.write('\n')
 
-    for module_name in module_names:
+    for module_name in sorted(module_names):
         index_file.write(" *  [{}]({}.rst)\n".format(module_name, module_name))
 
 
