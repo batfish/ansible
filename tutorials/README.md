@@ -38,7 +38,9 @@ This repository contains example playbooks that show how to use Batfish in conju
 
 ## Running a tutorial
 
-Run specific tutorials via
+We highly recommend that you run the tutorials in a Python 3 virtual environment. Details on how to set one up can be found [here](https://docs.python.org/3/library/venv.html).
+
+From the `tutorials` directory, run specific tutorials via
 
   `ansible-playbook -i inventory playbooks/bf_tutorial_1.yml`
 
