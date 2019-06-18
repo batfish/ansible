@@ -22,7 +22,6 @@ This repository contains example playbooks that show how to use Batfish in conju
 
   `ansible-galaxy install --force batfish.base`
   - If you encounter any issues related to SSL certificates use the `-c` option. 
-  - When you want to update the role in the future, you will need use the `--force` option.
 
 - Clone or download this repository to your local machine, and run the setup playblook.
 
