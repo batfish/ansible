@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-source setup_ansible.sh
+BUILDKITE_DIR="$(dirname "${BASH_SOURCE[0]}")"
+source ${BUILDKITE_DIR}/setup_ansible.sh
+
+pushd tutorials
 
 # Run tutorial setup
 ansible-playbook -i inventory playbooks/batfish_setup.yml
