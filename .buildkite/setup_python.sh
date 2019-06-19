@@ -11,5 +11,7 @@ source activate conda_env
 # Get around having to build regex since there is no linux wheel in PyPI
 conda install --yes -c conda-forge regex
 
-# pip install git+https://github.com/batfish/pybatfish.git
-# pip install -r tutorials/requirements.txt
+# Setup a virtual environment as well, so the setup playbook does not complain
+pip install virtualenv
+python -m virtualenv venv
+source venv/bin/activate

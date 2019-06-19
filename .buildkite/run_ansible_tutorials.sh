@@ -7,8 +7,6 @@ source ${BUILDKITE_DIR}/setup_ansible.sh
 
 pushd tutorials
 
-# Run docker setup
-#ansible-playbook -i inventory playbooks/batfish_docker_setup.yml
 # Run setup playbook
 ansible-playbook -i inventory --extra-vars "batch_mode=True" playbooks/batfish_setup.yml
 
