@@ -20,8 +20,9 @@
            prompt: "Do you want to continue? (y/n)"
            echo: yes
          register: venv_prompt
+         when: batch_mode is not defined
 
-      when: python_venv.stdout[0] == "0" 
+      when: python_venv.stdout[0] == "0"
 
 
     - debug:
@@ -29,7 +30,7 @@
 
     - set_fact:
         venv_prompt: "y"
-      when: python_venv.stdout[0] == "1" or venv_prompt.user_input == "Y" or venv_prompt.user_input == "y"
+      when: batch_mode is defined or python_venv.stdout[0] == "1" or venv_prompt.user_input == "Y" or venv_prompt.user_input == "y"
 
 
     - name: Proceeding with pybatfish installation based on user input
@@ -43,7 +44,7 @@
         when: python_installed.stdout is search('Python 2')
 
       - name: Download and install Pybatfish (Python SDK for Batfish)
-        shell: "python -m pip install --upgrade pip; python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git; python -m pip install -r ../requirements.txt" 
+        shell: "python -m pip install --upgrade pip; python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git; python -m pip install -r ../requirements.txt"
         register: pybatfish_install
 
       - name: Pybatfish installation error
@@ -55,4 +56,3 @@
         when: pybatfish_install.changed|bool == true
 
       when: venv_prompt == "Y" or venv_prompt == "y"
-
