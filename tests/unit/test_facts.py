@@ -31,7 +31,7 @@ class MockQuestion(QuestionBase):
 
 
 def test_get_facts_questions():
-    """Test that get facts calls the right questions with the right args."""
+    """Test that get facts calls the right questions, passing through the right args."""
     bf = Session(load_questions=False)
     nodes = 'foo'
     with patch.object(bf.q,
@@ -83,6 +83,8 @@ def test_load_facts(tmpdir):
     tmpdir.join('node1.yml').write(_encapsulate_nodes_facts(node1, version))
     tmpdir.join('node2.yml').write(_encapsulate_nodes_facts(node2, version))
     facts = load_facts(str(tmpdir))
+
+    # Confirm facts were loaded from both files
     assert facts == _encapsulate_nodes_facts({'node1': 'foo', 'node2': 'foo'},
                                              version)
 
@@ -137,7 +139,7 @@ def test_validate_facts():
 
 
 def test_validate_facts_not_matching_version():
-    """Test that fact validation works for mismatched facts."""
+    """Test that fact validation detects mismatched versions."""
     expected = {
         'node1': {'foo': 1},
         'node2': {'foo': 2},
@@ -170,7 +172,8 @@ def test_validate_facts_not_matching_data():
         'node2': {'foo': 2},
     }
     actual = {
-        'node1': {'foo': 0, 'bar': 1},
+        'node1': {'foo': 0, 'bar': 1},  # 'foo' doesn't match expected
+        # also missing 'baz': 1
         'node2': {'foo': 2},
         'node3': {'foo': 3},
     }
