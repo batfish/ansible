@@ -98,7 +98,7 @@ def test_run_assertion():
                       'undefinedReferences',
                       create=True) as mock_undef:
         mock_undef.return_value = MockQuestion(MockTableAnswer())
-    assert run_assertion(bf, assertion) == ASSERT_PASS_MESSAGE
+        assert run_assertion(bf, assertion) == ASSERT_PASS_MESSAGE
 
 
 def test_run_assertion_fail():
