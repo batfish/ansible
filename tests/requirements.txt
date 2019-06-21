@@ -1,0 +1,4 @@
+pytest
+pandas
+PyYAML
+-e git+https://github.com/batfish/pybatfish#egg=pybatfish
