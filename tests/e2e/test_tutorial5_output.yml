@@ -1,0 +1,36 @@
+---
+- name: Tutorial 5 assertions
+  hosts: all
+  gather_facts: no
+  roles:
+    - batfish.base
+
+  tasks:
+  - name: test
+    block:
+    - set_fact:
+        assert_msg: "2 of 3 assertions failed"
+        assert_result: [{"details": "Found undefined reference(s), when none were expected\n[{'File_Name': 'configs/as2core2.cfg', 'Struct_Type': 'route-map', 'Ref_Name': 'filter-bogons', 'Context': 'bgp inbound route-map', 'Lines': FileLines(filename='configs/as2core2.cfg', lines=[109])}]", "name": "Confirm that there are NO undefined references on any network device", "status": "Fail", "type": "assert_no_undefined_references"}, {"details": "Found incompatible BGP session(s), when none were expected\n[{'Node': 'as1border1', 'VRF': 'default', 'Local_AS': 1, 'Local_Interface': None, 'Local_IP': None, 'Remote_AS': '666', 'Remote_Node': None, 'Remote_Interface': None, 'Remote_IP': '3.2.2.2', 'Session_Type': 'EBGP_SINGLEHOP', 'Configured_Status': 'NO_LOCAL_IP'}, {'Node': 'as1border1', 'VRF': 'default', 'Local_AS': 1, 'Local_Interface': None, 'Local_IP': None, 'Remote_AS': '555', 'Remote_Node': None, 'Remote_Interface': None, 'Remote_IP': '5.6.7.8', 'Session_Type': 'EBGP_SINGLEHOP', 'Configured_Status': 'NO_LOCAL_IP'}]", "name": "Confirm that all BGP peers are properly configured", "status": "Fail", "type": "assert_no_incompatible_bgp_sessions"}, {"details": "Assertion passed", "name": "Confirm that all compatible BGP peers establish sessions", "status": "Pass", "type": "assert_no_unestablished_bgp_sessions"}]
+
+    - name: Confirm 2 of 3 asserts failed
+      assert:
+        that:
+          - bf_assert.msg == assert_msg
+        fail_msg: "'{{ bf_assert.msg }}' not equal to '{{ assert_msg }}'"
+    - name: Confirm assert_no_undefined_references failed, found undefined references
+      assert:
+        that:
+          - "'Found undefined reference(s)' in bf_assert.result[0].details"
+        fail_msg: "'Found undefined reference(s)' not in '{{ bf_assert.result[0].details }}'"
+    - name: Confirm assert_no_incompatible_bgp_sessions failed, found incompatible BGP session
+      assert:
+        that:
+          - "'Found incompatible BGP session(s)' in bf_assert.result[1].details"
+        fail_msg: "'Found incompatible BGP session(s)' not in '{{ bf_assert.result[1].details }}'"
+    - name: Confirm assert_no_unestablished_bgp_sessions passed
+      assert:
+        that:
+          - "'Assertion passed' == bf_assert.result[2].details"
+        fail_msg: "'Assertion passed' not equal to '{{ bf_assert.result[2].details }}'"
+    delegate_to: localhost
+    run_once: true

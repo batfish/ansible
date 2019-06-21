@@ -1,0 +1,30 @@
+---
+- name: Tutorial4 assertions
+  hosts: all
+  gather_facts: no
+  roles:
+    - batfish.base
+
+  tasks:
+  - name: test
+    block:
+    - set_fact:
+        assert_msg: "1 of 2 assertions failed"
+
+    - name: Check assert message indicates 1 of 2 asserts failed
+      assert:
+        that:
+          - bf_assert.msg == assert_msg
+        fail_msg: "'{{ bf_assert.msg }}' not equal to '{{ assert_msg }}'"
+    - name: Confirm assert_has_no_unreachable_lines passed
+      assert:
+        that:
+          - "'Assertion passed' == bf_assert.result[0].details"
+        fail_msg: "'Assertion passed' not equal to '{{ bf_assert.result[0].details }}'"
+    - name: Confirm assert_filter_denies failed, found a permitted flow
+      assert:
+        that:
+          - "'Found a flow that was permitted' in bf_assert.result[1].details"
+        fail_msg: "'Found a flow that was permitted' not in '{{ bf_assert.result[1].details }}'"
+    delegate_to: localhost
+    run_once: true
