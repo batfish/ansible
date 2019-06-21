@@ -1,12 +1,12 @@
 ---
-- name: Tutorial4 assertions
+- name: Tutorial 4 assertions
   hosts: all
   gather_facts: no
   roles:
     - batfish.base
 
   tasks:
-  - name: test
+  - name: Test
     block:
     - set_fact:
         assert_msg: "1 of 2 assertions failed"
