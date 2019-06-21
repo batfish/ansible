@@ -2,27 +2,10 @@ from unittest.mock import patch
 
 from pandas import DataFrame
 from pybatfish.client.session import Session
-from pybatfish.datamodel.answer import TableAnswer
-from pybatfish.question.question import QuestionBase
 
 from module_utils.bf_assertion_util import get_assertion_issues, run_assertion, \
     ASSERT_PASS_MESSAGE
-
-
-class MockTableAnswer(TableAnswer):
-    def __init__(self, frame_to_use=DataFrame()):
-        self._frame = frame_to_use
-
-    def frame(self):
-        return self._frame
-
-
-class MockQuestion(QuestionBase):
-    def __init__(self, answer=None):
-        self._answer = answer if answer is not None else MockTableAnswer()
-
-    def answer(self, *args, **kwargs):
-        return self._answer
+from tests.unit.test_utils import MockTableAnswer, MockQuestion
 
 
 def test_get_assertion_issues():
