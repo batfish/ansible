@@ -13,18 +13,26 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from copy import deepcopy
 from collections import Mapping
-from inspect import signature
-from inspect import _empty as inspect_empty
+from copy import deepcopy
+
+import six
 from pybatfish.client.asserts import (
-    assert_filter_has_no_unreachable_lines, assert_filter_denies, assert_filter_permits,
+    assert_filter_has_no_unreachable_lines, assert_filter_denies,
+    assert_filter_permits,
     assert_flows_fail, assert_flows_succeed,
     assert_no_incompatible_bgp_sessions,
     assert_no_undefined_references,
     assert_no_unestablished_bgp_sessions
 )
 from pybatfish.exception import BatfishAssertException
+
+if six.PY3:
+    from inspect import signature
+    from inspect import _empty as inspect_empty
+else:
+    from funcsigs import signature
+    from funcsigs import _empty as inspect_empty
 
 ASSERTIONS = '''
 assert_all_flows_fail:
@@ -148,7 +156,8 @@ UNSUPPORTED_ASSERTION_PARAMETERS = {"session", "snapshot", "soft", "df_format"}
 def get_assertion_issues(assertion):
     """Return the reason the assertion dictionary is valid, or return None if it is valid."""
     if not isinstance(assertion, Mapping):
-        return "Assertion format is invalid, expected dictionary: {}".format(assertion)
+        return "Assertion format is invalid, expected dictionary: {}".format(
+            assertion)
 
     if 'name' not in assertion:
         return "No name specified for assertion: {}".format(assertion)
@@ -156,17 +165,20 @@ def get_assertion_issues(assertion):
 
     valid_assert_types = ', '.join(_ASSERT_TYPE_TO_FUNCTION.keys())
     if 'type' not in assertion:
-        return "No type specified for assertion '{}'. Valid assert types are: {}".format(name, valid_assert_types)
+        return "No type specified for assertion '{}'. Valid assert types are: {}".format(
+            name, valid_assert_types)
 
     params = assertion.get('parameters', {})
     if not isinstance(params, Mapping):
-        return "Invalid parameters, expected a dictionary of param name to value for assertion '{}'".format(name)
+        return "Invalid parameters, expected a dictionary of param name to value for assertion '{}'".format(
+            name)
 
     type_ = assertion['type']
     assert_func = _get_asserts_function_from_type(type_)
     if not assert_func:
-        return "Unknown assertion type '{}' for assertion '{}'. Valid assert types are: {}".format(type_, name,
-                                                                                                  valid_assert_types)
+        return "Unknown assertion type '{}' for assertion '{}'. Valid assert types are: {}".format(
+            type_, name,
+            valid_assert_types)
 
     parameter_issues = _get_parameter_issues(type_, assert_func, params)
     if parameter_issues:
@@ -185,18 +197,23 @@ def _get_parameter_issues(assert_type, assert_func, params):
 
     assert_func_sig = signature(assert_func)
 
-    valid_params = set(assert_func_sig.parameters) - UNSUPPORTED_ASSERTION_PARAMETERS
+    valid_params = set(
+        assert_func_sig.parameters) - UNSUPPORTED_ASSERTION_PARAMETERS
 
-    extra_params = params.keys() - valid_params
+    params_key_set = set(params.keys())
+    extra_params = params_key_set - valid_params
     if len(extra_params) > 0:
-        return "Invalid parameter(s) for {}: {} (valid parameters are {})".format(assert_type, extra_params,
-                                                                                  valid_params)
+        return "Invalid parameter(s) for {}: {} (valid parameters are {})".format(
+            assert_type, extra_params,
+            valid_params)
 
-    mandatory_params = {param for param in valid_params if (assert_func_sig.parameters[param].default == inspect_empty)}
+    mandatory_params = {param for param in valid_params if (
+        assert_func_sig.parameters[param].default == inspect_empty)}
 
-    missing_params = mandatory_params - params.keys()
+    missing_params = mandatory_params - params_key_set
     if len(missing_params) > 0:
-        return "Missing mandatory parameter(s) for {}: {}".format(assert_type, missing_params)
+        return "Missing mandatory parameter(s) for {}: {}".format(assert_type,
+                                                                  missing_params)
 
     return None
 
