@@ -17,8 +17,6 @@ cat <<EOF
   - label: ":ansible: Run Ansible Tutorials"
     command:
       - ".buildkite/run_ansible_tutorial_assertions.sh"
-    env:
-      BUILDKITE_BRANCH: ${BUILDKITE_BRANCH}
   - label: ":pytest: Run Python unit tests"
     command:
       - ".buildkite/run_python_unit_tests.sh"
