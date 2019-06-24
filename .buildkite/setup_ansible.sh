@@ -4,7 +4,7 @@ set -euo pipefail
 
 pip install ansible
 
-# Install our local Ansible role instead of the one on galaxy
+# Install our Ansible role from the current branch source
 ROLES_DIR=$HOME/.ansible/roles/
 mkdir -p ${ROLES_DIR}
 ln -s $(pwd) ${ROLES_DIR}batfish.base
