@@ -3,7 +3,7 @@
 set -euo pipefail
 
 if [[ "$1" == "" ]]; then
-    echo "This script requires one positional argument specifying which Python version to use (e.g. 2.7)"
+    echo "This script requires one argument specifying which Python version to use (e.g. 2.7)"
     exit 1
 fi
 
