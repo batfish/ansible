@@ -10,7 +10,7 @@
     block:
     - set_fact:
         validate_msg: "Validation failed for the following nodes: ['as1border2', 'as1border1']."
-        validate_result: {"as1border1": [{"BGP.Neighbors.10.12.11.2.Peer_Group": {"actual": "as2", "expected": "as3"}}, {"DNS.DNS_Servers": {"actual": [], "expected": ["1.1.1.1"]}}], "as1border2": [{"Syslog.Logging_Servers": {"actual": [], "expected": ["1.1.1.1"]}}, {"Syslog.Logging_Source_Interface": {"actual": null, "expected": "Loopback0"}}]}
+        validate_result: {"as1border1": {"BGP.Neighbors.10.12.11.2.Peer_Group": {"actual": "as2", "expected": "as3"}, "DNS.DNS_Servers": {"actual": [], "expected": ["1.1.1.1"]}}, "as1border2": {"Syslog.Logging_Servers": {"actual": [], "expected": ["1.1.1.1"]}, "Syslog.Logging_Source_Interface": {"actual": null, "expected": "Loopback0"}}}
 
     - name: Check validate fact summary indicates validation failed
       assert:

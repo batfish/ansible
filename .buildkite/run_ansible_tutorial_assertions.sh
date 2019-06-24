@@ -16,4 +16,4 @@ ansible-playbook -i inventory --extra-vars "batch_mode=True" playbooks/batfish_s
 popd
 
 # Run the tutorial assertions playbook, validating the output of the tutorials
-ansible-playbook -i inventory tests/e2e/test_tutorials.yml
+ansible-playbook -i tutorials/inventory tests/e2e/test_tutorials.yml
