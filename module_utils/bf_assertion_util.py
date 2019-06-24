@@ -15,8 +15,8 @@
 
 from collections import Mapping
 from copy import deepcopy
+from sys import version_info
 
-import six
 from pybatfish.client.asserts import (
     assert_filter_has_no_unreachable_lines, assert_filter_denies,
     assert_filter_permits, assert_flows_fail, assert_flows_succeed,
@@ -25,12 +25,12 @@ from pybatfish.client.asserts import (
 )
 from pybatfish.exception import BatfishAssertException
 
-if six.PY3:
+if version_info.major >= 3 and version_info.minor >= 3:
     from inspect import signature
-    from inspect import _empty as inspect_empty
+    from inspect import Parameter
 else:
     from funcsigs import signature
-    from funcsigs import _empty as inspect_empty
+    from funcsigs import Parameter
 
 ASSERTIONS = '''
 assert_all_flows_fail:
@@ -205,7 +205,7 @@ def _get_parameter_issues(assert_type, assert_func, params):
             valid_params)
 
     mandatory_params = {param for param in valid_params if (
-        assert_func_sig.parameters[param].default == inspect_empty)}
+        assert_func_sig.parameters[param].default == Parameter.empty)}
 
     missing_params = mandatory_params - params_key_set
     if len(missing_params) > 0:
