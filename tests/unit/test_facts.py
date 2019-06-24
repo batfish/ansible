@@ -1,5 +1,11 @@
 import os
-from unittest.mock import patch
+
+import six
+
+if six.PY3:
+    from unittest.mock import patch
+else:
+    from mock import patch
 
 import pytest
 import yaml
@@ -75,14 +81,15 @@ def test_load_facts_bad_dir(tmpdir):
     """Test load facts when loading from bad directories."""
     # Empty input dir should throw ValueError
     with pytest.raises(ValueError) as e:
-        load_facts(tmpdir)
+        load_facts(str(tmpdir))
     assert 'No files present in specified dir' in str(e)
 
     f = tmpdir.join('file')
     f.write('foo')
-    # File instead of dir should throw NotADirError
-    with pytest.raises(NotADirectoryError):
+    # File instead of dir should throw exception indicating such
+    with pytest.raises(Exception) as e_not_dir:
         load_facts(str(f))
+    assert 'Not a directory' in str(e_not_dir)
 
 
 def test_load_facts_mismatch_version(tmpdir):
@@ -184,11 +191,12 @@ def test_write_facts(tmpdir):
     nodes = {'node1': 'foo', 'node2': 'bar'}
     version = 'version'
     facts = _encapsulate_nodes_facts(nodes, version)
-    write_facts(tmpdir, facts)
+    write_facts(str(tmpdir), facts)
     for node in nodes:
         filename = node + '.yml'
-        assert os.path.isfile(tmpdir.join(filename))
-        with open(tmpdir.join(filename)) as f:
+        file_path = str(tmpdir.join(filename))
+        assert os.path.isfile(file_path)
+        with open(file_path) as f:
             node_facts_raw = yaml.safe_load(f.read())
             node_facts, node_version = _unencapsulate_facts(node_facts_raw)
             assert version == node_version, 'Each file has the correct version'
