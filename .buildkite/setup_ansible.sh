@@ -3,4 +3,8 @@
 set -euo pipefail
 
 pip install ansible
-ansible-galaxy install --force batfish.base
+
+# Install our Ansible role from the current branch source
+ROLES_DIR=$HOME/.ansible/roles/
+mkdir -p ${ROLES_DIR}
+ln -s $(pwd) ${ROLES_DIR}batfish.base
