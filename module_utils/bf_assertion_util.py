@@ -25,7 +25,7 @@ from pybatfish.client.asserts import (
 )
 from pybatfish.exception import BatfishAssertException
 
-if version_info.major >= 3 and version_info.minor >= 3:
+if version_info.major > 3 or version_info.major == 3 and version_info.minor >= 3:
     from inspect import signature
     from inspect import Parameter
 else:
