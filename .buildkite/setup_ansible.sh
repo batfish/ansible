@@ -3,4 +3,5 @@
 set -euo pipefail
 
 pip install ansible
-ansible-galaxy install --force batfish.base
+# Install our local Ansible role instead of the one on galaxy
+ln -s $(pwd) $HOME/.ansible/roles/batfish.base/
