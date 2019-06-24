@@ -15,8 +15,10 @@
     - name: Check validate fact summary indicates validation failed
       assert:
         that:
-          - bf_validate.msg == validate_msg
-        fail_msg: "'{{ bf_validate.msg }}' is not equal to '{{ validate_msg }}'"
+          - "'Validation failed for the following nodes' in bf_validate.msg"
+          - "'as1border1' in bf_validate.msg"
+          - "'as1border2' in bf_validate.msg"
+        fail_msg: "'Validation failed for the following nodes: ['as1border2', 'as1border1']' not in '{{ bf_validate.result }}'"
     - name: Check validate fact detailed results indicate actual vs expected fact mismatch
       assert:
         that:
