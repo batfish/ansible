@@ -19,10 +19,8 @@ from copy import deepcopy
 import six
 from pybatfish.client.asserts import (
     assert_filter_has_no_unreachable_lines, assert_filter_denies,
-    assert_filter_permits,
-    assert_flows_fail, assert_flows_succeed,
-    assert_no_incompatible_bgp_sessions,
-    assert_no_undefined_references,
+    assert_filter_permits, assert_flows_fail, assert_flows_succeed,
+    assert_no_incompatible_bgp_sessions, assert_no_undefined_references,
     assert_no_unestablished_bgp_sessions
 )
 from pybatfish.exception import BatfishAssertException
@@ -177,8 +175,7 @@ def get_assertion_issues(assertion):
     assert_func = _get_asserts_function_from_type(type_)
     if not assert_func:
         return "Unknown assertion type '{}' for assertion '{}'. Valid assert types are: {}".format(
-            type_, name,
-            valid_assert_types)
+            type_, name, valid_assert_types)
 
     parameter_issues = _get_parameter_issues(type_, assert_func, params)
     if parameter_issues:
