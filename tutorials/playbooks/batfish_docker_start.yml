@@ -31,7 +31,7 @@
     when: docker_start_status.failed|bool == true
 
   - name: Print Docker Container status
-    debug: msg="Image; {{docker_start_status.container.Config.Image}} - Status; {{docker_start_status.container.State}}"
+    debug: msg="Image; {{docker_container.Config.Image}} - Status; {{docker_container.State}}"
     when: docker_start_status.changed|bool == true
 
   when: service != true

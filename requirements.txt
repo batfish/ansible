@@ -1,1 +1,2 @@
 PyYAML<4.3,>=3.10
+funcsigs;python_version<"3.3"
