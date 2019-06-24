@@ -18,10 +18,10 @@ for version in ${PYTHON_TEST_VERSIONS[@]}; do
 cat <<EOF
   - label: ":ansible: Run Ansible Tutorials in Python ${version}"
     command:
-      - ".buildkite/run_ansible_tutorial_assertions.sh" ${version}
+      - ".buildkite/run_ansible_tutorial_assertions.sh ${version}"
   - label: ":pytest: Run Python ${version} unit tests"
     command:
-      - ".buildkite/run_python_unit_tests.sh" ${version}
+      - ".buildkite/run_python_unit_tests.sh ${version}"
     plugins:
       - docker#${DOCKER_PLUGIN_VERSION}:
           image: "${BATFISH_DOCKER_CI_BASE_IMAGE}"
