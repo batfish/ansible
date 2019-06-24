@@ -15,3 +15,5 @@ conda create -y -n conda_env python=$1
 source activate conda_env
 # Get around having to build regex since there is no linux wheel in PyPI
 conda install --yes -c conda-forge regex
+# Install role requirements
+pip install -r requirements.txt
