@@ -1,0 +1,14 @@
+- import_playbook: ../../tutorials/playbooks/tutorial1_extract_facts.yml
+- import_playbook: test_tutorial1_output.yml
+
+- import_playbook: ../../tutorials/playbooks/tutorial2_validate_facts.yml
+- import_playbook: test_tutorial2_output.yml
+
+- import_playbook: ../../tutorials/playbooks/tutorial3_validate_forwarding.yml
+- import_playbook: test_tutorial3_output.yml
+
+- import_playbook: ../../tutorials/playbooks/tutorial4_validate_acls.yml
+- import_playbook: test_tutorial4_output.yml
+
+- import_playbook: ../../tutorials/playbooks/tutorial5_validate_bgp_sessions.yml
+- import_playbook: test_tutorial5_output.yml

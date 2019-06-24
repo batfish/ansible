@@ -16,7 +16,7 @@ EOF
 cat <<EOF
   - label: ":ansible: Run Ansible Tutorials"
     command:
-      - ".buildkite/run_ansible_tutorials.sh"
+      - ".buildkite/run_ansible_tutorial_assertions.sh"
   - label: ":pytest: Run Python unit tests"
     command:
       - ".buildkite/run_python_unit_tests.sh"
