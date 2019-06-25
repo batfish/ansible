@@ -1,6 +1,6 @@
 ---
 - name: Upload Snapshot Diagnostics
-  hosts: all
+  hosts: localhost
   gather_facts: no
   roles:
     - batfish.base
@@ -20,29 +20,23 @@
     private: no
 
   tasks:
-  - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
-    block:
+  - include_tasks: batfish_docker_start.yml
 
-    - include_tasks: batfish_docker_start.yml
+  - name: Setup connection to Batfish service
+    bf_session:
+      host: localhost
+      name: local_batfish
 
-    - name: Setup connection to Batfish service
-      bf_session:
-        host: localhost
-        name: local_batfish
+  - name: Collect diagnostics
+    bf_upload_diagnostics:
+      network: "{{ network }}"
+      snapshot: "{{ snapshot }}"
+      dry_run: "{{ dry_run|bool }}"
+      contact_info: "{{ contact_info }}"
+    register: diag_action
 
-    - name: Collect diagnostics
-      bf_upload_diagnostics:
-        network: "{{ network }}"
-        snapshot: "{{ snapshot }}"
-        dry_run: "{{ dry_run|bool }}"
-        contact_info: "{{ contact_info }}"
-      register: diag_action
+  - name: Print diagnostics action summary
+    debug:
+      var: diag_action.summary
 
-    - name: Print diagnostics action summary
-      debug:
-        var: diag_action.summary
-
-    - include_tasks: batfish_docker_stop.yml
-
-    delegate_to: localhost
-    run_once: true
+  - include_tasks: batfish_docker_stop.yml
