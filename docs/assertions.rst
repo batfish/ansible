@@ -44,7 +44,7 @@ The following parameters may be specified for this assertion:
     </tr>
 
     <tr>
-    <td>start<br/><div style="font-size: small;"></div></td>
+    <td>startLocation<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>yes</td>
     <td></td>
@@ -96,7 +96,7 @@ The following parameters may be specified for this assertion:
     </tr>
 
     <tr>
-    <td>start<br/><div style="font-size: small;"></div></td>
+    <td>startLocation<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>yes</td>
     <td></td>

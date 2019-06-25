@@ -13,7 +13,7 @@ Synopsis
 --------
 
 
-* Fetches, anonymizes, and uploads diagnostic information about a Batfish snapshot.  This runs a series of diagnostic questions on the specified snapshot, which are then anonymized with Netconan (`https://github.com/intentionet/netconan <https://github.com/intentionet/netconan>`_), and optionally uploaded to the Batfish developers.
+* Fetches, anonymizes, and uploads diagnostic information about a Batfish snapshot. This runs a series of diagnostic questions on the specified snapshot, which are then anonymized with Netconan (`https://github.com/intentionet/netconan <https://github.com/intentionet/netconan>`_), and optionally uploaded to the Batfish developers. By default, passwords are stripped and IP addresses are anonymized.
 
 
 
