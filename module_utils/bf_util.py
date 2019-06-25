@@ -13,13 +13,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 import os
-import yaml
 from collections import Mapping
 from copy import deepcopy
-from pybatfish.client.session import Session
+
+import yaml
 from pybatfish.client._diagnostics import (
     check_if_all_passed, check_if_any_failed, get_snapshot_parse_status
 )
+from pybatfish.client.session import Session
 from pybatfish.datamodel.primitives import ListWrapper
 
 _UPLOAD_DIAGNOSTICS_DOC_URL = 'https://github.com/batfish/ansible/blob/master/docs/bf_upload_diagnostics.rst'
@@ -48,6 +49,7 @@ NODE_PROPERTIES_REORG = dict([
 
 NODE_SPECIFIER_INSTRUCTIONS_URL = 'https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier'
 
+
 def create_session(**params):
     """Create session with the supplied params."""
     # TODO dynamically determine which session we want to use based on
@@ -65,9 +67,11 @@ def get_snapshot_init_warning(session):
     """Return warning message if the snapshot initialization had issues (parse warnings, errors)."""
     statuses = get_snapshot_parse_status(session)
     if check_if_any_failed(statuses):
-        return 'Your snapshot was initialized but Batfish failed to parse one or more input files. You can proceed but some analysis may be incorrect. You can help the Batfish developers improve support for your network by running the bf_upload_diagnostics module: {}'.format(_UPLOAD_DIAGNOSTICS_DOC_URL)
+        return 'Your snapshot was initialized but Batfish failed to parse one or more input files. You can proceed but some analysis may be incorrect. You can help the Batfish developers improve support for your network by running the bf_upload_diagnostics module: {}'.format(
+            _UPLOAD_DIAGNOSTICS_DOC_URL)
     if not check_if_all_passed(statuses):
-        return 'Your snapshot was successfully initialized but Batfish failed to fully recognized some lines in one or more input files. Some unrecognized configuration lines are not uncommon for new networks, and it is often fine to proceed with further analysis.  You can help the Batfish developers improve support for your network by running the bf_upload_diagnostics module: {}'.format(_UPLOAD_DIAGNOSTICS_DOC_URL)
+        return 'Your snapshot was successfully initialized but Batfish failed to fully recognized some lines in one or more input files. Some unrecognized configuration lines are not uncommon for new networks, and it is often fine to proceed with further analysis.  You can help the Batfish developers improve support for your network by running the bf_upload_diagnostics module: {}'.format(
+            _UPLOAD_DIAGNOSTICS_DOC_URL)
     return None
 
 
@@ -276,7 +280,7 @@ def write_facts(output_directory, facts):
     # Write facts for each node in its own file
     for node in nodes:
         filepath = os.path.join(output_directory, '{}.yml'.format(node))
-        node_facts = _encapsulate_nodes_facts({node:facts['nodes'][node]},
+        node_facts = _encapsulate_nodes_facts({node: facts['nodes'][node]},
                                               version)
         _write_yaml_file(node_facts, filepath)
 
@@ -302,27 +306,24 @@ def assert_dict_subset(actual, expected, prefix="", diffs=None):
     :param expected: the expected value of a dictionary
     """
     if diffs is None:
-        diffs = []
+        diffs_out = {}
+    else:
+        diffs_out = diffs
     for k in expected:
         key_name = '{}{}'.format(prefix, k)
         if k not in actual:
-            diffs.append({
-                key_name: {
-                    'key_present': False,
-                    'expected': expected[k],
-                }
-            })
+            diffs_out[key_name] = {
+                'key_present': False,
+                'expected': expected[k],
+            }
         else:
             if isinstance(expected[k], Mapping):
-                assert_dict_subset(actual[k], expected[k], key_name + '.', diffs)
+                assert_dict_subset(actual[k], expected[k], key_name + '.',
+                                   diffs_out)
             else:
                 if expected[k] != actual[k]:
-                    #diffs.append('{}: expected: {}, actual: {}'
-                    #             .format(key_name, expected[k], actual[k]))
-                    diffs.append({
-                        key_name: {
-                            'expected': expected[k],
-                            'actual': actual[k],
-                        }
-                    })
-    return diffs
+                    diffs_out[key_name] = {
+                        'expected': expected[k],
+                        'actual': actual[k],
+                    }
+    return diffs_out

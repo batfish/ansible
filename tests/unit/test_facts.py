@@ -1,5 +1,11 @@
 import os
-from unittest.mock import patch
+
+import six
+
+if six.PY3:
+    from unittest.mock import patch
+else:
+    from mock import patch
 
 import pytest
 import yaml
@@ -75,14 +81,15 @@ def test_load_facts_bad_dir(tmpdir):
     """Test load facts when loading from bad directories."""
     # Empty input dir should throw ValueError
     with pytest.raises(ValueError) as e:
-        load_facts(tmpdir)
+        load_facts(str(tmpdir))
     assert 'No files present in specified dir' in str(e)
 
     f = tmpdir.join('file')
     f.write('foo')
-    # File instead of dir should throw NotADirError
-    with pytest.raises(NotADirectoryError):
+    # File instead of dir should throw exception indicating such
+    with pytest.raises(OSError) as e_not_dir:
         load_facts(str(f))
+    assert 'Not a directory' in str(e_not_dir)
 
 
 def test_load_facts_mismatch_version(tmpdir):
@@ -164,19 +171,16 @@ def test_validate_facts_not_matching_data():
                          _encapsulate_nodes_facts(actual, version))
 
     # Result should identify the mismatched value and the missing key
-    assert res['node1'] == [
-        {
-            'foo': {
-                'expected': 1,
-                'actual': 0,
-            }
+    assert res['node1'] == {
+        'foo': {
+            'expected': 1,
+            'actual': 0,
         },
-        {
-            'baz': {
-                'expected': 1,
-                'key_present': False,
-            }
-        }]
+        'baz': {
+            'expected': 1,
+            'key_present': False,
+        }
+    }
 
 
 def test_write_facts(tmpdir):
@@ -184,11 +188,12 @@ def test_write_facts(tmpdir):
     nodes = {'node1': 'foo', 'node2': 'bar'}
     version = 'version'
     facts = _encapsulate_nodes_facts(nodes, version)
-    write_facts(tmpdir, facts)
+    write_facts(str(tmpdir), facts)
     for node in nodes:
         filename = node + '.yml'
-        assert os.path.isfile(tmpdir.join(filename))
-        with open(tmpdir.join(filename)) as f:
+        file_path = str(tmpdir.join(filename))
+        assert os.path.isfile(file_path)
+        with open(file_path) as f:
             node_facts_raw = yaml.safe_load(f.read())
             node_facts, node_version = _unencapsulate_facts(node_facts_raw)
             assert version == node_version, 'Each file has the correct version'
@@ -217,7 +222,7 @@ def test_assert_dict_subset_equal():
         'none': None,
     }
     # Equal dicts should result in no differences
-    assert assert_dict_subset(actual, expected) == []
+    assert assert_dict_subset(actual, expected) == {}
 
 
 def test_assert_dict_subset_subset():
@@ -237,7 +242,7 @@ def test_assert_dict_subset_subset():
         },
     }
     # Expected being a subset should result in no differences
-    assert assert_dict_subset(actual, expected) == []
+    assert assert_dict_subset(actual, expected) == {}
 
 
 def test_assert_dict_subset_not_equal():
@@ -264,29 +269,21 @@ def test_assert_dict_subset_not_equal():
 
     }
     # Make sure we identify missing and different values
-    assert assert_dict_subset(actual, expected) == [
-        {
-            'parent_key.missing_nested_key': {
-                'expected': 'missing_value',
-                'key_present': False,
-            }
+    assert assert_dict_subset(actual, expected) == {
+        'parent_key.missing_nested_key': {
+            'expected': 'missing_value',
+            'key_present': False,
         },
-        {
-            'parent_key.different_nested_key': {
-                'expected': 'different_value',
-                'actual': 'not_different_value',
-            }
+        'parent_key.different_nested_key': {
+            'expected': 'different_value',
+            'actual': 'not_different_value',
         },
-        {
-            'missing_key': {
-                'expected': 'missing_value',
-                'key_present': False,
-            }
+        'missing_key': {
+            'expected': 'missing_value',
+            'key_present': False,
         },
-        {
-            'different_key': {
-                'expected': 'different_value',
-                'actual': 'not_different_value',
-            }
-        },
-    ], ''
+        'different_key': {
+            'expected': 'different_value',
+            'actual': 'not_different_value',
+        }
+    }

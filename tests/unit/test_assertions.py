@@ -1,4 +1,9 @@
-from unittest.mock import patch
+import six
+
+if six.PY3:
+    from unittest.mock import patch
+else:
+    from mock import patch
 
 from pandas import DataFrame
 from pybatfish.client.session import Session

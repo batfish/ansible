@@ -132,7 +132,7 @@ Return Values
     <tr>
     <td>result</td>
     <td>
-        <div>Contains a map of node-name to list of failures for that node.</div>
+        <div>Contains a map of node-name to dictionary of failures for that node.</div>
     </td>
     <td align=center>when validation does not pass</td>
     <td align=center>dict</td>

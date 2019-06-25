@@ -79,13 +79,13 @@ summary:
     type: str
     returned: always
 result:
-    description: Contains a map of node-name to list of failures for that node.
+    description: Contains a map of node-name to dictionary of failures for that node.
     returned: when validation does not pass
     type: dict
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.bf_util import (assert_dict_subset, create_session,
+from ansible.module_utils.bf_util import (create_session,
                                           get_facts, get_node_count, load_facts,
                                           set_snapshot, validate_facts,
                                           NODE_SPECIFIER_INSTRUCTIONS_URL)
@@ -96,6 +96,7 @@ except Exception as e:
     pybatfish_found = False
 else:
     pybatfish_found = True
+
 
 def run_module():
     # define the available arguments/parameters that a user can pass to
@@ -143,7 +144,8 @@ def run_module():
     try:
         session = create_session(**session_params)
     except Exception as e:
-        message = 'Failed to establish session with Batfish service: {}'.format(e)
+        message = 'Failed to establish session with Batfish service: {}'.format(
+            e)
         module.fail_json(msg=message, **result)
         return
 
@@ -158,7 +160,8 @@ def run_module():
         actual = get_facts(session, nodes_specifier=nodes_spec)
         if not get_node_count(actual):
             result['warnings'] = [
-                'No nodes found matching node specifier "{}". See here for details on how to use node specifiers: {}'.format(nodes_spec, NODE_SPECIFIER_INSTRUCTIONS_URL)]
+                'No nodes found matching node specifier "{}". See here for details on how to use node specifiers: {}'.format(
+                    nodes_spec, NODE_SPECIFIER_INSTRUCTIONS_URL)]
     except Exception as e:
         message = 'Failed to get actual facts: {}'.format(e)
         module.fail_json(msg=message, **result)
@@ -192,8 +195,10 @@ def run_module():
 
     module.exit_json(**result)
 
+
 def main():
     run_module()
+
 
 if __name__ == '__main__':
     main()
