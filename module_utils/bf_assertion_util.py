@@ -41,7 +41,7 @@ assert_all_flows_fail:
         - "If no flow (start location, header) can reach its destination, this assertion will return true."
         - "This assertion is used to evaluate the security of select destinations in the network."
     options:
-        start:
+        startLocation:
             description:
                 - Start location specifier. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#location-specifier) for location specification.
             required: true
@@ -60,7 +60,7 @@ assert_all_flows_succeed:
         - "If all flows (start location, header) can reach its destination, this assertion will return true."
         - "This assertion is used to evaluate the accessibility of select destinations in the network."
     options:
-        start:
+        startLocation:
             description:
                 - Start location specifier. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#location-specifier) for location specification.
             required: true
