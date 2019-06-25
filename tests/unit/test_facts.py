@@ -87,7 +87,7 @@ def test_load_facts_bad_dir(tmpdir):
     f = tmpdir.join('file')
     f.write('foo')
     # File instead of dir should throw exception indicating such
-    with pytest.raises(Exception) as e_not_dir:
+    with pytest.raises(OSError) as e_not_dir:
         load_facts(str(f))
     assert 'Not a directory' in str(e_not_dir)
 
