@@ -82,14 +82,14 @@ def test_load_facts_bad_dir(tmpdir):
     # Empty input dir should throw ValueError
     with pytest.raises(ValueError) as e:
         load_facts(str(tmpdir))
-    assert 'No files present in specified dir' in str(e)
+    assert 'No files present in specified dir' in str(e.value)
 
     f = tmpdir.join('file')
     f.write('foo')
     # File instead of dir should throw exception indicating such
     with pytest.raises(OSError) as e_not_dir:
         load_facts(str(f))
-    assert 'Not a directory' in str(e_not_dir)
+    assert 'Not a directory' in str(e_not_dir.value)
 
 
 def test_load_facts_mismatch_version(tmpdir):
@@ -106,7 +106,7 @@ def test_load_facts_mismatch_version(tmpdir):
     tmpdir.join('node2.yml').write(_encapsulate_nodes_facts(node2, version2))
     with pytest.raises(ValueError) as e:
         load_facts(str(tmpdir))
-    assert 'Input file version mismatch' in str(e)
+    assert 'Input file version mismatch' in str(e.value)
 
 
 def test_validate_facts():
