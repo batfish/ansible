@@ -211,7 +211,13 @@ def _get_parameter_issues(assert_type, assert_func, params):
 
 
 def run_assertion(session, assertion):
-    """Run the specified assertion and return the result message."""
+    """Run the specified assertion and return the result message.
+
+    Assertion dictionary should be validated with `get_assertion_issues` before being passed into this function.
+
+    :param session: Pybatfish session object to run assertion on
+    :param assertion: assertion dictionary with `name`, `type`, and `parameters` keys; `name` is the human-readable name associated with this assertion, `type` corresponds to a key in the `_ASSERT_TYPE_TO_FUNCTION` (determining which Pybatfish assertion to run), and `parameters` is a dictionary of params passed into the called Pybatfish assertion function
+    """
     type_ = assertion['type']
     params = deepcopy(assertion.get('parameters', {}))
     params['df_format'] = "records"
@@ -219,6 +225,7 @@ def run_assertion(session, assertion):
     assert_ = _get_asserts_function_from_type(type_)
 
     try:
+        # In Python 2, unbound method must be called with self parameter as the _positional_ first arg (not keyword arg)
         assert_(session.asserts, **params)
     except BatfishAssertException as e:
         return str(e)
