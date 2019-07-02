@@ -14,6 +14,8 @@
 #   limitations under the License.
 from __future__ import (absolute_import, division, print_function)
 
+import os
+
 __metaclass__ = type
 
 from ansible.errors import AnsibleActionFail
@@ -25,6 +27,11 @@ display = Display()
 # Modules that require snapshot (and network) to be explicitly specified
 _EXPLICIT_SNAPSHOT_PARAMETER_MODULES = {
     'bf_init_snapshot', 'bf_upload_diagnostics', 'bf_set_snapshot'
+}
+
+# Modules that perform assertions on snapshots
+_ASSERTION_MODULES = {
+    'bf_assert', 'bf_validate_facts'
 }
 
 
@@ -74,6 +81,15 @@ class ActionModule(ActionBase):
                         'module to set one up or set the network name via '
                         'bf_set_snapshot module.')
                 module_args['network'] = network
+
+        if module_name in _ASSERTION_MODULES:
+            if 'bf_policy_name' not in os.environ:
+                os.environ['bf_policy_name'] = self._templar.template(
+                    '{{ansible_play_name}}')
+            if 'bf_policy_id' not in os.environ:
+                os.environ['bf_policy_id'] = self._play_context._uuid
+            if 'bf_test_name' not in os.environ:
+                os.environ['bf_test_name'] = self._task.name
 
         result = self._execute_module(module_name=module_name,
                                       module_args=module_args,
