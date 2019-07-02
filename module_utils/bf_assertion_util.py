@@ -219,7 +219,7 @@ def run_assertion(session, assertion):
     assert_ = _get_asserts_function_from_type(type_)
 
     try:
-        assert_(self=session.asserts, **params)
+        assert_(session.asserts, **params)
     except BatfishAssertException as e:
         return str(e)
     return ASSERT_PASS_MESSAGE
