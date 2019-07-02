@@ -17,12 +17,7 @@ from collections import Mapping
 from copy import deepcopy
 from sys import version_info
 
-from pybatfish.client.asserts import (
-    assert_filter_has_no_unreachable_lines, assert_filter_denies,
-    assert_filter_permits, assert_flows_fail, assert_flows_succeed,
-    assert_no_incompatible_bgp_sessions, assert_no_undefined_references,
-    assert_no_unestablished_bgp_sessions
-)
+from pybatfish.client.session import Asserts
 from pybatfish.exception import BatfishAssertException
 
 if version_info >= (3, 3):
@@ -136,19 +131,19 @@ assert_no_undefined_references:
 
 # Map assertion-type string to Pybatfish-assertion function
 _ASSERT_TYPE_TO_FUNCTION = {
-    'assert_all_flows_fail': assert_flows_fail,
-    'assert_all_flows_succeed': assert_flows_succeed,
-    'assert_filter_has_no_unreachable_lines': assert_filter_has_no_unreachable_lines,
-    'assert_filter_denies': assert_filter_denies,
-    'assert_filter_permits': assert_filter_permits,
-    'assert_no_incompatible_bgp_sessions': assert_no_incompatible_bgp_sessions,
-    'assert_no_unestablished_bgp_sessions': assert_no_unestablished_bgp_sessions,
-    'assert_no_undefined_references': assert_no_undefined_references,
+    'assert_all_flows_fail': Asserts.assert_flows_fail,
+    'assert_all_flows_succeed': Asserts.assert_flows_succeed,
+    'assert_filter_has_no_unreachable_lines': Asserts.assert_filter_has_no_unreachable_lines,
+    'assert_filter_denies': Asserts.assert_filter_denies,
+    'assert_filter_permits': Asserts.assert_filter_permits,
+    'assert_no_incompatible_bgp_sessions': Asserts.assert_no_incompatible_bgp_sessions,
+    'assert_no_unestablished_bgp_sessions': Asserts.assert_no_unestablished_bgp_sessions,
+    'assert_no_undefined_references': Asserts.assert_no_undefined_references,
 }
 
 ASSERT_PASS_MESSAGE = 'Assertion passed'
 
-UNSUPPORTED_ASSERTION_PARAMETERS = {"session", "snapshot", "soft", "df_format"}
+UNSUPPORTED_ASSERTION_PARAMETERS = {"self", "snapshot", "soft", "df_format"}
 
 
 def get_assertion_issues(assertion):
@@ -216,15 +211,22 @@ def _get_parameter_issues(assert_type, assert_func, params):
 
 
 def run_assertion(session, assertion):
-    """Run the specified assertion and return the result message."""
+    """Run the specified assertion and return the result message.
+
+    Assertion dictionary should be validated with `get_assertion_issues` before being passed into this function.
+
+    :param session: Pybatfish session object to run assertion on
+    :param assertion: assertion dictionary with `name`, `type`, and `parameters` keys; `name` is the human-readable name associated with this assertion, `type` corresponds to a key in the `_ASSERT_TYPE_TO_FUNCTION` (determining which Pybatfish assertion to run), and `parameters` is a dictionary of params passed into the called Pybatfish assertion function
+    """
     type_ = assertion['type']
     params = deepcopy(assertion.get('parameters', {}))
-    params['session'] = session
     params['df_format'] = "records"
 
     assert_ = _get_asserts_function_from_type(type_)
+
     try:
-        assert_(**params)
+        # In Python 2, unbound method must be called with self parameter as the _positional_ first arg (not keyword arg)
+        assert_(session.asserts, **params)
     except BatfishAssertException as e:
         return str(e)
     return ASSERT_PASS_MESSAGE
