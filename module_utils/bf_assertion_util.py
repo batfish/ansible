@@ -13,16 +13,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+# from pybatfish.client.asserts import (
+#     assert_filter_has_no_unreachable_lines, assert_filter_denies,
+#     assert_filter_permits, assert_flows_fail, assert_flows_succeed,
+#     assert_no_incompatible_bgp_sessions, assert_no_undefined_references,
+#     assert_no_unestablished_bgp_sessions
+# )
 from collections import Mapping
 from copy import deepcopy
 from sys import version_info
 
-from pybatfish.client.asserts import (
-    assert_filter_has_no_unreachable_lines, assert_filter_denies,
-    assert_filter_permits, assert_flows_fail, assert_flows_succeed,
-    assert_no_incompatible_bgp_sessions, assert_no_undefined_references,
-    assert_no_unestablished_bgp_sessions
-)
+from pybatfish.client.session import Asserts
 from pybatfish.exception import BatfishAssertException
 
 if version_info >= (3, 3):
@@ -136,19 +137,19 @@ assert_no_undefined_references:
 
 # Map assertion-type string to Pybatfish-assertion function
 _ASSERT_TYPE_TO_FUNCTION = {
-    'assert_all_flows_fail': assert_flows_fail,
-    'assert_all_flows_succeed': assert_flows_succeed,
-    'assert_filter_has_no_unreachable_lines': assert_filter_has_no_unreachable_lines,
-    'assert_filter_denies': assert_filter_denies,
-    'assert_filter_permits': assert_filter_permits,
-    'assert_no_incompatible_bgp_sessions': assert_no_incompatible_bgp_sessions,
-    'assert_no_unestablished_bgp_sessions': assert_no_unestablished_bgp_sessions,
-    'assert_no_undefined_references': assert_no_undefined_references,
+    'assert_all_flows_fail': Asserts.assert_flows_fail,
+    'assert_all_flows_succeed': Asserts.assert_flows_succeed,
+    'assert_filter_has_no_unreachable_lines': Asserts.assert_filter_has_no_unreachable_lines,
+    'assert_filter_denies': Asserts.assert_filter_denies,
+    'assert_filter_permits': Asserts.assert_filter_permits,
+    'assert_no_incompatible_bgp_sessions': Asserts.assert_no_incompatible_bgp_sessions,
+    'assert_no_unestablished_bgp_sessions': Asserts.assert_no_unestablished_bgp_sessions,
+    'assert_no_undefined_references': Asserts.assert_no_undefined_references,
 }
 
 ASSERT_PASS_MESSAGE = 'Assertion passed'
 
-UNSUPPORTED_ASSERTION_PARAMETERS = {"session", "snapshot", "soft", "df_format"}
+UNSUPPORTED_ASSERTION_PARAMETERS = {"self", "snapshot", "soft", "df_format"}
 
 
 def get_assertion_issues(assertion):
@@ -219,12 +220,12 @@ def run_assertion(session, assertion):
     """Run the specified assertion and return the result message."""
     type_ = assertion['type']
     params = deepcopy(assertion.get('parameters', {}))
-    params['session'] = session
     params['df_format'] = "records"
 
     assert_ = _get_asserts_function_from_type(type_)
+
     try:
-        assert_(**params)
+        assert_(self=session.asserts, **params)
     except BatfishAssertException as e:
         return str(e)
     return ASSERT_PASS_MESSAGE
