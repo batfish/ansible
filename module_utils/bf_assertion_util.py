@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+import os
 from collections import Mapping
 from copy import deepcopy
 from sys import version_info
@@ -222,6 +223,7 @@ def run_assertion(session, assertion):
     params = deepcopy(assertion.get('parameters', {}))
     params['df_format'] = "records"
 
+    os.environ['bf_assert_name'] = assertion['name']
     assert_ = _get_asserts_function_from_type(type_)
 
     try:
