@@ -15,12 +15,12 @@
 import os
 from collections import Mapping
 from copy import deepcopy
+from importlib import import_module
 
 import yaml
 from pybatfish.client._diagnostics import (
     check_if_all_passed, check_if_any_failed, get_snapshot_parse_status
 )
-from pybatfish.client.session import Session
 from pybatfish.datamodel.primitives import ListWrapper
 
 _UPLOAD_DIAGNOSTICS_DOC_URL = 'https://github.com/batfish/ansible/blob/master/docs/bf_upload_diagnostics.rst'
@@ -50,11 +50,10 @@ NODE_PROPERTIES_REORG = dict([
 NODE_SPECIFIER_INSTRUCTIONS_URL = 'https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier'
 
 
-def create_session(**params):
+def create_session(session_module='pybatfish.client.session', **params):
     """Create session with the supplied params."""
-    # TODO dynamically determine which session we want to use based on
-    # available modules w/Sessions
-    return Session(**params)
+    # Dynamically import Session class from the specified module
+    return getattr(import_module(session_module), 'Session')(**params)
 
 
 def set_snapshot(session, network, snapshot):
