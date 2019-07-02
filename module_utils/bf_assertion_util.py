@@ -13,12 +13,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# from pybatfish.client.asserts import (
-#     assert_filter_has_no_unreachable_lines, assert_filter_denies,
-#     assert_filter_permits, assert_flows_fail, assert_flows_succeed,
-#     assert_no_incompatible_bgp_sessions, assert_no_undefined_references,
-#     assert_no_unestablished_bgp_sessions
-# )
 from collections import Mapping
 from copy import deepcopy
 from sys import version_info
