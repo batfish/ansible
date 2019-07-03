@@ -52,7 +52,6 @@ NODE_SPECIFIER_INSTRUCTIONS_URL = 'https://github.com/batfish/batfish/blob/maste
 
 def create_session(session_type='bf', **params):
     """Create session with the supplied params."""
-    # Dynamically import Session class from the specified module
     return Session.get(type_=session_type, **params)
 
 
