@@ -227,8 +227,8 @@ def run_assertion(session, assertion):
     assert_ = _get_asserts_function_from_type(type_)
 
     try:
-        # In Python 2, unbound method must be called with self parameter as the _positional_ first arg (not keyword arg)
-        assert_(session.asserts, **params)
+        # Call the assertion function on the specified Session object's Asserts object
+        getattr(session.asserts, assert_.__name__)(**params)
     except BatfishAssertException as e:
         return str(e)
     return ASSERT_PASS_MESSAGE
