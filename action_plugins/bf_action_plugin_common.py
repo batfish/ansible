@@ -86,6 +86,7 @@ class ActionModule(ActionBase):
             if 'bf_policy_name' not in os.environ:
                 os.environ['bf_policy_name'] = self._templar.template(
                     '{{ansible_play_name}}')
+            # Differentiate between different runs of the same policy/play
             if 'bf_policy_id' not in os.environ:
                 os.environ['bf_policy_id'] = self._play_context._uuid
             if 'bf_test_name' not in os.environ:
