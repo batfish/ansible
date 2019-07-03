@@ -50,11 +50,9 @@ NODE_PROPERTIES_REORG = dict([
 NODE_SPECIFIER_INSTRUCTIONS_URL = 'https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier'
 
 
-def create_session(**params):
+def create_session(session_type='bf', **params):
     """Create session with the supplied params."""
-    # TODO dynamically determine which session we want to use based on
-    # available modules w/Sessions
-    return Session(**params)
+    return Session.get(type_=session_type, **params)
 
 
 def set_snapshot(session, network, snapshot):
