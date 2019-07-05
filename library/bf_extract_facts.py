@@ -92,11 +92,10 @@ result:
             returned: always
     returned: always
 '''
-import os
+
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.bf_util import (create_session, get_facts,
-                                          get_node_count, set_snapshot,
-                                          write_facts,
+from ansible.module_utils.bf_util import (create_session, get_node_count,
+                                          set_snapshot,
                                           NODE_SPECIFIER_INSTRUCTIONS_URL)
 
 try:
@@ -105,6 +104,7 @@ except Exception as e:
     pybatfish_found = False
 else:
     pybatfish_found = True
+
 
 def run_module():
     # define the available arguments/parameters that a user can pass to
@@ -152,7 +152,8 @@ def run_module():
     try:
         session = create_session(**session_params)
     except Exception as e:
-        message = 'Failed to establish session with Batfish service: {}'.format(e)
+        message = 'Failed to establish session with Batfish service: {}'.format(
+            e)
         module.fail_json(msg=message, **result)
         return
 
@@ -164,27 +165,19 @@ def run_module():
         return
 
     try:
-        facts = get_facts(session=session, nodes_specifier=nodes)
+        facts = session.extract_facts(nodes=nodes,
+                                      output_directory=output_directory)
         if not get_node_count(facts):
             result['warnings'] = [
-                'No nodes found matching node specifier "{}". See here for details on how to use node specifiers: {}'.format(nodes, NODE_SPECIFIER_INSTRUCTIONS_URL)]
+                'No nodes found matching node specifier "{}". See here for details on how to use node specifiers: {}'.format(
+                    nodes, NODE_SPECIFIER_INSTRUCTIONS_URL)]
     except Exception as e:
-        message = 'Failed to get facts: {}'.format(e)
+        message = 'Failed to extract facts: {}'.format(e)
         module.fail_json(msg=message, **result)
         return
 
     summary = "Got facts for nodes: '{}'".format(nodes)
-
     if output_directory:
-        try:
-            if not os.path.exists(output_directory):
-                os.makedirs(output_directory)
-            if os.path.isfile(output_directory):
-                module.fail_json(msg='Cannot write facts to file, must be a directory: {}'.format(output_directory))
-            write_facts(output_directory, facts)
-        except Exception as e:
-            message = 'Failed to write facts: {}'.format(e)
-            module.fail_json(msg=message, **result)
         summary += ', wrote facts to directory: {}'.format(output_directory)
 
     # Overall status of command execution
@@ -192,8 +185,10 @@ def run_module():
     result['result'] = facts
     module.exit_json(**result)
 
+
 def main():
     run_module()
+
 
 if __name__ == '__main__':
     main()

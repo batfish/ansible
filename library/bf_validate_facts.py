@@ -28,12 +28,6 @@ version_added: "2.7"
 description:
     - "Validates facts for the current Batfish snapshot against the facts in the C(expected_facts) directory"
 options:
-    nodes:
-        default: All nodes
-        description:
-            - Nodes to extract facts for. See U(https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier) for more details on node specifiers.
-        required: false
-        type: str
     network:
         description:
             - Name of the network to validate facts for. 
@@ -67,10 +61,6 @@ EXAMPLES = '''
 # Validate current snapshot facts against local YAML facts
 - bf_validate_facts:
     expected_facts: /path/to/local/YAML/files/
-# Validate current snapshot facts for nodes whose names contain as1border against local YAML facts
-- bf_validate_facts:
-    nodes: '/as1border/'
-    expected_facts: /path/to/local/YAML/files/
 '''
 
 RETURN = '''
@@ -86,9 +76,7 @@ result:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import (create_session,
-                                          get_facts, get_node_count, load_facts,
-                                          set_snapshot, validate_facts,
-                                          NODE_SPECIFIER_INSTRUCTIONS_URL)
+                                          set_snapshot)
 
 try:
     from pybatfish.client.session import Session
@@ -102,7 +90,6 @@ def run_module():
     # define the available arguments/parameters that a user can pass to
     # the module
     module_args = dict(
-        nodes=dict(type='str', required=False, default='.*'),
         network=dict(type='str', required=True),
         snapshot=dict(type='str', required=True),
         expected_facts=dict(type='str', required=True),
@@ -135,7 +122,6 @@ def run_module():
     if module.check_mode:
         return result
 
-    nodes_spec = module.params['nodes']
     input_directory = module.params['expected_facts']
     session_params = module.params.get('session', {})
     network = module.params.get('network')
@@ -157,25 +143,7 @@ def run_module():
         return
 
     try:
-        actual = get_facts(session, nodes_specifier=nodes_spec)
-        if not get_node_count(actual):
-            result['warnings'] = [
-                'No nodes found matching node specifier "{}". See here for details on how to use node specifiers: {}'.format(
-                    nodes_spec, NODE_SPECIFIER_INSTRUCTIONS_URL)]
-    except Exception as e:
-        message = 'Failed to get actual facts: {}'.format(e)
-        module.fail_json(msg=message, **result)
-        return
-
-    try:
-        expected = load_facts(input_directory)
-    except Exception as e:
-        message = 'Failed to get expected facts: {}'.format(e)
-        module.fail_json(msg=message, **result)
-        return
-
-    try:
-        failures = validate_facts(expected, actual)
+        failures = session.validate_facts(expected_facts=input_directory)
     except Exception as e:
         message = 'Failed to validate facts: {}'.format(e)
         module.fail_json(msg=message, **result)
