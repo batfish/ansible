@@ -64,16 +64,6 @@ The following options may be specified for this module:
     </tr>
 
     <tr>
-    <td>nodes<br/><div style="font-size: small;"></div></td>
-    <td>str</td>
-    <td>no</td>
-    <td>All nodes</td>
-    <td>
-        <div>Nodes to extract facts for. See <a href='https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier'>https://github.com/batfish/batfish/blob/master/questions/Parameters.md#node-specifier</a> for more details on node specifiers.</div>
-    </td>
-    </tr>
-
-    <tr>
     <td>session<br/><div style="font-size: small;"></div></td>
     <td>dict</td>
     <td>no</td>
@@ -106,10 +96,6 @@ Examples
     
     # Validate current snapshot facts against local YAML facts
     - bf_validate_facts:
-        expected_facts: /path/to/local/YAML/files/
-    # Validate current snapshot facts for nodes whose names contain as1border against local YAML facts
-    - bf_validate_facts:
-        nodes: '/as1border/'
         expected_facts: /path/to/local/YAML/files/
 
 
