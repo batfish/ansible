@@ -111,6 +111,12 @@ assert_filter_permits:
             required: true
             type: dict
 
+assert_no_forwarding_loops:
+    short_description: Assert that there are no forwarding loops
+    description:
+        - "This test will fail if any flow will experience a forwarding loop in the snapshot."
+        - "This test takes no parameters."
+
 assert_no_incompatible_bgp_sessions:
     short_description: Assert that all BGP sessions are compatibly configured
     description:
@@ -137,6 +143,7 @@ _ASSERT_TYPE_TO_FUNCTION = {
     'assert_filter_has_no_unreachable_lines': Asserts.assert_filter_has_no_unreachable_lines,
     'assert_filter_denies': Asserts.assert_filter_denies,
     'assert_filter_permits': Asserts.assert_filter_permits,
+    'assert_no_forwarding_loops': Asserts.assert_no_forwarding_loops,
     'assert_no_incompatible_bgp_sessions': Asserts.assert_no_incompatible_bgp_sessions,
     'assert_no_unestablished_bgp_sessions': Asserts.assert_no_unestablished_bgp_sessions,
     'assert_no_undefined_references': Asserts.assert_no_undefined_references,
