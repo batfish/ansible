@@ -247,6 +247,19 @@ The following parameters may be specified for this assertion:
     </br>
 
 
+.. _assert_no_forwarding_loops:
+
+assert_no_forwarding_loops
+--------------------------
+Assert that there are no forwarding loops
+
+
+
+* This test will fail if any flow will experience a forwarding loop in the snapshot.
+* This test takes no parameters.
+
+
+
 .. _assert_no_incompatible_bgp_sessions:
 
 assert_no_incompatible_bgp_sessions
