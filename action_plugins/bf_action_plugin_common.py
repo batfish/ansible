@@ -18,7 +18,7 @@ import os
 
 __metaclass__ = type
 
-from ansible.errors import AnsibleActionFail
+from ansible.errors import AnsibleActionFail, AnsibleUndefinedVariable
 from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
 
@@ -84,8 +84,14 @@ class ActionModule(ActionBase):
 
         if module_name in _ASSERTION_MODULES:
             if 'bf_policy_name' not in os.environ:
-                os.environ['bf_policy_name'] = self._templar.template(
-                    '{{ansible_play_name}}')
+                try:
+                    os.environ['bf_policy_name'] = self._templar.template(
+                        '{{ansible_play_name}}')
+                except AnsibleUndefinedVariable:
+                    # If ansible_play_name isn't available, use the playbook's dir name
+                    os.environ['bf_policy_name'] = os.path.basename(
+                        self._templar.template(
+                            '{{playbook_dir}}'))
             # Differentiate between different runs of the same policy/play
             if 'bf_policy_id' not in os.environ:
                 os.environ['bf_policy_id'] = self._play_context._uuid
