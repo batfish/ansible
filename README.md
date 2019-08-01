@@ -57,7 +57,7 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
     when: bf_facts.failed|bool == false
 ```
 
-Note: to connect to a Batfish Enterprise service, just add `parameters: session_type: bfe` to the setup task, e.g.:
+Note: to connect to a Batfish Enterprise service, just add `session_type: bfe` under `parameters:` in the setup task, e.g.:
 ```yaml
   - name: Setup connection to Batfish Enterprise service
     bf_session:
