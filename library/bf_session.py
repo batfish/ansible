@@ -22,10 +22,10 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 ---
 module: bf_session
-short_description: Builds a Batfish session for use with other Batfish Ansible modules
+short_description: Builds a session for use with other Batfish Ansible modules
 version_added: "2.7"
 description:
-    - "Builds a Batfish session for use with other Batfish Ansible modules and populates C(bf_session) fact."
+    - "Builds a session for use with other Batfish Ansible modules and populates C(bf_session) fact."
 options:
     host:
         description:
@@ -61,6 +61,13 @@ EXAMPLES = '''
     name: my_session
     parameters:
       ssl: true
+# Establish SSL session with Batfish Enterprise service running at 10.10.10.10
+- bf_session:
+    host: 10.10.10.10
+    name: enterprise_session
+    parameters:
+      ssl: true
+      session_type: bfe
 '''
 
 RETURN = '''
@@ -83,8 +90,9 @@ session:
     returned: always
 '''
 
-from datetime import datetime
 import time
+from datetime import datetime
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.bf_util import create_session
 
@@ -98,6 +106,7 @@ else:
 # Constants for session creation retry
 _MAX_RETRY_TIME = 10
 _RETRY_DELAY = 3
+
 
 def run_module():
     # define the available arguments/parameters that a user can pass to
@@ -153,11 +162,13 @@ def run_module():
         except Exception as session_e:
             if retry_time < _MAX_RETRY_TIME:
                 try_time = (datetime.now() - try_start_time).seconds
-                sleep_time = max(_RETRY_DELAY - try_time, 1)  # sleep at least 1 second
+                sleep_time = max(_RETRY_DELAY - try_time,
+                                 1)  # sleep at least 1 second
                 time.sleep(sleep_time)
                 retry_time += try_time + sleep_time
             else:
-                message = 'Failed to establish session with Batfish service: {}'.format(session_e)
+                message = 'Failed to establish session with Batfish service: {}'.format(
+                    session_e)
                 module.fail_json(msg=message, **result)
 
     # Overall status of command execution
@@ -167,8 +178,10 @@ def run_module():
     result['ansible_facts']['bf_session'] = parameters
     module.exit_json(**result)
 
+
 def main():
     run_module()
+
 
 if __name__ == '__main__':
     main()

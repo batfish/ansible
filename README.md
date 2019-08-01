@@ -1,6 +1,6 @@
 # Ansible roles for Batfish
 
-Intentionet has created this Ansible role to allow users to embed [Batfish](https://www.github.com/batfish/batfish) pre-deployment validation into any Ansible playbook. This role is hosted on Ansible Galaxy as `batfish.base`. The role includes a set of Ansible modules that analyze configuration files for an entire (or subset of a) network, allowing users to extract configuration data and perform network-wide validation tests in a completely vendor agnostic manner.
+Intentionet has created this Ansible role to allow users to embed [Batfish](https://www.github.com/batfish/batfish) or [Batfish Enterprise](https://www.intentionet.com/product/batfish-enterprise/) pre-deployment validation into any Ansible playbook. This role is hosted on Ansible Galaxy as `batfish.base`. The role includes a set of Ansible modules that analyze configuration files for an entire (or subset of a) network, allowing users to extract configuration data and perform network-wide validation tests in a completely vendor agnostic manner.
 
 ## Overview of Modules
 
@@ -57,6 +57,16 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
     when: bf_facts.failed|bool == false
 ```
 
+Note: to connect to a Batfish Enterprise service, just add `session_type: bfe` under `parameters:` in the setup task, e.g.:
+```yaml
+  - name: Setup connection to Batfish Enterprise service
+    bf_session:
+      host: localhost
+      name: local_batfish
+      parameters:
+        session_type: bfe
+```
+
 Check out the [tutorials](tutorials) for additional examples.
 
 ## Dependencies
@@ -72,14 +82,15 @@ This module requires the following packages to be installed on the Ansible contr
        python -m pip install -r https://raw.githubusercontent.com/batfish/ansible/master/requirements.txt
        ```
 
-- Running Batfish service and Pybatfish
-
-   - To install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands:
+- Batfish service and client
+   - For open-source users: to install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands:
       ```
       docker pull batfish/allinone
       docker run -v batfish-data:/data -p 8888:8888 -p 9997:9997 -p 9996:9996 batfish/allinone
       python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
       ```
+
+   - For enterprise users: follow the instructions delivered with Batfish Enterprise
 
 ## Installation  
 
