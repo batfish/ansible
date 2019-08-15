@@ -108,11 +108,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: null
@@ -150,11 +145,6 @@ nodes:
         MLAG_ID: null
         MTU: 1800
         Native_VLAN: null
-        OSPF_Area_Name: 1
-        OSPF_Cost: 1
-        OSPF_Enabled: true
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.12.22.2/24
@@ -192,11 +182,6 @@ nodes:
         MLAG_ID: null
         MTU: 1600
         Native_VLAN: null
-        OSPF_Area_Name: 1
-        OSPF_Cost: 1
-        OSPF_Enabled: true
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.12.12.2/24
@@ -234,11 +219,6 @@ nodes:
         MLAG_ID: null
         MTU: 1700
         Native_VLAN: null
-        OSPF_Area_Name: 1
-        OSPF_Cost: 1
-        OSPF_Enabled: true
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.23.22.2/24
@@ -276,11 +256,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: 1
-        OSPF_Cost: 1
-        OSPF_Enabled: true
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.23.21.2/24
@@ -318,11 +293,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: 1
-        OSPF_Cost: 1
-        OSPF_Enabled: true
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.1.2.2/32
