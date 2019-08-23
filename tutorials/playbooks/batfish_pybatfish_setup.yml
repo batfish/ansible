@@ -43,16 +43,40 @@
         debug: msg="Python version 2 detected. We recommend that you use Python 3"
         when: python_installed.stdout is search('Python 2')
 
+      - name: Upgrade pip
+        shell: "python -m pip install --upgrade pip"
+        register: pip_upgrade
+
+      - name: Pip upgrade error
+        debug: msg="Something went wrong"
+        when: pip_upgrade.failed|bool == true
+
+      - name: Print information about pip upgrade
+        debug: msg="{{pip_upgrade.stdout}}"
+        when: pip_upgrade.changed|bool == true
+
       - name: Download and install Pybatfish (Python SDK for Batfish)
-        shell: "python -m pip install --upgrade pip; python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git; python -m pip install -r ../requirements.txt" 
+        shell: "python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git"
         register: pybatfish_install
 
       - name: Pybatfish installation error
         debug: msg="Something went wrong"
         when: pybatfish_install.failed|bool == true
 
-      - name: Print information about image download
+      - name: Print information about Pybatfish install
         debug: msg="{{pybatfish_install.stdout}}"
         when: pybatfish_install.changed|bool == true
+
+      - name: Install tutorial requirements
+        shell: "python -m pip install -r ../requirements.txt"
+        register: requirement_install
+
+      - name: Requirement installation error
+        debug: msg="Something went wrong"
+        when: requirement_install.failed|bool == true
+
+      - name: Print information about requirement install
+        debug: msg="{{requirement_install.stdout}}"
+        when: requirement_install.changed|bool == true
 
       when: venv_prompt == "Y" or venv_prompt == "y"
