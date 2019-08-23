@@ -14,6 +14,6 @@ export PATH="$HOME/miniconda/bin:$PATH"
 conda create -y -n conda_env python=$1
 source activate conda_env
 # Get around having to build regex since there is no linux wheel in PyPI
-conda install --yes -c conda-forge regex=2019.06.08
+conda install --yes -c conda-forge "regex<=2019.06.08"
 # Install role requirements
 pip install -r requirements.txt
