@@ -123,6 +123,12 @@ assert_no_incompatible_bgp_sessions:
         - "This test finds all pairs of BGP session endpoints in the snapshot and will fail if the configuration of any pair is incompatible."
         - "This test takes no parameters."
 
+assert_no_incompatible_ospf_sessions:
+    short_description: Assert that all OSPF sessions are compatibly configured and established
+    description:
+        - "This test finds all pairs of OSPF session endpoints in the snapshot and will fail if any pair is incompatible or otherwise unable to establish an OSPF session."
+        - "This test takes no parameters."
+
 assert_no_unestablished_bgp_sessions:
     short_description: Assert that all compatibly-configured BGP sessions are established
     description:
@@ -145,6 +151,7 @@ _ASSERT_TYPE_TO_FUNCTION = {
     'assert_filter_permits': Asserts.assert_filter_permits,
     'assert_no_forwarding_loops': Asserts.assert_no_forwarding_loops,
     'assert_no_incompatible_bgp_sessions': Asserts.assert_no_incompatible_bgp_sessions,
+    'assert_no_incompatible_ospf_sessions': Asserts.assert_no_incompatible_ospf_sessions,
     'assert_no_unestablished_bgp_sessions': Asserts.assert_no_unestablished_bgp_sessions,
     'assert_no_undefined_references': Asserts.assert_no_undefined_references,
 }
