@@ -273,6 +273,19 @@ Assert that all BGP sessions are compatibly configured
 
 
 
+.. _assert_no_incompatible_ospf_sessions:
+
+assert_no_incompatible_ospf_sessions
+------------------------------------
+Assert that all OSPF sessions are compatibly configured and established
+
+
+
+* This test finds all pairs of OSPF session endpoints in the snapshot and will fail if any pair is incompatible or otherwise unable to establish an OSPF session.
+* This test takes no parameters.
+
+
+
 .. _assert_no_unestablished_bgp_sessions:
 
 assert_no_unestablished_bgp_sessions
