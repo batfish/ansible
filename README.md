@@ -16,7 +16,7 @@ Some of the modules included in the role are:
 
 * **[bf_assert](docs/bf_assert.rst)** - Validate network behavior
 
-See [docs](docs) for a complete list of modules and documentation. 
+See [docs](docs) for a complete list of modules and documentation.
 
 ## Examples
 The example playbook below outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
@@ -36,7 +36,7 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
     bf_session:
       host: localhost
       name: local_batfish
-  
+
   - name: Initialize the example network
     bf_init_snapshot:
       network: example_network
@@ -48,7 +48,7 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
     bf_extract_facts:
       output_directory: data/bf_facts
     register: bf_facts
-    
+
   - name: Display configuration for all interfaces on all nodes
     debug: msg=" {{item.value.Interfaces}} "
     with_dict: "{{bf_facts.result.nodes}}"
@@ -87,14 +87,14 @@ This module requires the following packages to be installed on the Ansible contr
       ```
       docker pull batfish/allinone
       docker run -v batfish-data:/data -p 8888:8888 -p 9997:9997 -p 9996:9996 batfish/allinone
-      python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
+      python -m pip install --upgrade pybatfish
       ```
 
    - For enterprise users: follow the instructions delivered with Batfish Enterprise
 
 ## Installation  
 
-Ensure that the [dependencies](#dependencies) above are met, and then get the latest version of the role from Ansible galaxy. 
+Ensure that the [dependencies](#dependencies) above are met, and then get the latest version of the role from Ansible galaxy.
 
 ```
 ansible-galaxy install --force batfish.base
