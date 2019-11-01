@@ -56,7 +56,7 @@
         when: pip_upgrade.changed|bool == true
 
       - name: Download and install Pybatfish (Python SDK for Batfish)
-        shell: "python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git"
+        shell: "python -m pip install --upgrade pybatfish"
         register: pybatfish_install
 
       - name: Pybatfish installation error
