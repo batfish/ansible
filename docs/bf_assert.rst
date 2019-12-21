@@ -106,7 +106,7 @@ Examples
     # Confirm 10.10.10.10 is reachable by traffic entering Gig0/0 of as1border1
     - bf_assert:
         assertions:
-          - type: assert_reachable
+          - type: assert_all_flows_succeed
             name: confirm host is reachable for traffic received on GigEth0/0
             parameters:
               startLocation: '@enter(as1border1[GigabitEthernet0/0])'
