@@ -2,7 +2,7 @@
 
 bf_session
 ++++++++++
-Builds a Batfish session for use with other Batfish Ansible modules
+Builds a session for use with other Batfish Ansible modules
 
 .. contents::
    :local:
@@ -13,7 +13,7 @@ Synopsis
 --------
 
 
-* Builds a Batfish session for use with other Batfish Ansible modules and populates ``bf_session`` fact.
+* Builds a session for use with other Batfish Ansible modules and populates ``bf_session`` fact.
 
 
 
@@ -94,6 +94,13 @@ Examples
         name: my_session
         parameters:
           ssl: true
+    # Establish SSL session with Batfish Enterprise service running at 10.10.10.10
+    - bf_session:
+        host: 10.10.10.10
+        name: enterprise_session
+        parameters:
+          ssl: true
+          session_type: bfe
 
 
 

@@ -44,6 +44,16 @@ The following options may be specified for this module:
     </tr>
 
     <tr>
+    <td>extra_args<br/><div style="font-size: small;"></div></td>
+    <td>dict</td>
+    <td>no</td>
+    <td></td>
+    <td>
+        <div>Additional arguments to pass to the Batfish service for snapshot initialization</div>
+    </td>
+    </tr>
+
+    <tr>
     <td>network<br/><div style="font-size: small;"></div></td>
     <td>str</td>
     <td>yes</td>

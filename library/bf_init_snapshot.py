@@ -55,6 +55,11 @@ options:
         default: Value in the C(bf_session) fact.
         required: false
         type: dict
+    extra_args:
+        description:
+            - Additional arguments to pass to the Batfish service for snapshot initialization
+        required: false
+        type: dict
 author:
     - Spencer Fraint (`@sfraint <https://github.com/sfraint>`_)
 requirements:
@@ -116,6 +121,7 @@ def run_module():
         snapshot_data=dict(type='str', required=True),
         overwrite=dict(type='bool', required=False, default=False),
         session=dict(type='dict', required=True),
+        extra_args=dict(type='dict', required=False)
     )
 
     # seed the result dict in the object
@@ -150,6 +156,7 @@ def run_module():
     snapshot_data = module.params['snapshot_data']
     overwrite = module.params['overwrite']
     session_params = module.params.get('session', {})
+    extra_args = module.params.get('extra_args', {})
 
     try:
         session = create_session(**session_params)
@@ -161,7 +168,7 @@ def run_module():
     session.set_network(network)
 
     try:
-        session.init_snapshot(snapshot_data, snapshot, overwrite=overwrite)
+        session.init_snapshot(snapshot_data, snapshot, overwrite=overwrite, extra_args=extra_args)
     except Exception as e:
         message = 'Failed to initialize snapshot: {}'.format(e)
         module.fail_json(msg=message, **result)
