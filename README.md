@@ -83,11 +83,11 @@ This module requires the following packages to be installed on the Ansible contr
        ```
 
 - Batfish service and client
-   - For open-source users: to install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands:
+   - For open-source users: to install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands to update and run Batfish:
       ```
+      python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
       docker pull batfish/allinone
       docker run -v batfish-data:/data -p 8888:8888 -p 9997:9997 -p 9996:9996 batfish/allinone
-      python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
       ```
 
    - For enterprise users: follow the instructions delivered with Batfish Enterprise
