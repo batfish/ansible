@@ -73,19 +73,19 @@ Check out the [tutorials](tutorials) for additional examples.
 
 This module requires the following packages to be installed on the Ansible control machine:
 
-- Python >= 2.7
+- Python 3
 - Ansible 2.7 or later
 - Batfish module requirements listed in `requirements.txt`
 
    - To install these requirements, run:
        ```
-       python -m pip install -r https://raw.githubusercontent.com/batfish/ansible/master/requirements.txt
+       python3 -m pip install -r https://raw.githubusercontent.com/batfish/ansible/master/requirements.txt
        ```
 
 - Batfish service and client
    - For open-source users: to install Batfish and Pybatfish, you may use the [batfish setup playbook](tutorials/playbooks/batfish_setup.yml) or run the following commands to update and run Batfish:
       ```
-      python -m pip install --upgrade git+https://github.com/batfish/pybatfish.git
+      python3 -m pip install --upgrade pybatfish
       docker pull batfish/allinone
       docker run -v batfish-data:/data -p 8888:8888 -p 9997:9997 -p 9996:9996 batfish/allinone
       ```
