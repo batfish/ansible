@@ -53,5 +53,5 @@ From the `tutorials` directory, run specific tutorials via
 
  - [Documentation for the Ansible modules](../docs/README.md)
 
- - [Documentation for Batfish](https://github.com/batfish/batfish)
+ - [Packaging your own network snapshots](https://pybatfish.readthedocs.io/en/latest/notebooks/interacting.html#Packaging-snapshot-data)
 
