@@ -16,7 +16,7 @@ Some of the modules included in the role are:
 
 * **[bf_assert](docs/bf_assert.rst)** - Validate network behavior
 
-See [docs](docs) for a complete list of modules and documentation. 
+See [docs](docs) for a complete list of modules and [tutorials](tutorials) for end-to-end examples. 
 
 ## Examples
 The example playbook below outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
