@@ -7,3 +7,7 @@
  *  [bf_set_snapshot](bf_set_snapshot.rst)
  *  [bf_upload_diagnostics](bf_upload_diagnostics.rst)
  *  [bf_validate_facts](bf_validate_facts.rst)
+
+# Additional resources
+ * [Tutorials](../tutorials)
+ * [Packaging your network snapshot](https://pybatfish.readthedocs.io/en/latest/notebooks/interacting.html#Packaging-snapshot-data)
