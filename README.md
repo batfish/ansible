@@ -16,10 +16,11 @@ Some of the modules included in the role are:
 
 * **[bf_assert](docs/bf_assert.rst)** - Validate network behavior
 
-See [docs](docs) for a complete list of modules and [tutorials](tutorials) for end-to-end examples. 
+See [docs](docs) for a complete list of modules and their documentation, and [instructions for packaging your network snapshots](https://pybatfish.readthedocs.io/en/latest/notebooks/interacting.html#Packaging-snapshot-data)
 
 ## Examples
-The example playbook below outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network.
+The example playbook below outlines how to use the `batfish.base` role to extract the list of interfaces for all devices in the network. Check out the [tutorials](tutorials) for additional examples.
+
 
 ```yaml
 ---
@@ -66,8 +67,6 @@ Note: to connect to a Batfish Enterprise service, just add `session_type: bfe` u
       parameters:
         session_type: bfe
 ```
-
-Check out the [tutorials](tutorials) for additional examples.
 
 ## Dependencies
 
