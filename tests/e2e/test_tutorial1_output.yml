@@ -1,20 +1,20 @@
 ---
 - name: Tutorial 1 assertions
-  hosts: all
+  hosts: localhost
   gather_facts: no
   roles:
     - batfish.base
 
   tasks:
-  - name: Test
-    block:
-    - set_fact:
-        validate_summary: "Got facts for nodes: '.*', wrote facts to directory: data/bf_facts"
+    - name: Test
+      block:
+        - set_fact:
+            validate_summary: "Got facts for nodes: '.*', wrote facts to directory: data/bf_facts"
 
-    - name: Check get fact summary indicates facts were retrieved and saved
-      assert:
-        that:
-          - bf_facts.summary == validate_summary
-        fail_msg: "'{{ bf_facts.summary }}' is not equal to '{{ validate_summary }}'"
-    delegate_to: localhost
-    run_once: true
+        - name: Check get fact summary indicates facts were retrieved and saved
+          assert:
+            that:
+              - bf_facts.summary == validate_summary
+            fail_msg: "'{{ bf_facts.summary }}' is not equal to '{{ validate_summary }}'"
+      delegate_to: localhost
+      run_once: true

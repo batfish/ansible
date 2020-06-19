@@ -1,27 +1,27 @@
 ---
 - name: Tutorial 2 assertions
-  hosts: all
+  hosts: localhost
   gather_facts: no
   roles:
     - batfish.base
 
   tasks:
-  - name: Test
-    block:
-    - set_fact:
-        validate_result: {"as1border1": {"BGP.Neighbors.10.12.11.2.Peer_Group": {"actual": "as2", "expected": "as3"}, "DNS.DNS_Servers": {"actual": [], "expected": ["1.1.1.1"]}}, "as1border2": {"Syslog.Logging_Servers": {"actual": [], "expected": ["1.1.1.1"]}, "Syslog.Logging_Source_Interface": {"actual": null, "expected": "Loopback0"}}}
+    - name: Test
+      block:
+        - set_fact:
+            validate_result: {"as1border1": {"BGP.Neighbors.10.12.11.2.Peer_Group": {"actual": "as2", "expected": "as3"}, "DNS.DNS_Servers": {"actual": [], "expected": ["1.1.1.1"]}}, "as1border2": {"Syslog.Logging_Servers": {"actual": [], "expected": ["1.1.1.1"]}, "Syslog.Logging_Source_Interface": {"actual": null, "expected": "Loopback0"}}}
 
-    - name: Check validate fact summary indicates validation failed
-      assert:
-        that:
-          - "'Validation failed for the following nodes' in bf_validate.msg"
-          - "'as1border1' in bf_validate.msg"
-          - "'as1border2' in bf_validate.msg"
-        fail_msg: "'Validation failed for the following nodes: ['as1border2', 'as1border1']' not in '{{ bf_validate.result }}'"
-    - name: Check validate fact detailed results indicate actual vs expected fact mismatch
-      assert:
-        that:
-          - bf_validate.result == validate_result
-        fail_msg: "'{{ bf_validate.result }}' is not equal to '{{ validate_result }}'"
-    delegate_to: localhost
-    run_once: true
+        - name: Check validate fact summary indicates validation failed
+          assert:
+            that:
+              - "'Validation failed for the following nodes' in bf_validate.msg"
+              - "'as1border1' in bf_validate.msg"
+              - "'as1border2' in bf_validate.msg"
+            fail_msg: "'Validation failed for the following nodes: ['as1border2', 'as1border1']' not in '{{ bf_validate.result }}'"
+        - name: Check validate fact detailed results indicate actual vs expected fact mismatch
+          assert:
+            that:
+              - bf_validate.result == validate_result
+            fail_msg: "'{{ bf_validate.result }}' is not equal to '{{ validate_result }}'"
+      delegate_to: localhost
+      run_once: true

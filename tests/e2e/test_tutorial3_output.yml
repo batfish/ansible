@@ -1,26 +1,26 @@
 ---
 - name: Tutorial 3 assertions
-  hosts: all
+  hosts: localhost
   gather_facts: no
   roles:
     - batfish.base
 
   tasks:
-  - name: Test
-    block:
-    - set_fact:
-        assert_msg: "1 of 1 assertions failed"
-        assert_status: "Fail"
+    - name: Test
+      block:
+        - set_fact:
+            assert_msg: "1 of 1 assertions failed"
+            assert_status: "Fail"
 
-    - name: Check assert message indicates assert failure
-      assert:
-        that:
-          - bf_assert.msg == assert_msg
-        fail_msg: "'{{ bf_assert.msg }}' is not equal to '{{ assert_msg }}'"
-    - name: Confirm assert_all_flows_succeed failed, found a flow that failed
-      assert:
-        that:
-          - "'Found a flow that failed' in bf_assert.result[0].details"
-        fail_msg: "'Found a flow that failed' not in '{{ bf_assert.result[0].details }}'"
-    delegate_to: localhost
-    run_once: true
+        - name: Check assert message indicates assert failure
+          assert:
+            that:
+              - bf_assert.msg == assert_msg
+            fail_msg: "'{{ bf_assert.msg }}' is not equal to '{{ assert_msg }}'"
+        - name: Confirm assert_all_flows_succeed failed, found a flow that failed
+          assert:
+            that:
+              - "'Found a flow that failed' in bf_assert.result[0].details"
+            fail_msg: "'Found a flow that failed' not in '{{ bf_assert.result[0].details }}'"
+      delegate_to: localhost
+      run_once: true
