@@ -2,7 +2,7 @@
 # Setup Ansible and our Batfish Ansible role
 set -euo pipefail
 
-pip install ansible
+pip install "ansible==2.9.9"
 
 # Install our Ansible role from the current branch source
 ROLES_DIR=$HOME/.ansible/roles/
