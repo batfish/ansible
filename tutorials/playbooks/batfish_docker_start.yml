@@ -27,6 +27,8 @@
         volumes:
           - "{{ lookup('env','PWD') }}/data:/data"
       register: docker_start_status
+      # Run directly on local machine instead of over ssh
+      connection: local
 
     - name: Print error message
       debug: msg="Something went wrong"
