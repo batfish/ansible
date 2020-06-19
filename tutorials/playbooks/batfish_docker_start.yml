@@ -2,8 +2,8 @@
 - name: Get list of running docker containers
   shell: docker ps
   register: status
-  environment:
-    ANSIBLE_HOST_KEY_CHECKING: False
+  # Run directly on local machine instead of over ssh
+  connection: local
 
 - set_fact:
     service: false
