@@ -1,6 +1,6 @@
 ---
 - name: Welcome to the fifth Batfish Tutorial!
-  hosts: all
+  hosts: localhost
   gather_facts: no
   roles:
     - batfish.base
