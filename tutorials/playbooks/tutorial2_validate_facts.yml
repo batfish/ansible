@@ -4,36 +4,35 @@
   gather_facts: no
   roles:
     - batfish.base
-
+  connection: local
   tasks:
 
-  - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
-    block:
+    - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
+      block:
 
-    - include_tasks: batfish_docker_start.yml
+        - include_tasks: batfish_docker_start.yml
 
-    - name: Setup connection to Batfish service
-      bf_session:
-        host: localhost
-        name: local_batfish
+        - name: Setup connection to Batfish service
+          bf_session:
+            host: localhost
+            name: local_batfish
 
-    - name: Initialize the example network
-      bf_init_snapshot:
-        network: example_network
-        snapshot: example_snapshot
-        snapshot_data: ../networks/example
-        overwrite: true
+        - name: Initialize the example network
+          bf_init_snapshot:
+            network: example_network
+            snapshot: example_snapshot
+            snapshot_data: ../networks/example
+            overwrite: true
 
-    - name: Validate facts gathered by Batfish
-      bf_validate_facts:
-        expected_facts: data/validation
-      register: bf_validate
-      ignore_errors: true
+        - name: Validate facts gathered by Batfish
+          bf_validate_facts:
+            expected_facts: data/validation
+          register: bf_validate
+          ignore_errors: true
 
-    - name: Display Batfish validation result details
-      debug: msg="{{bf_validate}}"
+        - name: Display Batfish validation result details
+          debug: msg="{{bf_validate}}"
 
-    - include_tasks: batfish_docker_stop.yml
+        - include_tasks: batfish_docker_stop.yml
 
-    delegate_to: localhost
-    run_once: true
+      run_once: true

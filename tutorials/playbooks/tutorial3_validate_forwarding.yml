@@ -4,44 +4,44 @@
   gather_facts: no
   roles:
     - batfish.base
+  connection: local
 
   tasks:
 
-  - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
-    block:
+    - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
+      block:
 
-    - include_tasks: batfish_docker_start.yml
+        - include_tasks: batfish_docker_start.yml
 
-    - name: Setup connection to Batfish service
-      bf_session:
-        host: localhost
-        name: local_batfish
+        - name: Setup connection to Batfish service
+          bf_session:
+            host: localhost
+            name: local_batfish
 
-    - name: Initialize the example network
-      bf_init_snapshot:
-        network: example_network
-        snapshot: example_snapshot
-        snapshot_data: ../networks/example
-        overwrite: true
+        - name: Initialize the example network
+          bf_init_snapshot:
+            network: example_network
+            snapshot: example_snapshot
+            snapshot_data: ../networks/example
+            overwrite: true
 
-    - name: Validate that a service is reachable from outside the network
-      bf_assert:
-        assertions:
-          - type: assert_all_flows_succeed
-            name: Confirm web server is reachable for HTTPS traffic received on GigEth0/0 on as1border1
-            parameters:
-              startLocation: '@enter(as1border1[GigabitEthernet0/0])'
-              headers:
-                dstIps: '2.128.0.101'
-                ipProtocols: 'tcp'
-                dstPorts: '443'
-      register: bf_assert
-      ignore_errors: true
+        - name: Validate that a service is reachable from outside the network
+          bf_assert:
+            assertions:
+              - type: assert_all_flows_succeed
+                name: Confirm web server is reachable for HTTPS traffic received on GigEth0/0 on as1border1
+                parameters:
+                  startLocation: '@enter(as1border1[GigabitEthernet0/0])'
+                  headers:
+                    dstIps: '2.128.0.101'
+                    ipProtocols: 'tcp'
+                    dstPorts: '443'
+          register: bf_assert
+          ignore_errors: true
 
-    - name: Display Batfish validation result details
-      debug: msg="{{bf_assert}}"
+        - name: Display Batfish validation result details
+          debug: msg="{{bf_assert}}"
 
-    - include_tasks: batfish_docker_stop.yml
+        - include_tasks: batfish_docker_stop.yml
 
-    delegate_to: localhost
-    run_once: true
+      run_once: true

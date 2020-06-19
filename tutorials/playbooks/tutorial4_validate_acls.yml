@@ -4,47 +4,47 @@
   gather_facts: no
   roles:
     - batfish.base
+  connection: local
 
   tasks:
 
-  - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
-    block:
+    - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
+      block:
 
-    - include_tasks: batfish_docker_start.yml
+        - include_tasks: batfish_docker_start.yml
 
-    - name: Setup connection to Batfish service
-      bf_session:
-        host: localhost
-        name: local_batfish
+        - name: Setup connection to Batfish service
+          bf_session:
+            host: localhost
+            name: local_batfish
 
-    - name: Initialize the example network
-      bf_init_snapshot:
-        network: example_network
-        snapshot: example_snapshot
-        snapshot_data: ../networks/example
-        overwrite: true
+        - name: Initialize the example network
+          bf_init_snapshot:
+            network: example_network
+            snapshot: example_snapshot
+            snapshot_data: ../networks/example
+            overwrite: true
 
-    - name: Validate the behavior of a packet filter (ACL/Firewall rule)
-      bf_assert:
-        assertions:
-          - type: assert_filter_has_no_unreachable_lines
-            name: Confirm that the filter has any unreachable lines
-            parameters:
-              filters: 'as2border2["101"]'
+        - name: Validate the behavior of a packet filter (ACL/Firewall rule)
+          bf_assert:
+            assertions:
+              - type: assert_filter_has_no_unreachable_lines
+                name: Confirm that the filter has any unreachable lines
+                parameters:
+                  filters: 'as2border2["101"]'
 
-          - type: assert_filter_denies
-            name: Confirm that the filter drops SSH traffic
-            parameters:
-              filters: 'as2border2["101"]'
-              headers:
-                applications: 'ssh'
-      register: bf_assert
-      ignore_errors: true
+              - type: assert_filter_denies
+                name: Confirm that the filter drops SSH traffic
+                parameters:
+                  filters: 'as2border2["101"]'
+                  headers:
+                    applications: 'ssh'
+          register: bf_assert
+          ignore_errors: true
 
-    - name: Display Batfish validation result details
-      debug: msg="{{bf_assert}}"
+        - name: Display Batfish validation result details
+          debug: msg="{{bf_assert}}"
 
-    - include_tasks: batfish_docker_stop.yml
+        - include_tasks: batfish_docker_stop.yml
 
-    delegate_to: localhost
-    run_once: true
+      run_once: true

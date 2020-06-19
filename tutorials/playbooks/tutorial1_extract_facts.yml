@@ -4,46 +4,45 @@
   gather_facts: no
   roles:
     - batfish.base
-
+  connection: local
   tasks:
 
-  - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
-    block:
-
-    - include_tasks: batfish_docker_start.yml
-
-    - name: Setup connection to Batfish service
-      bf_session:
-        host: localhost
-        name: local_batfish
-
-    - name: Initialize the example network
-      bf_init_snapshot:
-        network: example_network
-        snapshot: example_snapshot
-        snapshot_data: ../networks/example
-        overwrite: true
-
-    - name: Retrieve Batfish Facts
-      bf_extract_facts:
-        output_directory: data/bf_facts
-      register: bf_facts
-
-    - name: Display select facts gathered by Batfish
+    - name: Execute Batfish related tasks in a block that is "delegate_to -> localhost" and "run_once -> true"
       block:
 
-      - name: Display Batfish Facts for as1border1
-        debug: msg="{{bf_facts.result.nodes.as1border1}}"
+        - include_tasks: batfish_docker_start.yml
 
-      - name: Display NTP configuration for all nodes
-        debug: msg=" {{item.value.NTP}} "
-        with_dict: "{{bf_facts.result.nodes}}"
-        loop_control:
-          label: " {{item.key}}.NTP "
+        - name: Setup connection to Batfish service
+          bf_session:
+            host: localhost
+            name: local_batfish
 
-      when: bf_facts.failed|bool == false
+        - name: Initialize the example network
+          bf_init_snapshot:
+            network: example_network
+            snapshot: example_snapshot
+            snapshot_data: ../networks/example
+            overwrite: true
 
-    - include_tasks: batfish_docker_stop.yml
+        - name: Retrieve Batfish Facts
+          bf_extract_facts:
+            output_directory: data/bf_facts
+          register: bf_facts
 
-    delegate_to: localhost
-    run_once: true
+        - name: Display select facts gathered by Batfish
+          block:
+
+            - name: Display Batfish Facts for as1border1
+              debug: msg="{{bf_facts.result.nodes.as1border1}}"
+
+            - name: Display NTP configuration for all nodes
+              debug: msg=" {{item.value.NTP}} "
+              with_dict: "{{bf_facts.result.nodes}}"
+              loop_control:
+                label: " {{item.key}}.NTP "
+
+          when: bf_facts.failed|bool == false
+
+        - include_tasks: batfish_docker_stop.yml
+
+      run_once: true
