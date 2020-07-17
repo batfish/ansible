@@ -73,7 +73,7 @@ Note: to connect to a Batfish Enterprise service, just add `session_type: bfe` u
 This module requires the following packages to be installed on the Ansible control machine:
 
 - Python 3
-- Ansible 2.7 or later
+- Ansible >=2.7 <=2.9.9
 - Batfish module requirements listed in `requirements.txt`
 
    - To install these requirements, run:
