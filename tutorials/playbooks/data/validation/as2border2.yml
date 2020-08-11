@@ -65,7 +65,6 @@ nodes:
       DNS_Source_Interface: null
     Default_Cross_Zone_Action: PERMIT
     Default_Inbound_Action: PERMIT
-    Device_Type: ROUTER
     Domain_Name: lab.local
     Hostname: as2border2
     IP6_Access_Lists: []
