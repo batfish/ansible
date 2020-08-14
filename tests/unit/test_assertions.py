@@ -58,7 +58,7 @@ def test_get_assertion_issues_unsupported_assertion(session):
         },
     }, session=session)
     # Issue message should indicate this assertion isn't supported by this session
-    assert 'does not existing in the current session' in issue
+    assert 'does not exist in the current session' in issue
     # and reference that parameter's name
     assert 'Make sure you are establishing a session with the correct type' in issue
 

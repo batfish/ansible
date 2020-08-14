@@ -208,7 +208,7 @@ def _get_parameter_issues(assert_type, assert_func_name, params, session):
         assert_func = getattr(session.asserts, assert_func_name)
     except AttributeError:
         return (
-            "{} does not existing in the current session. Make sure you are "
+            "{} does not exist in the current session. Make sure you are "
             "establishing a session with the correct type (e.g. for Batfish "
             "Enterprise: session_type: bfe)"
         ).format(assert_type)
