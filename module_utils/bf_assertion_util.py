@@ -18,7 +18,6 @@ from collections import Mapping
 from copy import deepcopy
 from sys import version_info
 
-from pybatfish.client.session import Asserts
 from pybatfish.exception import BatfishAssertException
 
 if version_info >= (3, 3):
@@ -144,16 +143,18 @@ assert_no_undefined_references:
 
 # Map assertion-type string to Pybatfish-assertion function
 _ASSERT_TYPE_TO_FUNCTION = {
-    'assert_all_flows_fail': Asserts.assert_flows_fail,
-    'assert_all_flows_succeed': Asserts.assert_flows_succeed,
-    'assert_filter_has_no_unreachable_lines': Asserts.assert_filter_has_no_unreachable_lines,
-    'assert_filter_denies': Asserts.assert_filter_denies,
-    'assert_filter_permits': Asserts.assert_filter_permits,
-    'assert_no_forwarding_loops': Asserts.assert_no_forwarding_loops,
-    'assert_no_incompatible_bgp_sessions': Asserts.assert_no_incompatible_bgp_sessions,
-    'assert_no_incompatible_ospf_sessions': Asserts.assert_no_incompatible_ospf_sessions,
-    'assert_no_unestablished_bgp_sessions': Asserts.assert_no_unestablished_bgp_sessions,
-    'assert_no_undefined_references': Asserts.assert_no_undefined_references,
+    'assert_all_flows_fail': 'assert_flows_fail',
+    'assert_all_flows_succeed': 'assert_flows_succeed',
+    'assert_filter_has_no_unreachable_lines': 'assert_filter_has_no_unreachable_lines',
+    'assert_filter_denies': 'assert_filter_denies',
+    'assert_filter_permits': 'assert_filter_permits',
+    'assert_no_forwarding_loops': 'assert_no_forwarding_loops',
+    'assert_no_incompatible_bgp_sessions': 'assert_no_incompatible_bgp_sessions',
+    'assert_no_incompatible_ospf_sessions': 'assert_no_incompatible_ospf_sessions',
+    'assert_no_unestablished_bgp_sessions': 'assert_no_unestablished_bgp_sessions',
+    'assert_no_undefined_references': 'assert_no_undefined_references',
+    # General Enterprise assertion
+    'assert_that': 'assert_that',
 }
 
 ASSERT_PASS_MESSAGE = 'Assertion passed'
@@ -161,8 +162,8 @@ ASSERT_PASS_MESSAGE = 'Assertion passed'
 UNSUPPORTED_ASSERTION_PARAMETERS = {"self", "snapshot", "soft", "df_format"}
 
 
-def get_assertion_issues(assertion):
-    """Return the reason the assertion dictionary is valid, or return None if it is valid."""
+def get_assertion_issues(assertion, session):
+    """Return the reason the assertion dictionary is invalid for the specified session, or return None if it is valid."""
     if not isinstance(assertion, Mapping):
         return "Assertion format is invalid, expected dictionary: {}".format(
             assertion)
@@ -182,12 +183,13 @@ def get_assertion_issues(assertion):
             name)
 
     type_ = assertion['type']
-    assert_func = _get_asserts_function_from_type(type_)
-    if not assert_func:
+    assert_func_name = _get_asserts_function_from_type(type_)
+    if not assert_func_name:
         return "Unknown assertion type '{}' for assertion '{}'. Valid assert types are: {}".format(
             type_, name, valid_assert_types)
 
-    parameter_issues = _get_parameter_issues(type_, assert_func, params)
+    parameter_issues = _get_parameter_issues(type_, assert_func_name, params,
+                                             session)
     if parameter_issues:
         return parameter_issues
 
@@ -195,12 +197,21 @@ def get_assertion_issues(assertion):
 
 
 def _get_asserts_function_from_type(type_):
-    """Get the Pybatfish-asserts function for a given Ansible assertion-type string."""
+    """Get the Pybatfish-asserts function name for a given Ansible assertion-type string."""
     return _ASSERT_TYPE_TO_FUNCTION.get(type_)
 
 
-def _get_parameter_issues(assert_type, assert_func, params):
+def _get_parameter_issues(assert_type, assert_func_name, params, session):
     """Checks if the parameters supplied to an assertion are valid"""
+
+    try:
+        assert_func = getattr(session.asserts, assert_func_name)
+    except AttributeError:
+        return (
+            "{} does not exist in the current session. Make sure you are "
+            "establishing a session with the correct type (e.g. for Batfish "
+            "Enterprise: session_type: bfe)"
+        ).format(assert_type)
 
     assert_func_sig = signature(assert_func)
 
@@ -215,12 +226,15 @@ def _get_parameter_issues(assert_type, assert_func, params):
             valid_params)
 
     mandatory_params = {param for param in valid_params if (
-        assert_func_sig.parameters[param].default == Parameter.empty)}
+            assert_func_sig.parameters[param].default == Parameter.empty)}
 
     missing_params = mandatory_params - params_key_set
     if len(missing_params) > 0:
         return "Missing mandatory parameter(s) for {}: {}".format(assert_type,
                                                                   missing_params)
+
+    # TODO smarter checking of parameter type/content
+    #  e.g. make sure Session can parse supplied assertion dict
 
     return None
 
@@ -235,14 +249,19 @@ def run_assertion(session, assertion):
     """
     type_ = assertion['type']
     params = deepcopy(assertion.get('parameters', {}))
-    params['df_format'] = "records"
 
     os.environ['bf_assert_name'] = assertion['name']
-    assert_ = _get_asserts_function_from_type(type_)
+    assert_func_name = _get_asserts_function_from_type(type_)
+    assert_func = getattr(session.asserts, assert_func_name)
+
+    # Only add df_format for assertions supporting it
+    assertion_func_sig = signature(assert_func)
+    if 'df_format' in set(assertion_func_sig.parameters):
+        params['df_format'] = "records"
 
     try:
         # Call the assertion function on the specified Session object's Asserts object
-        getattr(session.asserts, assert_.__name__)(**params)
+        assert_func(**params)
     except BatfishAssertException as e:
         return str(e)
     return ASSERT_PASS_MESSAGE

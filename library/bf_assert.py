@@ -100,10 +100,10 @@ result:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.bf_util import create_session, set_snapshot
 from ansible.module_utils.bf_assertion_util import (
     ASSERT_PASS_MESSAGE, get_assertion_issues, run_assertion
 )
+from ansible.module_utils.bf_util import create_session, set_snapshot
 
 try:
     from pybatfish.client.session import Session
@@ -151,10 +151,20 @@ def run_module():
     network = module.params.get('network')
     snapshot = module.params.get('snapshot')
 
-    issues = [i for i in [get_assertion_issues(a) for a in assertions] if i]
+    try:
+        session = create_session(**session_params)
+    except Exception as e:
+        message = 'Failed to establish session with Batfish service: {}'.format(
+            e)
+        module.fail_json(msg=message, **result)
+        return
+
+    issues = [i for i in [get_assertion_issues(a, session) for a in assertions]
+              if i]
     if any(issues):
         message = (
-                '{} of {} assertions are malformed'.format(len(issues), len(assertions))
+                '{} of {} assertions are malformed'.format(len(issues),
+                                                           len(assertions))
                 + ', no assertions run'
         )
         result['result'] = issues
@@ -166,13 +176,6 @@ def run_module():
     results = []
     failed = []
     summary = 'Assertion(s) completed successfully'
-
-    try:
-        session = create_session(**session_params)
-    except Exception as e:
-        message = 'Failed to establish session with Batfish service: {}'.format(e)
-        module.fail_json(msg=message, **result)
-        return
 
     try:
         set_snapshot(session=session, network=network, snapshot=snapshot)
@@ -200,7 +203,8 @@ def run_module():
             'details': assert_result,
         })
     if failed:
-        summary = '{} of {} assertions failed'.format(len(failed), len(assertions))
+        summary = '{} of {} assertions failed'.format(len(failed),
+                                                      len(assertions))
 
     result['summary'] = summary
     result['result'] = results
