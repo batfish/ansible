@@ -37,7 +37,7 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
     bf_session:
       host: localhost
       name: local_batfish
-  
+
   - name: Initialize the example network
     bf_init_snapshot:
       network: example_network
@@ -49,7 +49,7 @@ The example playbook below outlines how to use the `batfish.base` role to extrac
     bf_extract_facts:
       output_directory: data/bf_facts
     register: bf_facts
-    
+
   - name: Display configuration for all interfaces on all nodes
     debug: msg=" {{item.value.Interfaces}} "
     with_dict: "{{bf_facts.result.nodes}}"
@@ -72,7 +72,7 @@ Note: to connect to a Batfish Enterprise service, just add `session_type: bfe` u
 
 This module requires the following packages to be installed on the Ansible control machine:
 
-- Python 3
+- Python 3.6 or 3.7
 - Ansible >=2.7 <=2.9.9
 - Batfish module requirements listed in `requirements.txt`
 
@@ -93,7 +93,7 @@ This module requires the following packages to be installed on the Ansible contr
 
 ## Installation  
 
-Ensure that the [dependencies](#dependencies) above are met, and then get the latest version of the role from Ansible galaxy. 
+Ensure that the [dependencies](#dependencies) above are met, and then get the latest version of the role from Ansible galaxy.
 
 ```
 ansible-galaxy install --force batfish.base
