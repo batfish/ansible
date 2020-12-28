@@ -3,12 +3,16 @@ nodes:
     AS_Path_Access_Lists: []
     Authentication_Key_Chains: []
     BGP:
+      Confederation_ID: null
+      Confederation_Members: null
       Multipath_EBGP: true
       Multipath_IBGP: true
       Multipath_Match_Mode: EXACT_PATH
       Neighbors:
         2.34.101.3:
           Cluster_ID: null
+          Confederation: null
+          Description: null
           Export_Policy:
           - dept_to_as2
           Import_Policy:
@@ -25,6 +29,8 @@ nodes:
           VRF: default
         2.34.201.3:
           Cluster_ID: null
+          Confederation: null
+          Description: null
           Export_Policy:
           - dept_to_as2
           Import_Policy:
@@ -51,7 +57,6 @@ nodes:
       DNS_Source_Interface: null
     Default_Cross_Zone_Action: PERMIT
     Default_Inbound_Action: PERMIT
-    Device_Type: ROUTER
     Domain_Name: lab.local
     Hostname: as2dept1
     IP6_Access_Lists: []
@@ -89,11 +94,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: null
@@ -131,11 +131,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.34.101.4/24
@@ -173,11 +168,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.34.201.4/24
@@ -215,11 +205,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.128.0.1/24
@@ -257,11 +242,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.128.1.1/24
@@ -299,11 +279,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 2.1.1.2/32
