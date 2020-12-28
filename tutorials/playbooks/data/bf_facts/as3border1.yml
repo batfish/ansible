@@ -3,12 +3,16 @@ nodes:
     AS_Path_Access_Lists: []
     Authentication_Key_Chains: []
     BGP:
+      Confederation_ID: null
+      Confederation_Members: null
       Multipath_EBGP: true
       Multipath_IBGP: true
       Multipath_Match_Mode: EXACT_PATH
       Neighbors:
         10.23.21.2:
           Cluster_ID: null
+          Confederation: null
+          Description: null
           Export_Policy:
           - as3_to_as2
           Import_Policy:
@@ -25,6 +29,8 @@ nodes:
           VRF: default
         3.10.1.1:
           Cluster_ID: null
+          Confederation: null
+          Description: null
           Export_Policy: []
           Import_Policy: []
           Is_Passive: false
@@ -51,7 +57,6 @@ nodes:
       DNS_Source_Interface: null
     Default_Cross_Zone_Action: PERMIT
     Default_Inbound_Action: PERMIT
-    Device_Type: ROUTER
     Domain_Name: lab.local
     Hostname: as3border1
     IP6_Access_Lists: []
@@ -88,11 +93,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: null
@@ -130,11 +130,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: 1
-        OSPF_Cost: 1
-        OSPF_Enabled: true
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 3.0.1.1/24
@@ -172,11 +167,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: null
-        OSPF_Cost: null
-        OSPF_Enabled: false
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 10.23.21.3/24
@@ -214,11 +204,6 @@ nodes:
         MLAG_ID: null
         MTU: 1500
         Native_VLAN: null
-        OSPF_Area_Name: 1
-        OSPF_Cost: 1
-        OSPF_Enabled: true
-        OSPF_Passive: false
-        OSPF_Point_To_Point: false
         Outgoing_Filter_Name: null
         PBR_Policy_Name: null
         Primary_Address: 3.1.1.1/32
@@ -239,6 +224,30 @@ nodes:
       - 18.18.18.18
       - 23.23.23.23
       NTP_Source_Interface: null
+    OSPF:
+      Processes:
+        '1':
+          Areas:
+            '1':
+              Area_Type: NONE
+              Interfaces:
+                GigabitEthernet0/0:
+                  Cost: 1
+                  Dead_Interval: 40
+                  Enabled: true
+                  Hello_Interval: 10
+                  Network_Type: BROADCAST
+                  Passive: false
+                Loopback0:
+                  Cost: 1
+                  Dead_Interval: 40
+                  Enabled: true
+                  Hello_Interval: 10
+                  Network_Type: BROADCAST
+                  Passive: false
+          Reference_Bandwidth: 100000000.0
+          Router_ID: 3.1.1.1
+          VRF: default
     PBR_Policies: []
     Route6_Filter_Lists: []
     Route_Filter_Lists:

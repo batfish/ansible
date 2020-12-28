@@ -1,5 +1,4 @@
 pytest
 mock;python_version<"3.0"
-pandas
 PyYAML
 -e git+https://github.com/batfish/pybatfish#egg=pybatfish
