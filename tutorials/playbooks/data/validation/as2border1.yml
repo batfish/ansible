@@ -55,10 +55,6 @@ nodes:
       Router_ID: 2.1.1.1
       Tie_Breaker: ARRIVAL_ORDER
       VRF: default
-    Community_Lists:
-    - as1_community
-    - as2_community
-    - as3_community
     Configuration_Format: CISCO_IOS
     DNS:
       DNS_Servers: []
