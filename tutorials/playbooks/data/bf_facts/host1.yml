@@ -2,7 +2,6 @@ nodes:
   host1:
     AS_Path_Access_Lists: []
     Authentication_Key_Chains: []
-    Community_Lists: []
     Configuration_Format: HOST
     DNS:
       DNS_Servers: []
