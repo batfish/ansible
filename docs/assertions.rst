@@ -294,7 +294,8 @@ Assert that all compatibly-configured BGP sessions are established
 
 
 
-* This test fails if there are any BGP session in the snapshot that are compatibly configured but will not be established (e.g., due to ACLs).
+* This test fails if any compatible BGP session cannot be established (e.g., due to ACLs).
+* This test considers only sessions that are compatible from a configuration settings perspective  To test that are no incompatible sessions, use the assert_no_incompatible_bgp_sessions assertion.
 * This test takes no parameters.
 
 
