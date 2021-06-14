@@ -132,7 +132,7 @@ assert_no_incompatible_ospf_sessions:
 assert_no_unestablished_bgp_sessions:
     short_description: Assert that all compatibly-configured BGP sessions are established
     description:
-        - "This test fails if any compatible BGP session cannot be established (e.g., due to ACLs)." 
+        - "This test fails if any compatible BGP session cannot be established (e.g., due to ACLs)."
         - "This test considers only sessions that are compatible from a configuration settings perspective  To test that are no incompatible sessions, use the assert_no_incompatible_bgp_sessions assertion." 
         - "This test takes no parameters."
 
